@@ -1,0 +1,3025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal de Envios Wepink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>@layer theme, base, components, utilities;</style>
+<style id="tw">/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+@layer properties;
+@layer theme {
+  :root, :host {
+    --font-mono: ui-monospace, Menlo, Consolas, monospace;
+    --color-black: #000;
+    --color-white: #fff;
+    --spacing: 0.25rem;
+    --text-xs: 0.75rem;
+    --text-xs--line-height: calc(1 / 0.75);
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
+    --text-base: 1rem;
+    --text-base--line-height: calc(1.5 / 1);
+    --text-lg: 1.125rem;
+    --text-lg--line-height: calc(1.75 / 1.125);
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --tracking-wide: 0.025em;
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
+    --radius-3xl: 1.5rem;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    --animate-subir: subir .55s cubic-bezier(.22,1,.36,1) both;
+    --animate-caminhao: caminhao 1.9s ease-in-out infinite;
+    --animate-pulso: pulso 1.8s ease-out infinite;
+    --animate-brilho: brilho .9s ease-out 2;
+  }
+}
+@layer utilities {
+  .pointer-events-auto {
+    pointer-events: auto;
+  }
+  .pointer-events-none {
+    pointer-events: none;
+  }
+  .absolute {
+    position: absolute;
+  }
+  .fixed {
+    position: fixed;
+  }
+  .relative {
+    position: relative;
+  }
+  .inset-0 {
+    inset: 0px;
+  }
+  .inset-x-0 {
+    inset-inline: 0px;
+  }
+  .inset-x-5 {
+    inset-inline: calc(var(--spacing) * 5);
+  }
+  .inset-y-0 {
+    inset-block: 0px;
+  }
+  .-top-0\.5 {
+    top: calc(var(--spacing) * -0.5);
+  }
+  .top-1 {
+    top: var(--spacing);
+  }
+  .top-1\.5 {
+    top: calc(var(--spacing) * 1.5);
+  }
+  .top-4 {
+    top: calc(var(--spacing) * 4);
+  }
+  .top-5 {
+    top: calc(var(--spacing) * 5);
+  }
+  .top-12 {
+    top: calc(var(--spacing) * 12);
+  }
+  .top-\[9px\] {
+    top: 9px;
+  }
+  .top-\[11px\] {
+    top: 11px;
+  }
+  .top-\[18\%\] {
+    top: 18%;
+  }
+  .top-\[60\%\] {
+    top: 60%;
+  }
+  .-right-0\.5 {
+    right: calc(var(--spacing) * -0.5);
+  }
+  .-right-8 {
+    right: calc(var(--spacing) * -8);
+  }
+  .right-0 {
+    right: 0px;
+  }
+  .right-5 {
+    right: calc(var(--spacing) * 5);
+  }
+  .right-\[12\.5\%\] {
+    right: 12.5%;
+  }
+  .-bottom-10 {
+    bottom: calc(var(--spacing) * -10);
+  }
+  .bottom-0 {
+    bottom: 0px;
+  }
+  .bottom-5 {
+    bottom: calc(var(--spacing) * 5);
+  }
+  .bottom-6 {
+    bottom: calc(var(--spacing) * 6);
+  }
+  .left-0 {
+    left: 0px;
+  }
+  .left-\[5px\] {
+    left: 5px;
+  }
+  .left-\[7px\] {
+    left: 7px;
+  }
+  .left-\[12\.5\%\] {
+    left: 12.5%;
+  }
+  .z-30 {
+    z-index: 30;
+  }
+  .z-40 {
+    z-index: 40;
+  }
+  .z-50 {
+    z-index: 50;
+  }
+  .z-\[60\] {
+    z-index: 60;
+  }
+  .col-span-full {
+    grid-column: 1 / -1;
+  }
+  .m-0 {
+    margin: 0px;
+  }
+  .mt-0\.5 {
+    margin-top: calc(var(--spacing) * 0.5);
+  }
+  .mt-1 {
+    margin-top: var(--spacing);
+  }
+  .mt-1\.5 {
+    margin-top: calc(var(--spacing) * 1.5);
+  }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
+  .mt-3 {
+    margin-top: calc(var(--spacing) * 3);
+  }
+  .mt-4 {
+    margin-top: calc(var(--spacing) * 4);
+  }
+  .mr-1 {
+    margin-right: var(--spacing);
+  }
+  .mb-3 {
+    margin-bottom: calc(var(--spacing) * 3);
+  }
+  .mb-4 {
+    margin-bottom: calc(var(--spacing) * 4);
+  }
+  .mb-6 {
+    margin-bottom: calc(var(--spacing) * 6);
+  }
+  .ml-3 {
+    margin-left: calc(var(--spacing) * 3);
+  }
+  .ml-auto {
+    margin-left: auto;
+  }
+  .block {
+    display: block;
+  }
+  .flex {
+    display: flex;
+  }
+  .grid {
+    display: grid;
+  }
+  .hidden {
+    display: none;
+  }
+  .inline-flex {
+    display: inline-flex;
+  }
+  .table {
+    display: table;
+  }
+  .h-0\.5 {
+    height: calc(var(--spacing) * 0.5);
+  }
+  .h-1\.5 {
+    height: calc(var(--spacing) * 1.5);
+  }
+  .h-2 {
+    height: calc(var(--spacing) * 2);
+  }
+  .h-2\.5 {
+    height: calc(var(--spacing) * 2.5);
+  }
+  .h-3 {
+    height: calc(var(--spacing) * 3);
+  }
+  .h-4 {
+    height: calc(var(--spacing) * 4);
+  }
+  .h-5 {
+    height: calc(var(--spacing) * 5);
+  }
+  .h-6 {
+    height: calc(var(--spacing) * 6);
+  }
+  .h-7 {
+    height: calc(var(--spacing) * 7);
+  }
+  .h-9 {
+    height: calc(var(--spacing) * 9);
+  }
+  .h-10 {
+    height: calc(var(--spacing) * 10);
+  }
+  .h-11 {
+    height: calc(var(--spacing) * 11);
+  }
+  .h-14 {
+    height: calc(var(--spacing) * 14);
+  }
+  .h-16 {
+    height: calc(var(--spacing) * 16);
+  }
+  .h-20 {
+    height: calc(var(--spacing) * 20);
+  }
+  .h-full {
+    height: 100%;
+  }
+  .max-h-\[60vh\] {
+    max-height: 60vh;
+  }
+  .max-h-\[92vh\] {
+    max-height: 92vh;
+  }
+  .max-h-\[320px\] {
+    max-height: 320px;
+  }
+  .min-h-9 {
+    min-height: calc(var(--spacing) * 9);
+  }
+  .min-h-10 {
+    min-height: calc(var(--spacing) * 10);
+  }
+  .min-h-11 {
+    min-height: calc(var(--spacing) * 11);
+  }
+  .min-h-12 {
+    min-height: calc(var(--spacing) * 12);
+  }
+  .min-h-\[1\.2em\] {
+    min-height: 1.2em;
+  }
+  .\!w-32 {
+    width: calc(var(--spacing) * 32) !important;
+  }
+  .\!w-auto {
+    width: auto !important;
+  }
+  .w-0 {
+    width: 0px;
+  }
+  .w-0\.5 {
+    width: calc(var(--spacing) * 0.5);
+  }
+  .w-1\/2 {
+    width: calc(1 / 2 * 100%);
+  }
+  .w-2 {
+    width: calc(var(--spacing) * 2);
+  }
+  .w-2\.5 {
+    width: calc(var(--spacing) * 2.5);
+  }
+  .w-3 {
+    width: calc(var(--spacing) * 3);
+  }
+  .w-3\/4 {
+    width: calc(3 / 4 * 100%);
+  }
+  .w-4 {
+    width: calc(var(--spacing) * 4);
+  }
+  .w-5 {
+    width: calc(var(--spacing) * 5);
+  }
+  .w-6 {
+    width: calc(var(--spacing) * 6);
+  }
+  .w-7 {
+    width: calc(var(--spacing) * 7);
+  }
+  .w-9 {
+    width: calc(var(--spacing) * 9);
+  }
+  .w-10 {
+    width: calc(var(--spacing) * 10);
+  }
+  .w-11 {
+    width: calc(var(--spacing) * 11);
+  }
+  .w-14 {
+    width: calc(var(--spacing) * 14);
+  }
+  .w-\[min\(360px\,calc\(100vw-32px\)\)\] {
+    width: min(360px, calc(100vw - 32px));
+  }
+  .w-full {
+    width: 100%;
+  }
+  .max-w-\[32ch\] {
+    max-width: 32ch;
+  }
+  .max-w-\[420px\] {
+    max-width: 420px;
+  }
+  .max-w-\[480px\] {
+    max-width: 480px;
+  }
+  .max-w-\[680px\] {
+    max-width: 680px;
+  }
+  .min-w-5 {
+    min-width: calc(var(--spacing) * 5);
+  }
+  .flex-1 {
+    flex: 1;
+  }
+  .shrink-0 {
+    flex-shrink: 0;
+  }
+  .origin-top-left {
+    transform-origin: 0 0;
+  }
+  .origin-top-right {
+    transform-origin: 100% 0;
+  }
+  .translate-x-0 {
+    --tw-translate-x: 0px;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-x-full {
+    --tw-translate-x: 100%;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-y-0 {
+    --tw-translate-y: 0px;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-y-4 {
+    --tw-translate-y: calc(var(--spacing) * 4);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .scale-95 {
+    --tw-scale-x: 95%;
+    --tw-scale-y: 95%;
+    --tw-scale-z: 95%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
+  .scale-100 {
+    --tw-scale-x: 100%;
+    --tw-scale-y: 100%;
+    --tw-scale-z: 100%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
+  .scale-110 {
+    --tw-scale-x: 110%;
+    --tw-scale-y: 110%;
+    --tw-scale-z: 110%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .list-none {
+    list-style-type: none;
+  }
+  .\[grid-template-columns\:repeat\(auto-fill\,minmax\(min\(100\%\,300px\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fill,minmax(min(100%, 300px),1fr));
+  }
+  .\[grid-template-columns\:repeat\(auto-fit\,minmax\(min\(100\%\,120px\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fit,minmax(min(100%, 120px),1fr));
+  }
+  .\[grid-template-columns\:repeat\(auto-fit\,minmax\(min\(100\%\,140px\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fit,minmax(min(100%, 140px),1fr));
+  }
+  .\[grid-template-columns\:repeat\(auto-fit\,minmax\(min\(100\%\,180px\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fit,minmax(min(100%, 180px),1fr));
+  }
+  .\[grid-template-columns\:repeat\(auto-fit\,minmax\(min\(100\%\,230px\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fit,minmax(min(100%, 230px),1fr));
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  .place-items-center {
+    place-items: center;
+  }
+  .content-start {
+    align-content: flex-start;
+  }
+  .items-center {
+    align-items: center;
+  }
+  .items-end {
+    align-items: flex-end;
+  }
+  .items-start {
+    align-items: flex-start;
+  }
+  .justify-between {
+    justify-content: space-between;
+  }
+  .justify-center {
+    justify-content: center;
+  }
+  .justify-end {
+    justify-content: flex-end;
+  }
+  .gap-1\.5 {
+    gap: calc(var(--spacing) * 1.5);
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
+  }
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
+  }
+  .gap-4 {
+    gap: calc(var(--spacing) * 4);
+  }
+  :where(.space-y-4 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  :where(.space-y-5 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 5) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 5) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  :where(.space-y-7 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 7) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 7) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  :where(.space-y-8 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 8) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 8) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
+  }
+  .rounded-2xl {
+    border-radius: var(--radius-2xl);
+  }
+  .rounded-3xl {
+    border-radius: var(--radius-3xl);
+  }
+  .rounded-full {
+    border-radius: calc(infinity * 1px);
+  }
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
+  .rounded-xl {
+    border-radius: var(--radius-xl);
+  }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+  .border-0 {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+  }
+  .border-2 {
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+  }
+  .border-\[3px\] {
+    border-style: var(--tw-border-style);
+    border-width: 3px;
+  }
+  .border-t {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 1px;
+  }
+  .border-b {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+  }
+  .border-dashed {
+    --tw-border-style: dashed;
+    border-style: dashed;
+  }
+  .border-\[\#e5007e\] {
+    border-color: #e5007e;
+  }
+  .border-\[\#e5007e\]\/50 {
+    border-color: color-mix(in oklab, #e5007e 50%, transparent);
+  }
+  .border-\[var\(--line\)\] {
+    border-color: var(--line);
+  }
+  .border-\[var\(--warn\)\] {
+    border-color: var(--warn);
+  }
+  .border-current {
+    border-color: currentcolor;
+  }
+  .bg-\[\#0b7a43\] {
+    background-color: #0b7a43;
+  }
+  .bg-\[\#16101a\] {
+    background-color: #16101a;
+  }
+  .bg-\[\#e5007e\] {
+    background-color: #e5007e;
+  }
+  .bg-\[\#fbbf24\] {
+    background-color: #fbbf24;
+  }
+  .bg-\[color-mix\(in_srgb\,var\(--ok\)_14\%\,transparent\)\] {
+    background-color: var(--ok);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in srgb,var(--ok) 14%,transparent);
+    }
+  }
+  .bg-\[color-mix\(in_srgb\,var\(--warn\)_14\%\,transparent\)\] {
+    background-color: var(--warn);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in srgb,var(--warn) 14%,transparent);
+    }
+  }
+  .bg-\[color-mix\(in_srgb\,var\(--warn\)_16\%\,transparent\)\] {
+    background-color: var(--warn);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in srgb,var(--warn) 16%,transparent);
+    }
+  }
+  .bg-\[var\(--band\)\] {
+    background-color: var(--band);
+  }
+  .bg-\[var\(--bg\)\] {
+    background-color: var(--bg);
+  }
+  .bg-\[var\(--ink\)\] {
+    background-color: var(--ink);
+  }
+  .bg-\[var\(--line\)\] {
+    background-color: var(--line);
+  }
+  .bg-\[var\(--panel\)\] {
+    background-color: var(--panel);
+  }
+  .bg-\[var\(--soft\)\] {
+    background-color: var(--soft);
+  }
+  .bg-\[var\(--soft\)\]\/40 {
+    background-color: var(--soft);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--soft) 40%, transparent);
+    }
+  }
+  .bg-\[var\(--soft\)\]\/50 {
+    background-color: var(--soft);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--soft) 50%, transparent);
+    }
+  }
+  .bg-\[var\(--warn\)\] {
+    background-color: var(--warn);
+  }
+  .bg-black\/45 {
+    background-color: color-mix(in srgb, #000 45%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 45%, transparent);
+    }
+  }
+  .bg-black\/50 {
+    background-color: color-mix(in srgb, #000 50%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 50%, transparent);
+    }
+  }
+  .bg-current {
+    background-color: currentcolor;
+  }
+  .bg-transparent {
+    background-color: transparent;
+  }
+  .bg-white {
+    background-color: var(--color-white);
+  }
+  .bg-white\/15 {
+    background-color: color-mix(in srgb, #fff 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 15%, transparent);
+    }
+  }
+  .bg-white\/70 {
+    background-color: color-mix(in srgb, #fff 70%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 70%, transparent);
+    }
+  }
+  .bg-gradient-to-r {
+    --tw-gradient-position: to right in oklab;
+    background-image: linear-gradient(var(--tw-gradient-stops));
+  }
+  .bg-\[repeating-linear-gradient\(90deg\,var\(--pink\)_0_10px\,transparent_10px_18px\)\] {
+    background-image: repeating-linear-gradient(90deg,var(--pink) 0 10px,transparent 10px 18px);
+  }
+  .from-\[\#ff6fb5\] {
+    --tw-gradient-from: #ff6fb5;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .to-\[\#e5007e\] {
+    --tw-gradient-to: #e5007e;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .p-0 {
+    padding: 0px;
+  }
+  .p-2 {
+    padding: calc(var(--spacing) * 2);
+  }
+  .p-4 {
+    padding: calc(var(--spacing) * 4);
+  }
+  .p-5 {
+    padding: calc(var(--spacing) * 5);
+  }
+  .p-7 {
+    padding: calc(var(--spacing) * 7);
+  }
+  .px-1 {
+    padding-inline: var(--spacing);
+  }
+  .px-2 {
+    padding-inline: calc(var(--spacing) * 2);
+  }
+  .px-2\.5 {
+    padding-inline: calc(var(--spacing) * 2.5);
+  }
+  .px-3 {
+    padding-inline: calc(var(--spacing) * 3);
+  }
+  .px-3\.5 {
+    padding-inline: calc(var(--spacing) * 3.5);
+  }
+  .px-4 {
+    padding-inline: calc(var(--spacing) * 4);
+  }
+  .px-5 {
+    padding-inline: calc(var(--spacing) * 5);
+  }
+  .px-6 {
+    padding-inline: calc(var(--spacing) * 6);
+  }
+  .\!py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5) !important;
+  }
+  .\!py-6 {
+    padding-block: calc(var(--spacing) * 6) !important;
+  }
+  .py-1 {
+    padding-block: var(--spacing);
+  }
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
+  }
+  .py-3 {
+    padding-block: calc(var(--spacing) * 3);
+  }
+  .py-4 {
+    padding-block: calc(var(--spacing) * 4);
+  }
+  .py-6 {
+    padding-block: calc(var(--spacing) * 6);
+  }
+  .py-10 {
+    padding-block: calc(var(--spacing) * 10);
+  }
+  .py-14 {
+    padding-block: calc(var(--spacing) * 14);
+  }
+  .pt-4 {
+    padding-top: calc(var(--spacing) * 4);
+  }
+  .pt-5 {
+    padding-top: calc(var(--spacing) * 5);
+  }
+  .pb-2 {
+    padding-bottom: calc(var(--spacing) * 2);
+  }
+  .pb-4 {
+    padding-bottom: calc(var(--spacing) * 4);
+  }
+  .pb-5 {
+    padding-bottom: calc(var(--spacing) * 5);
+  }
+  .pb-6 {
+    padding-bottom: calc(var(--spacing) * 6);
+  }
+  .pl-3 {
+    padding-left: calc(var(--spacing) * 3);
+  }
+  .pl-7 {
+    padding-left: calc(var(--spacing) * 7);
+  }
+  .pl-8 {
+    padding-left: calc(var(--spacing) * 8);
+  }
+  .text-center {
+    text-align: center;
+  }
+  .text-left {
+    text-align: left;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  .text-base {
+    font-size: var(--text-base);
+    line-height: var(--tw-leading, var(--text-base--line-height));
+  }
+  .text-lg {
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-lg--line-height));
+  }
+  .text-sm {
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+  }
+  .text-xs {
+    font-size: var(--text-xs);
+    line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  .text-\[11px\] {
+    font-size: 11px;
+  }
+  .text-\[12px\] {
+    font-size: 12px;
+  }
+  .text-\[13px\] {
+    font-size: 13px;
+  }
+  .text-\[15px\] {
+    font-size: 15px;
+  }
+  .text-\[20px\] {
+    font-size: 20px;
+  }
+  .text-\[22px\] {
+    font-size: 22px;
+  }
+  .text-\[24px\] {
+    font-size: 24px;
+  }
+  .text-\[26px\] {
+    font-size: 26px;
+  }
+  .text-\[28px\] {
+    font-size: 28px;
+  }
+  .leading-5 {
+    --tw-leading: calc(var(--spacing) * 5);
+    line-height: calc(var(--spacing) * 5);
+  }
+  .leading-snug {
+    --tw-leading: var(--leading-snug);
+    line-height: var(--leading-snug);
+  }
+  .leading-tight {
+    --tw-leading: var(--leading-tight);
+    line-height: var(--leading-tight);
+  }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+  .font-normal {
+    --tw-font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-normal);
+  }
+  .font-semibold {
+    --tw-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+  .tracking-wide {
+    --tw-tracking: var(--tracking-wide);
+    letter-spacing: var(--tracking-wide);
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
+  .\!text-\[var\(--bad\)\] {
+    color: var(--bad) !important;
+  }
+  .\!text-\[var\(--mut\)\] {
+    color: var(--mut) !important;
+  }
+  .text-\[\#3b2300\] {
+    color: #3b2300;
+  }
+  .text-\[\#6d5f69\] {
+    color: #6d5f69;
+  }
+  .text-\[\#8c004c\] {
+    color: #8c004c;
+  }
+  .text-\[var\(--bad\)\] {
+    color: var(--bad);
+  }
+  .text-\[var\(--bg\)\] {
+    color: var(--bg);
+  }
+  .text-\[var\(--deep\)\] {
+    color: var(--deep);
+  }
+  .text-\[var\(--ink\)\] {
+    color: var(--ink);
+  }
+  .text-\[var\(--mut\)\] {
+    color: var(--mut);
+  }
+  .text-\[var\(--ok\)\] {
+    color: var(--ok);
+  }
+  .text-\[var\(--pink\)\] {
+    color: var(--pink);
+  }
+  .text-\[var\(--warn\)\] {
+    color: var(--warn);
+  }
+  .text-inherit {
+    color: inherit;
+  }
+  .text-transparent {
+    color: transparent;
+  }
+  .text-white {
+    color: var(--color-white);
+  }
+  .text-white\/15 {
+    color: color-mix(in srgb, #fff 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-white) 15%, transparent);
+    }
+  }
+  .text-white\/80 {
+    color: color-mix(in srgb, #fff 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-white) 80%, transparent);
+    }
+  }
+  .text-white\/85 {
+    color: color-mix(in srgb, #fff 85%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-white) 85%, transparent);
+    }
+  }
+  .uppercase {
+    text-transform: uppercase;
+  }
+  .line-through {
+    text-decoration-line: line-through;
+  }
+  .accent-\[\#0b7a43\] {
+    accent-color: #0b7a43;
+  }
+  .accent-\[\#b45309\] {
+    accent-color: #b45309;
+  }
+  .accent-\[\#e5007e\] {
+    accent-color: #e5007e;
+  }
+  .opacity-0 {
+    opacity: 0%;
+  }
+  .opacity-40 {
+    opacity: 40%;
+  }
+  .opacity-50 {
+    opacity: 50%;
+  }
+  .opacity-55 {
+    opacity: 55%;
+  }
+  .opacity-100 {
+    opacity: 100%;
+  }
+  .shadow-2xl {
+    --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[0_0_0_4px_var\(--soft\)\] {
+    --tw-shadow: 0 0 0 4px var(--tw-shadow-color, var(--soft));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[0_0_60px_rgba\(0\,0\,0\,\.35\)\] {
+    --tw-shadow: 0 0 60px var(--tw-shadow-color, rgba(0,0,0,.35));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[0_20px_60px_rgba\(0\,0\,0\,\.3\)\] {
+    --tw-shadow: 0 20px 60px var(--tw-shadow-color, rgba(0,0,0,.3));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-lg {
+    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-md {
+    --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-sm {
+    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .ring-1 {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .ring-\[\#e5007e\]\/25 {
+    --tw-ring-color: color-mix(in oklab, #e5007e 25%, transparent);
+  }
+  .backdrop-blur-\[3px\] {
+    --tw-backdrop-blur: blur(3px);
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .transition {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-\[width\] {
+    transition-property: width;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-colors {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-opacity {
+    transition-property: opacity;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-transform {
+    transition-property: transform, translate, scale, rotate;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+  }
+  .duration-500 {
+    --tw-duration: 500ms;
+    transition-duration: 500ms;
+  }
+  .duration-700 {
+    --tw-duration: 700ms;
+    transition-duration: 700ms;
+  }
+  .duration-\[1200ms\] {
+    --tw-duration: 1200ms;
+    transition-duration: 1200ms;
+  }
+  .ease-\[cubic-bezier\(\.22\,1\,\.36\,1\)\] {
+    --tw-ease: cubic-bezier(.22,1,.36,1);
+    transition-timing-function: cubic-bezier(.22,1,.36,1);
+  }
+  .ease-out {
+    --tw-ease: var(--ease-out);
+    transition-timing-function: var(--ease-out);
+  }
+  .outline-none {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .\[animation-delay\:90ms\] {
+    animation-delay: 90ms;
+  }
+  .\[animation-delay\:160ms\] {
+    animation-delay: 160ms;
+  }
+  @media (hover: hover) {
+    .group-hover\:translate-x-1:is(:where(.group):hover *) {
+      --tw-translate-x: var(--spacing);
+      translate: var(--tw-translate-x) var(--tw-translate-y);
+    }
+    .group-hover\:opacity-100:is(:where(.group):hover *) {
+      opacity: 100%;
+    }
+    .hover\:-translate-y-0\.5:hover {
+      --tw-translate-y: calc(var(--spacing) * -0.5);
+      translate: var(--tw-translate-x) var(--tw-translate-y);
+    }
+    .hover\:-translate-y-1:hover {
+      --tw-translate-y: calc(var(--spacing) * -1);
+      translate: var(--tw-translate-x) var(--tw-translate-y);
+    }
+    .hover\:rotate-90:hover {
+      rotate: 90deg;
+    }
+    .hover\:border-\[\#e5007e\]:hover {
+      border-color: #e5007e;
+    }
+    .hover\:border-\[var\(--ink\)\]:hover {
+      border-color: var(--ink);
+    }
+    .hover\:bg-\[\#c8006e\]:hover {
+      background-color: #c8006e;
+    }
+    .hover\:bg-\[color-mix\(in_srgb\,currentColor_14\%\,transparent\)\]:hover {
+      background-color: currentColor;
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-\[color-mix\(in_srgb\,currentColor_14\%\,transparent\)\]:hover {
+        background-color: color-mix(in srgb,currentColor 14%,transparent);
+      }
+    }
+    .hover\:bg-\[var\(--panel\)\]:hover {
+      background-color: var(--panel);
+    }
+    .hover\:bg-\[var\(--soft\)\]:hover {
+      background-color: var(--soft);
+    }
+    .hover\:bg-white\/25:hover {
+      background-color: color-mix(in srgb, #fff 25%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-white\/25:hover {
+        background-color: color-mix(in oklab, var(--color-white) 25%, transparent);
+      }
+    }
+    .hover\:bg-white\/30:hover {
+      background-color: color-mix(in srgb, #fff 30%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-white\/30:hover {
+        background-color: color-mix(in oklab, var(--color-white) 30%, transparent);
+      }
+    }
+    .hover\:text-\[var\(--bad\)\]:hover {
+      color: var(--bad);
+    }
+    .hover\:shadow-\[0_14px_40px_rgba\(229\,0\,126\,\.18\)\]:hover {
+      --tw-shadow: 0 14px 40px var(--tw-shadow-color, rgba(229,0,126,.18));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+    .hover\:shadow-lg:hover {
+      --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+    .hover\:shadow-md:hover {
+      --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+    .hover\:shadow-xl:hover {
+      --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
+  .focus\:border-\[\#e5007e\]:focus {
+    border-color: #e5007e;
+  }
+  .focus\:ring-4:focus {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .focus\:ring-\[\#e5007e\]\/15:focus {
+    --tw-ring-color: color-mix(in oklab, #e5007e 15%, transparent);
+  }
+  .focus\:outline-none:focus {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .active\:translate-y-0:active {
+    --tw-translate-y: 0px;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .disabled\:opacity-50:disabled {
+    opacity: 50%;
+  }
+  .has-\[\:checked\]\:border-\[\#0b7a43\]:has(:is(:checked)) {
+    border-color: #0b7a43;
+  }
+  .has-\[\:checked\]\:border-\[\#b45309\]:has(:is(:checked)) {
+    border-color: #b45309;
+  }
+  .has-\[\:checked\]\:ring-4:has(:is(:checked)) {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .has-\[\:checked\]\:ring-\[\#0b7a43\]\/15:has(:is(:checked)) {
+    --tw-ring-color: color-mix(in oklab, #0b7a43 15%, transparent);
+  }
+  .has-\[\:checked\]\:ring-\[\#b45309\]\/15:has(:is(:checked)) {
+    --tw-ring-color: color-mix(in oklab, #b45309 15%, transparent);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .motion-safe\:animate-brilho {
+      animation: var(--animate-brilho);
+    }
+    .motion-safe\:animate-caminhao {
+      animation: var(--animate-caminhao);
+    }
+    .motion-safe\:animate-pulse {
+      animation: var(--animate-pulse);
+    }
+    .motion-safe\:animate-pulso {
+      animation: var(--animate-pulso);
+    }
+    .motion-safe\:animate-subir {
+      animation: var(--animate-subir);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .motion-reduce\:transition-none {
+      transition-property: none;
+    }
+  }
+  @media (width >= 40rem) {
+    .sm\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sm\:grid-cols-\[auto_minmax\(0\,1fr\)_minmax\(0\,1fr\)_auto\] {
+      grid-template-columns: auto minmax(0,1fr) minmax(0,1fr) auto;
+    }
+    .sm\:grid-cols-\[minmax\(0\,1fr\)_minmax\(0\,220px\)\] {
+      grid-template-columns: minmax(0,1fr) minmax(0,220px);
+    }
+  }
+}
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-scale-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-space-y-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-gradient-position {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-via {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-to {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-via-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+@property --tw-gradient-via-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --tw-gradient-to-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-tracking {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-inset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-ring-inset {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-offset-width {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --tw-ring-offset-color {
+  syntax: "*";
+  inherits: false;
+  initial-value: #fff;
+}
+@property --tw-ring-offset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ease {
+  syntax: "*";
+  inherits: false;
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes caminhao {
+  0% {
+    left: 4%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(96% - 34px);
+    opacity: 0;
+  }
+}
+@keyframes pulso {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(229,0,126,.45);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(229,0,126,0);
+  }
+}
+@keyframes brilho {
+  from {
+    box-shadow: 0 0 0 0 rgba(229,0,126,.55);
+  }
+  to {
+    box-shadow: 0 0 0 10px rgba(229,0,126,0);
+  }
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
+      --tw-scale-x: 1;
+      --tw-scale-y: 1;
+      --tw-scale-z: 1;
+      --tw-space-y-reverse: 0;
+      --tw-border-style: solid;
+      --tw-gradient-position: initial;
+      --tw-gradient-from: #0000;
+      --tw-gradient-via: #0000;
+      --tw-gradient-to: #0000;
+      --tw-gradient-stops: initial;
+      --tw-gradient-via-stops: initial;
+      --tw-gradient-from-position: 0%;
+      --tw-gradient-via-position: 50%;
+      --tw-gradient-to-position: 100%;
+      --tw-leading: initial;
+      --tw-font-weight: initial;
+      --tw-tracking: initial;
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-color: initial;
+      --tw-shadow-alpha: 100%;
+      --tw-inset-shadow: 0 0 #0000;
+      --tw-inset-shadow-color: initial;
+      --tw-inset-shadow-alpha: 100%;
+      --tw-ring-color: initial;
+      --tw-ring-shadow: 0 0 #0000;
+      --tw-inset-ring-color: initial;
+      --tw-inset-ring-shadow: 0 0 #0000;
+      --tw-ring-inset: initial;
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-backdrop-blur: initial;
+      --tw-backdrop-brightness: initial;
+      --tw-backdrop-contrast: initial;
+      --tw-backdrop-grayscale: initial;
+      --tw-backdrop-hue-rotate: initial;
+      --tw-backdrop-invert: initial;
+      --tw-backdrop-opacity: initial;
+      --tw-backdrop-saturate: initial;
+      --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
+      --tw-ease: initial;
+    }
+  }
+}
+</style>
+<style>
+/* VOICE: painel de trabalho da agência para o cliente — direto, confiável, com a energia rosa da marca.
+   IDEA: o "livro de expedição" da AGF: cada dia uma coluna de etiquetas postadas.
+   PICTURE: faixa rosa de ponta a ponta com o gráfico diário de envios em branco e a média móvel.
+   COLOUR and TYPE: rosa #e5007e dominante, preto de apoio, branco; Outfit para títulos/números, Inter no texto.
+   LAYOUT: barra da marca, filtros, faixa rosa (conclusão + números + gráfico), mapa de UFs e departamentos, tabela. */
+:root{color-scheme:light dark;
+  --bg:light-dark(#ffffff,#120e11);--ink:light-dark(#16101a,#f7eef4);--mut:light-dark(#6d5f69,#b8a6b2);
+  --line:light-dark(#efe3ea,#2e232b);--panel:light-dark(#fcf6f9,#1c1519);
+  --pink:#e5007e;--band:light-dark(#e5007e,#a8005d);--soft:light-dark(#fde5f1,#3b1229);--deep:light-dark(#8c004c,#ff7ab8);
+  --ok:light-dark(#0b7a43,#5fd49a);--warn:light-dark(#b45309,#fbbf24);--bad:light-dark(#c0122c,#ff8a8a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+@layer base{body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Outfit,Inter,system-ui,sans-serif}
+button,select,input{font:inherit;font-size:16px;color:inherit}
+button{cursor:pointer}
+h2{font-size:22px;margin:0 0 4px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font-weight:600;font-size:13px;color:var(--mut);border-bottom:2px solid var(--ink);padding:8px 10px}
+td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}}
+.num{font-family:Outfit,Inter,system-ui,sans-serif}
+.band{padding:clamp(24px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.fig{position:relative;min-height:300px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.scroll{overflow-x:auto}
+@layer base{:focus-visible{outline:3px solid var(--deep);outline-offset:2px}}
+
+/* topo */
+.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px max(5vw,16px);background:var(--ink);color:var(--bg)}
+.top .marca{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-right:auto}
+.top b{font:700 22px/1 Outfit,sans-serif;letter-spacing:-.01em}
+.top b i{font-style:normal;color:var(--pink)}
+.top .marca span{opacity:.75;font-size:14px}
+.top .user{display:flex;gap:12px;align-items:center;font-size:14px}
+.top .user>button{background:none;border:1px solid currentColor;border-radius:99px;padding:6px 14px;min-height:36px;color:inherit}
+
+.abas{display:flex;gap:4px;flex-wrap:wrap}
+.abas a{color:inherit;opacity:.72;text-decoration:none;padding:8px 14px;border-radius:99px;font-size:15px;font-weight:500;transition:opacity .2s,background .2s}
+.abas a:hover{opacity:1}.abas a[aria-current=page]{opacity:1;background:color-mix(in srgb,currentColor 15%,transparent)}
+.top .user #usuario{opacity:.8;font-size:13px;max-width:22ch;line-height:1.25}
+@media(max-width:1380px){.top .marca span{display:none}}
+.demoPerfil{display:flex;gap:6px;align-items:center;font-size:13px}.demoPerfil select{color:#16101a;border-radius:99px;border:0;padding:6px 10px;font-size:14px}
+.chip{border:1px solid rgba(255,255,255,.55);background:transparent;color:#fff;border-radius:99px;padding:6px 14px;min-height:38px;font-size:14px;transition:background .2s,color .2s}
+.chip:hover{background:rgba(255,255,255,.15)}.chip[aria-pressed=true]{background:#fff;color:#8c004c;border-color:#fff;font-weight:600}
+.campo textarea{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;font:inherit;font-size:16px;color:inherit;min-height:84px;resize:vertical}
+.planilha{width:100%;border-collapse:collapse;font-size:15px}
+.planilha th{background:#173a5e;color:#fff;border:0;text-align:center;padding:9px 8px;font-size:14px}
+.planilha td{text-align:center;border:1px solid var(--line);padding:8px}
+.planilha tfoot td{font-weight:700;background:var(--panel)}
+#protocolo{display:none}
+@media print{body.imprimindo>*:not(#protocolo){display:none!important}body.imprimindo #protocolo{display:block}}
+/* filtros */
+.filtros{padding:16px max(5vw,16px);border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5}
+.filtros .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-right:6px}
+.presets button{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:8px 14px;min-height:40px;font-size:14px}
+.presets button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.campo{display:grid;gap:3px;font-size:13px;color:var(--mut)}
+.campo input,.campo select{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;min-height:40px}
+.campo.busca{flex:1 1 220px}
+.limpar{border:0;background:none;color:var(--deep);text-decoration:underline;padding:8px 4px;min-height:40px}
+
+/* faixa rosa */
+.hero{background:var(--band);color:#fff}
+.hero h1{font-size:clamp(28px,4vw,46px);line-height:1.05;margin:0 0 8px;text-wrap:balance;font-weight:700;letter-spacing:-.015em}
+.hero .sub{margin:0 0 24px;opacity:.9;max-width:70ch}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.28);border-radius:14px;overflow:hidden;margin-bottom:24px}
+.kpi{background:var(--band);padding:14px 18px}
+.kpi small{display:block;font-size:13px;opacity:.85}
+.kpi .num{font-size:clamp(26px,3vw,38px);font-weight:700;line-height:1.15;white-space:nowrap}
+.kpi em{font-style:normal;font-size:13px;opacity:.9}
+.legenda{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;opacity:.9;margin-top:8px}
+.legenda i{display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,.6);vertical-align:-1px;margin-right:6px}
+.legenda i.l{height:3px;background:#fff;vertical-align:3px}
+.tip{position:absolute;pointer-events:none;background:#fff;color:#16101a;border-radius:10px;padding:8px 12px;font-size:13px;box-shadow:0 6px 24px rgba(0,0,0,.25);white-space:nowrap;transform:translate(-50%,-110%);display:none}
+.tip b{font:700 18px Outfit,sans-serif;display:block}
+
+/* blocos */
+.grade{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+.nota{color:var(--mut);font-size:14px;margin:0 0 16px}
+.barras{display:grid;gap:6px}
+.barra{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr) 5.5em;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:none;padding:4px 6px;border-radius:8px;min-height:34px}
+.barra:hover{background:var(--panel)}
+.barra[aria-pressed=true]{background:var(--soft)}
+.barra .rot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px}
+.barra .trilho{height:14px;background:var(--panel);border-radius:4px;overflow:hidden}
+.barra .trilho i{display:block;height:100%;background:var(--pink);border-radius:4px}
+.barra .v{text-align:right;font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
+.barra .v small{color:var(--mut)}
+.regioes{display:flex;height:18px;border-radius:6px;overflow:hidden;margin:4px 0 8px}
+.regioes i{display:block;height:100%}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--mut);margin-bottom:18px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+.semana{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end;height:130px;margin-top:8px}
+.semana div{display:grid;grid-template-rows:auto 1fr auto;height:100%;text-align:center;font-size:12px;color:var(--mut)}
+.semana div span{align-self:end;background:var(--pink);border-radius:4px 4px 0 0;min-height:2px}
+.semana div b{font-weight:600;color:var(--ink);font-size:12px}
+.vazio{color:var(--mut);font-size:14px;padding:16px 0}
+
+/* tabela */
+.cab{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin-bottom:14px}
+.cab .t{margin-right:auto}
+.acao{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:99px;padding:8px 18px;min-height:44px;font-weight:600;font-size:15px}
+.acao.sec{background:none;color:var(--ink)}
+a.acao{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.rast{visibility:hidden;transition:visibility 0s .5s}.rast.aberto{visibility:visible;transition:none}
+.reg-cel{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+td.n,th.n{white-space:nowrap}
+.reg{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;font-weight:600}
+.pag{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px;font-size:14px;color:var(--mut)}
+.pag .bt{display:flex;gap:8px}
+.pag button{border:1px solid var(--line);background:var(--bg);border-radius:10px;min-width:44px;min-height:40px;padding:0 12px}
+.pag button:disabled{opacity:.4;cursor:default}
+
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+.aviso{background:var(--soft);color:var(--ink);padding:10px max(5vw,16px);font-size:14px}
+.erro{background:light-dark(#fff0f0,#3a1414);color:var(--bad);padding:10px max(5vw,16px);font-size:14px;display:none}
+main.carregando{opacity:.55;transition:opacity .2s}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;display:none;z-index:70;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+
+/* login */
+.login{position:fixed;inset:0;z-index:30;display:none;place-items:center;background:var(--band);padding:20px}
+.login form{background:var(--bg);color:var(--ink);border-radius:18px;padding:32px;width:min(400px,100%);display:grid;gap:14px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.login h1{font-size:30px;margin:0;line-height:1.1}
+.login p{margin:0;color:var(--mut);font-size:14px}
+.login input{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;background:var(--bg)}
+.login .msg{color:var(--bad);min-height:1.4em}
+
+@media(max-width:900px){.top .marca span{display:none}.abas{order:3;width:100%}.grade{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.filtros{position:static}}
+@media(max-width:600px){.top #usuario,.top #senhaBt{display:none}.demoPerfil{font-size:0;gap:0}.top .user{gap:8px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut)}.stack td:empty{display:none}.fig{min-height:240px}.barra{grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 4.8em}}
+@media(prefers-reduced-motion:no-preference){.barra .trilho i,.semana span{transition:width .5s ease,height .5s ease}}
+@media print{.rastrear,#rast,#lote,.filtros,.top .user,.acao,.pag .bt,.login,.toast,.aviso{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.band{padding:16px}main{opacity:1!important}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+
+<div class="login" id="login" role="dialog" aria-modal="true" aria-labelledby="loginTit">
+  <form id="loginForm">
+    <h1 id="loginTit">Portal de envios Wepink</h1>
+    <p>Acesso exclusivo · AGF Morada dos Lagos</p>
+    <label class="campo">Usuário<input id="lu" autocomplete="username" required></label>
+    <label class="campo">Senha<input id="ls" type="password" autocomplete="current-password" required></label>
+    <div class="msg" id="lmsg" role="alert"></div>
+    <button class="acao" type="submit">Entrar</button>
+  </form>
+</div>
+
+<header class="top">
+  <div class="marca"><b>wep<i>i</i>nk · portal</b><span>por AGF Morada dos Lagos</span></div>
+  <nav class="abas" id="abas" aria-label="Seções">
+    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
+  </nav>
+  <div class="user">
+    <label class="demoPerfil" id="demoPerfilBox" hidden>Ver como <select id="demoPerfil"><option value="cliente">Cliente Wepink</option><option value="transporte">Transporte</option><option value="operacao">Operação</option><option value="admin">Administrador</option></select></label>
+    <div class="relative">
+      <button type="button" id="sino" aria-label="Notificações" aria-expanded="false" class="relative grid h-10 w-10 place-items-center rounded-full border-0 bg-transparent text-inherit transition hover:bg-[color-mix(in_srgb,currentColor_14%,transparent)]"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>
+        <span id="sinoN" class="absolute -top-0.5 -right-0.5 hidden min-w-5 rounded-full bg-[#e5007e] px-1 text-center text-[11px] leading-5 font-bold text-white"></span></button>
+      <div id="notif" class="pointer-events-none absolute top-12 right-0 z-30 w-[min(360px,calc(100vw-32px))] origin-top-right scale-95 rounded-2xl bg-[var(--bg)] text-[var(--ink)] opacity-0 shadow-[0_20px_60px_rgba(0,0,0,.3)] transition duration-200 ease-out">
+        <p class="m-0 border-b border-[var(--line)] px-4 py-3 text-sm font-semibold">O que precisa da sua atenção</p>
+        <div id="notifLista" class="max-h-[60vh] overflow-y-auto"></div>
+      </div>
+    </div>
+    <span id="usuario"></span>
+    <button id="senhaBt" type="button">Senha</button>
+    <button id="sair" type="button">Sair</button>
+  </div>
+</header>
+<div class="aviso" id="aviso" hidden>Você está vendo dados de demonstração. Use “Ver como” no topo para testar o fluxo de coletas como cliente, transporte, operação ou administrador.</div>
+<div class="erro" id="erro" role="alert"></div>
+
+<div id="vEnvios">
+<div class="filtros">
+  <div class="wrap">
+    <div class="presets" id="presets" role="group" aria-label="Período">
+      <button type="button" data-p="7">7 dias</button>
+      <button type="button" data-p="30">30 dias</button>
+      <button type="button" data-p="90">90 dias</button>
+      <button type="button" data-p="mes">Este mês</button>
+      <button type="button" data-p="mesant">Mês passado</button>
+      <button type="button" data-p="ano">Este ano</button>
+    </div>
+    <label class="campo">De<input type="date" id="fIni"></label>
+    <label class="campo">Até<input type="date" id="fFim"></label>
+    <label class="campo">Estado<select id="fUf"><option value="">Todos</option></select></label>
+    <label class="campo">Departamento<select id="fDepto"><option value="">Todos</option></select></label>
+    <label class="campo busca">Registro ou CEP<input id="fQ" type="search" placeholder="Ex.: QB123456789BR ou 01310-100" autocomplete="off"></label>
+    <button type="button" class="limpar" id="limpar">Limpar filtros</button>
+  </div>
+</div>
+
+<main id="main">
+  <section class="band hero">
+    <div class="wrap">
+      <h1 id="titulo">Carregando envios…</h1>
+      <p class="sub" id="subtitulo">&nbsp;</p>
+      <div class="kpis" id="kpis"></div>
+      <div class="fig" id="figDia"><svg id="svgDia" role="img" aria-label="Envios por dia"></svg><div class="tip" id="tip"></div></div>
+      <div class="legenda"><span><i></i>Envios no dia</span><span><i class="l"></i>Média móvel de 7 dias</span></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap grade">
+      <div>
+        <h2>Para onde vão os pacotes</h2>
+        <p class="nota" id="notaUf">Estado de destino pelo CEP. Clique em um estado para filtrar.</p>
+        <div class="regioes" id="regioes"></div>
+        <div class="leg" id="legReg"></div>
+        <div class="barras" id="barUf"></div>
+      </div>
+      <div>
+        <h2>Envios por departamento</h2>
+        <p class="nota">Campo remetente/departamento. Clique para filtrar.</p>
+        <div class="barras" id="barDepto"></div>
+        <h2 style="margin-top:28px">Dia da semana</h2>
+        <p class="nota">Total de envios por dia da semana no período.</p>
+        <div class="semana" id="semana"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap">
+      <div class="cab">
+        <div class="t"><h2>Relação de objetos</h2><p class="nota" style="margin:0" id="notaTab"></p></div>
+        <label class="campo">Ordenar por<select id="fOrd">
+          <option value="data_desc">Mais recentes</option><option value="data_asc">Mais antigos</option>
+          <option value="registro">Registro</option><option value="cep">CEP</option><option value="remetente">Departamento</option></select></label>
+        <button type="button" class="acao sec" id="rastPagina">Rastrear esta página</button>
+        <button type="button" class="acao sec" id="imprimir">Imprimir relatório</button>
+        <button type="button" class="acao" id="exportar">Exportar planilha (CSV)</button>
+      </div>
+      <div class="scroll">
+        <table class="stack" id="tab">
+          <thead><tr><th>Registro</th><th class="n">Expedição</th><th class="n">CEP</th><th>UF</th><th>Status</th><th>Remetente e departamento</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="pag">
+        <span id="pagInfo"></span>
+        <div class="bt">
+          <label class="campo" style="flex-direction:row"><select id="fTam" aria-label="Linhas por página"><option>25</option><option>50</option><option>100</option></select></label>
+          <button type="button" id="ant" aria-label="Página anterior">‹</button>
+          <button type="button" id="prox" aria-label="Próxima página">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<div id="vColetas" hidden>
+  <section class="band hero">
+    <div class="wrap">
+      <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div><h1 id="colTitulo">Controle de coletas</h1><p class="sub" id="colSub" style="margin:0">&nbsp;</p></div>
+        <button type="button" id="novaColeta" class="inline-flex min-h-12 items-center gap-2 rounded-full border-0 bg-white px-6 text-[15px] font-semibold text-[#8c004c] shadow-lg transition duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Solicitar coleta</span></button>
+      </div>
+      <div class="kpis" id="colKpis"></div>
+      <div class="flex flex-wrap items-center gap-2" id="colFiltros">
+        <span class="mr-1 text-sm text-white/80">Período</span>
+        <button type="button" class="chip" data-per="7">7 dias</button><button type="button" class="chip" data-per="30">30 dias</button><button type="button" class="chip" data-per="90">90 dias</button>
+        <span class="mr-1 ml-3 text-sm text-white/80">Situação</span>
+        <button type="button" class="chip" data-st="">Todas</button><button type="button" class="chip" data-st="abertas">Em andamento</button><button type="button" class="chip" data-st="pendente">Com pendências</button><button type="button" class="chip" data-st="concluida">Concluídas</button>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap">
+      <div id="colLista" class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]"></div>
+    </div>
+  </section>
+</div>
+
+<div id="vUsuarios" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="cab">
+        <div class="t"><h2>Usuários do portal</h2><p class="nota" style="margin:0">Cada pessoa entra com o próprio login. O perfil define o que ela pode fazer no fluxo de coletas.</p></div>
+        <button type="button" class="acao" id="novoUsuario">Novo usuário</button>
+      </div>
+      <div class="mb-6 grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))]" id="perfisInfo"></div>
+      <div class="scroll"><table class="stack"><thead><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>Situação</th><th class="n">Último acesso</th><th></th></tr></thead><tbody id="usuBody"></tbody></table></div>
+    </div>
+  </section>
+</div>
+
+<footer class="band"><div class="wrap" id="rodape">AGF Morada dos Lagos · Portal de envios para Wepink (SAVI Cosméticos Ltda.)</div></footer>
+
+<div id="col" class="rast fixed inset-0 z-40">
+  <div id="colFundo" data-fechar class="absolute inset-0 bg-black/45 opacity-0 backdrop-blur-[3px] transition-opacity duration-300 motion-reduce:transition-none"></div>
+  <aside id="colPainel" role="dialog" aria-modal="true" aria-labelledby="colTit" tabindex="-1"
+    class="absolute inset-y-0 right-0 flex w-full max-w-[680px] translate-x-full flex-col bg-[var(--bg)] text-[var(--ink)] shadow-[0_0_60px_rgba(0,0,0,.35)] outline-none transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none">
+    <header class="relative overflow-hidden bg-[var(--band)] px-6 pt-5 pb-6 text-white">
+      <div class="relative flex items-center justify-between gap-3">
+        <span class="text-sm text-white/85">Protocolo de coleta · AGF Morada dos Lagos</span>
+        <div class="flex items-center gap-2">
+          <button type="button" id="colImprimir" class="min-h-10 rounded-full border-0 bg-white/15 px-4 text-[13px] font-semibold text-white transition hover:bg-white/30">Imprimir protocolo</button>
+          <button type="button" data-fechar aria-label="Fechar" class="grid h-11 w-11 place-items-center rounded-full border-0 bg-white/15 text-white transition duration-300 hover:rotate-90 hover:bg-white/25">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+      </div>
+      <div class="relative mt-2 flex flex-wrap items-center gap-3">
+        <p id="colTit" class="m-0 text-[28px] leading-tight font-bold" style="font-family:Outfit,sans-serif"></p>
+        <span id="colStatus"></span>
+      </div>
+      <p id="colData" class="relative m-0 mt-1 text-sm text-white/85"></p>
+    </header>
+    <div id="colCorpo" class="flex-1 overflow-y-auto px-6 py-6"></div>
+  </aside>
+</div>
+
+<div id="modal" class="rast fixed inset-0 z-[60] grid place-items-center p-4">
+  <div data-fechar class="modalFundo absolute inset-0 bg-black/50 opacity-0 backdrop-blur-[3px] transition-opacity duration-300"></div>
+  <form id="modalForm" role="dialog" aria-modal="true" aria-labelledby="modalTit" novalidate
+    class="relative grid max-h-[92vh] w-full max-w-[480px] translate-y-4 scale-95 gap-4 overflow-y-auto rounded-3xl bg-[var(--bg)] p-7 text-[var(--ink)] opacity-0 shadow-2xl transition duration-300 ease-[cubic-bezier(.22,1,.36,1)]">
+    <p id="modalTit" class="m-0 text-[24px] leading-tight font-bold" style="font-family:Outfit,sans-serif"></p>
+    <div id="modalCorpo" class="grid gap-3"></div>
+    <p id="modalErro" class="m-0 min-h-[1.2em] text-sm text-[var(--bad)]" role="alert"></p>
+    <div class="flex flex-wrap justify-end gap-3"><button type="button" class="acao sec" data-fechar>Cancelar</button><button type="submit" class="acao" id="modalOk">Salvar</button></div>
+  </form>
+</div>
+
+<div id="protocolo" aria-hidden="true"></div>
+
+<div id="rast" class="rast fixed inset-0 z-50">
+  <div id="rastFundo" data-fechar class="absolute inset-0 bg-black/45 opacity-0 backdrop-blur-[3px] transition-opacity duration-300 motion-reduce:transition-none"></div>
+  <aside id="rastPainel" role="dialog" aria-modal="true" aria-labelledby="rastTit" tabindex="-1"
+    class="absolute inset-y-0 right-0 flex w-full max-w-[480px] translate-x-full flex-col bg-[var(--bg)] text-[var(--ink)] shadow-[0_0_60px_rgba(0,0,0,.35)] outline-none transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none">
+    <header class="relative overflow-hidden bg-[var(--band)] px-6 pt-5 pb-6 text-white">
+      <div class="pointer-events-none absolute -right-8 -bottom-10 text-white/15"><svg viewBox="0 0 24 24" width="160" height="160" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></div>
+      <div class="relative flex items-center justify-between gap-3">
+        <span class="text-sm text-white/85">Rastreamento do objeto</span>
+        <button type="button" data-fechar aria-label="Fechar" class="grid h-11 w-11 place-items-center rounded-full border-0 bg-white/15 text-white transition duration-300 hover:rotate-90 hover:bg-white/25">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="relative mt-2 flex flex-wrap items-center gap-3">
+        <p id="rastTit" class="m-0 font-mono text-[26px] font-bold tracking-wide"></p>
+        <button type="button" id="rastCopiar" class="min-h-9 rounded-full border-0 bg-white/15 px-3 text-[13px] text-white transition hover:bg-white/30">Copiar código</button>
+      </div>
+      <p id="rastDest" class="relative m-0 mt-1 text-sm text-white/85"></p>
+    </header>
+    <div id="rastCorpo" class="flex-1 overflow-y-auto px-6 py-6" aria-live="polite"></div>
+    <footer class="flex flex-wrap gap-3 border-t border-[var(--line)] px-6 py-4">
+      <button type="button" class="acao" id="rastAtualizar">Atualizar status</button>
+      <a class="acao sec" id="rastSite" href="https://rastreamento.correios.com.br/app/index.php" target="_blank" rel="noopener">Ver no site dos Correios ↗</a>
+    </footer>
+  </aside>
+</div>
+
+<div id="lote" class="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-4 opacity-0 translate-y-4 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]">
+  <div class="pointer-events-auto w-full max-w-[420px] rounded-2xl bg-[var(--ink)] p-4 text-[var(--bg)] shadow-2xl">
+    <div class="flex items-center justify-between gap-3 text-sm"><span id="loteTxt">Rastreando…</span><button type="button" id="loteParar" class="min-h-9 rounded-full border border-current bg-transparent px-3 text-[13px] text-inherit">Parar</button></div>
+    <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-white/15"><div id="loteBarra" class="h-full w-0 rounded-full bg-[#e5007e] transition-[width] duration-500"></div></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+{
+const $ = s => document.querySelector(s);
+const nf = new Intl.NumberFormat('pt-BR');
+const pf = new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 1, signDisplay: 'exceptZero' });
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const parse = s => { const [y, m, d] = s.slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
+const br = s => s ? s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : '';
+const brCurto = s => s.slice(8, 10) + '/' + s.slice(5, 7);
+const addD = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+const SEM = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+const FAIXAS = [['SP',1000,19999],['RJ',20000,28999],['ES',29000,29999],['MG',30000,39999],['BA',40000,48999],['SE',49000,49999],['PE',50000,56999],['AL',57000,57999],['PB',58000,58999],['RN',59000,59999],['CE',60000,63999],['PI',64000,64999],['MA',65000,65999],['PA',66000,68899],['AP',68900,68999],['AM',69000,69299],['RR',69300,69399],['AM',69400,69899],['AC',69900,69999],['DF',70000,72799],['GO',72800,72999],['DF',73000,73699],['GO',73700,76799],['RO',76800,76999],['TO',77000,77999],['MT',78000,78899],['MS',79000,79999],['PR',80000,87999],['SC',88000,89999],['RS',90000,99999]];
+const NOMES = {AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins',ND:'CEP não identificado'};
+const REGIAO = {SP:'Sudeste',RJ:'Sudeste',ES:'Sudeste',MG:'Sudeste',PR:'Sul',SC:'Sul',RS:'Sul',BA:'Nordeste',SE:'Nordeste',PE:'Nordeste',AL:'Nordeste',PB:'Nordeste',RN:'Nordeste',CE:'Nordeste',PI:'Nordeste',MA:'Nordeste',PA:'Norte',AP:'Norte',AM:'Norte',RR:'Norte',AC:'Norte',RO:'Norte',TO:'Norte',DF:'Centro-Oeste',GO:'Centro-Oeste',MT:'Centro-Oeste',MS:'Centro-Oeste'};
+const COR_REG = { Sudeste: '#e5007e', Nordeste: '#ff6fb5', Sul: '#8c004c', 'Centro-Oeste': '#ffb0d5', Norte: '#16101a', Outros: '#bfb3ba' };
+const cepUF = c => { const n = +String(c || '').replace(/\D/g, '').padStart(8, '0').slice(0, 5); for (const [u, a, b] of FAIXAS) if (n >= a && n <= b) return u; return 'ND'; };
+const fmtCep = c => { const d = String(c || '').replace(/\D/g, '').padStart(8, '0'); return d.slice(0, 5) + '-' + d.slice(5); };
+const curtoDepto = r => String(r || '').replace(/^.*?SAVI COSMETICOS LTDA\s*[-–:/]?\s*/i, '').trim() || 'Sem departamento';
+
+const hoje = ymd(new Date());
+const st = { ini: addD(hoje, -29), fim: hoje, uf: '', depto: '', q: '', ord: 'data_desc', pag: 1, tam: 25, demo: false, preset: '30' };
+
+/* ---------- Dados de demonstração (usados só quando não há servidor) ---------- */
+let DEMO = null;
+function gerarDemo() {
+  let s = 20261121; const rnd = () => (s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296;
+  const deptos = [['SAVI COSMETICOS LTDA - E-COMMERCE', .56], ['SAVI COSMETICOS LTDA - MARKETING', .14], ['SAVI COSMETICOS LTDA - INFLUENCIADORES', .12], ['SAVI COSMETICOS LTDA - SAC TROCAS', .1], ['SAVI COSMETICOS LTDA - B2B REVENDA', .08]];
+  const ufs = [['SP',31],['MG',11],['RJ',10],['BA',6],['PR',6],['RS',5],['SC',4],['PE',4],['GO',4],['CE',3.5],['DF',2.5],['ES',2],['PA',2],['MA',1.5],['MT',1.5],['MS',1.3],['PB',1.2],['RN',1.2],['AL',1],['PI',.9],['SE',.8],['AM',1],['TO',.6],['RO',.6],['AP',.3],['RR',.2],['AC',.2]];
+  const pick = l => { const t = l.reduce((a, x) => a + x[1], 0); let r = rnd() * t; for (const x of l) if ((r -= x[1]) <= 0) return x[0]; return l[0][0]; };
+  const pref = ['QB', 'QC', 'OY', 'AN', 'NX'];
+  const rows = [];
+  for (let i = 200; i >= 0; i--) {
+    const dia = addD(hoje, -i), wd = parse(dia).getDay();
+    let base = wd === 0 ? 0 : wd === 6 ? 22 : 80 + 25 * Math.sin(i / 9);
+    if (i < 25) base *= 1 + (25 - i) / 40;
+    const n = Math.round(base * (0.8 + 0.4 * rnd()));
+    for (let k = 0; k < n; k++) {
+      const uf = pick(ufs), [, a, b] = FAIXAS.find(f => f[0] === uf);
+      const cep = String(Math.floor(a + rnd() * (b - a))).padStart(5, '0') + String(Math.floor(rnd() * 1000)).padStart(3, '0');
+      const hora = pad(8 + Math.floor(rnd() * 10)) + ':' + pad(Math.floor(rnd() * 60)) + ':' + pad(Math.floor(rnd() * 60));
+      if (i === 0 && new Date(dia + 'T' + hora) > new Date()) continue;
+      rows.push({ registro: pref[Math.floor(rnd() * 5)] + String(Math.floor(rnd() * 1e9)).padStart(9, '0') + 'BR', cep, data: dia + ' ' + hora, dia, uf, remetente: pick(deptos) });
+    }
+  }
+  return rows;
+}
+function demoFiltrar(p, ini = p.ini, fim = p.fim) {
+  const q = String(p.q || '').trim().toUpperCase(), qd = q.replace(/\D/g, '');
+  return DEMO.filter(r => r.dia >= ini && r.dia <= fim && (!p.uf || r.uf === p.uf) && (!p.depto || r.remetente === p.depto) &&
+    (!q || r.registro.includes(q) || (qd && r.cep.includes(qd))));
+}
+const contar = (l, f) => { const m = new Map(); for (const r of l) { const k = f(r); m.set(k, (m.get(k) || 0) + 1); } return m; };
+const DEMO_RAST = new Map();
+const CAPITAL = {AC:'Rio Branco',AL:'Maceió',AP:'Macapá',AM:'Manaus',BA:'Salvador',CE:'Fortaleza',DF:'Brasília',ES:'Vitória',GO:'Goiânia',MA:'São Luís',MT:'Cuiabá',MS:'Campo Grande',MG:'Belo Horizonte',PA:'Belém',PB:'João Pessoa',PR:'Curitiba',PE:'Recife',PI:'Teresina',RJ:'Rio de Janeiro',RN:'Natal',RS:'Porto Alegre',RO:'Porto Velho',RR:'Boa Vista',SC:'Florianópolis',SP:'São Paulo',SE:'Aracaju',TO:'Palmas'};
+function interpretar(ev) {
+  const d = String(ev[0]?.descricao || '').toLowerCase(), entregue = /entregue ao destinat/.test(d);
+  return { entregue, etapa: entregue ? 4 : /saiu para entrega/.test(d) ? 3 : (ev.length > 1 || /tr[aâ]nsito|transfer|encaminhad/.test(d)) ? 2 : ev.length ? 1 : 0,
+    alerta: !entregue && /n[aã]o entregue|devol|aguardando retirada|ausente|n[aã]o atendido/.test(d) };
+}
+function demoRastreio(cod) {
+  const r = DEMO.find(x => x.registro === cod) || { registro: cod, uf: 'SP', cep: '01310100', data: addD(hoje, -2) + ' 15:40:00', remetente: 'SAVI COSMETICOS LTDA - E-COMMERCE' };
+  let h = 0; for (const c of cod) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const sedex = h % 3 === 0, longe = !['SP', 'RJ', 'MG', 'ES', 'PR'].includes(r.uf);
+  const prazoD = (sedex ? 2 : 5) + (longe ? 3 : 0) + (h % 2);
+  const t0 = new Date(r.data.replace(' ', 'T')).getTime(), H = 3600e3, cap = `${CAPITAL[r.uf] || 'Destino'} / ${r.uf}`;
+  const ut = 'Unidade de Tratamento', ud = 'Unidade de Distribuição';
+  const roteiro = [
+    [0, 'Objeto postado', 'Agência · AGF Morada dos Lagos', ''],
+    [7 * H, 'Objeto em transferência - por favor aguarde', 'Agência · AGF Morada dos Lagos', `${ut} · São Paulo / SP`],
+    [prazoD * 0.45 * 24 * H, 'Objeto em transferência - por favor aguarde', `${ut} · São Paulo / SP`, `${ut} · ${cap}`],
+    [prazoD * 0.75 * 24 * H, 'Objeto em transferência - por favor aguarde', `${ut} · ${cap}`, `${ud} · ${cap}`],
+    [(prazoD - 0.6) * 24 * H, 'Objeto saiu para entrega ao destinatário', `${ud} · ${cap}`, '']
+  ];
+  if (h % 9 === 0) roteiro.push([(prazoD - 0.3) * 24 * H, 'Objeto não entregue - carteiro não atendido', `${ud} · ${cap}`, ''], [(prazoD + 0.2) * 24 * H, 'Objeto aguardando retirada no endereço indicado', `Agência dos Correios · ${cap}`, '']);
+  else roteiro.push([(prazoD - 0.35) * 24 * H, 'Objeto entregue ao destinatário', `${ud} · ${cap}`, '']);
+  const fmt = t => { const d = new Date(t); return ymd(d) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); };
+  const eventos = roteiro.filter(([dt]) => t0 + dt <= Date.now()).map(([dt, descricao, local, destino]) => ({ data: fmt(t0 + dt), descricao, local, destino, detalhe: '' })).reverse();
+  const u = eventos[0], it = interpretar(eventos);
+  if (!u) return { cod, eventos, ...it, status: 'Objeto ainda sem movimentação nos Correios', local: '', detalhe: '', ultimoEvento: null, postagem: null,
+    prazo: ymd(new Date(t0 + prazoD * 24 * H)), servico: sedex ? 'SEDEX' : 'PAC', mensagem: 'A etiqueta foi gerada, mas o objeto ainda não foi registrado na rede dos Correios.' };
+  return { cod, eventos, ...it, status: u.descricao, local: u.local, detalhe: u.destino ? 'Para ' + u.destino : '', ultimoEvento: u.data,
+    postagem: eventos[eventos.length - 1].data, prazo: ymd(new Date(t0 + prazoD * 24 * H)), servico: sedex ? 'SEDEX' : 'PAC', mensagem: '' };
+}
+function demoApi(rota, p) {
+  if (!DEMO) DEMO = gerarDemo();
+  if (rota === 'rastreio') {
+    const salvo = DEMO_RAST.get(p.cod);
+    const espera = salvo && !p.atualizar ? 150 : 700 + Math.random() * 600;
+    return new Promise((ok, falha) => setTimeout(() => {
+      try {
+        if (salvo && !p.atualizar) return ok({ ...salvo, origem: 'salvo' });
+        const d = { ...demoRastreio(p.cod), consultadoEm: ymd(new Date()) + ' ' + new Date().toTimeString().slice(0, 8), origem: 'correios', salvo: true };
+        DEMO_RAST.set(p.cod, d); ok(d);
+      } catch (e) { falha(e); }
+    }, espera));
+  }
+  if (rota === 'opcoes') return { deptos: [...contar(DEMO, r => r.remetente)].sort((a, b) => b[1] - a[1]).map(x => x[0]) };
+  const l = demoFiltrar(p);
+  if (rota === 'resumo') {
+    const n = Math.round((parse(p.fim) - parse(p.ini)) / 864e5) + 1;
+    const ord = l.map(r => r.data).sort();
+    return {
+      ini: p.ini, fim: p.fim, total: l.length, anterior: demoFiltrar(p, addD(p.ini, -n), addD(p.ini, -1)).length,
+      ceps: new Set(l.map(r => r.cep)).size, primeiro: ord[0] || null, ultimo: ord[ord.length - 1] || null,
+      dias: [...contar(l, r => r.dia)].sort().map(([d, n]) => ({ d, n })),
+      ufs: [...contar(l, r => r.uf)].sort((a, b) => b[1] - a[1]).map(([uf, n]) => ({ uf, n })),
+      deptos: [...contar(l, r => r.remetente)].sort((a, b) => b[1] - a[1]).map(([r, n]) => ({ r, n })), geradoEm: new Date().toISOString()
+    };
+  }
+  if (rota === 'envios') {
+    const k = { data_desc: (a, b) => b.data.localeCompare(a.data), data_asc: (a, b) => a.data.localeCompare(b.data), registro: (a, b) => a.registro.localeCompare(b.registro), cep: (a, b) => a.cep.localeCompare(b.cep), remetente: (a, b) => a.remetente.localeCompare(b.remetente) || b.data.localeCompare(a.data) }[p.ord];
+    const s = [...l].sort(k), o = (p.pag - 1) * p.tam;
+    return { total: s.length, pag: p.pag, tam: p.tam, linhas: s.slice(o, o + +p.tam).map(r => { const t = DEMO_RAST.get(r.registro); return t ? { ...r, status: t.status, etapa: t.etapa, entregue: t.entregue, alerta: t.alerta, consultado: t.consultadoEm } : r; }) };
+  }
+}
+
+/* ---------- API ---------- */
+const params = extra => ({ ini: st.ini, fim: st.fim, uf: st.uf, depto: st.depto, q: st.q, ...extra });
+async function api(rota, p = {}) {
+  if (st.demo) return /^(coletas|usuarios|notificacoes)/.test(rota) ? demoCol('GET', rota, p) : demoApi(rota, p);
+  const qs = new URLSearchParams(Object.entries(p).filter(([, v]) => v !== '' && v != null));
+  const r = await fetch('api/' + rota + '?' + qs, { credentials: 'same-origin' });
+  if (r.status === 401) { abrirLogin(); throw new Error('login'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.erro || 'Erro ' + r.status);
+  return j;
+}
+
+/* ---------- Gráfico diário ---------- */
+let serie = [];
+const svg = $('#svgDia'), fig = $('#figDia'), tip = $('#tip');
+function desenharDia() {
+  const W = svg.clientWidth, H = svg.clientHeight;
+  if (!W || !H) return;
+  if (!serie.length) { svg.innerHTML = `<text x="${W / 2}" y="${H / 2}" fill="#fff" text-anchor="middle" font-size="15">Nenhum envio no período</text>`; return; }
+  const estreito = W < 520, m = { t: 12, r: 8, b: 26, l: estreito ? 8 : 44 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b, max = Math.max(...serie.map(d => d.n), 1);
+  const passo = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000, 10000].find(p => max / p <= 4) || Math.ceil(max / 4);
+  const topo = Math.ceil(max / passo) * passo, y = v => m.t + ih - v / topo * ih, bw = iw / serie.length;
+  let g = '';
+  for (let v = 0; v <= topo; v += passo) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,${v ? .18 : .5})"/>` + (estreito ? '' : `<text x="${m.l - 8}" y="${y(v) + 4}" fill="rgba(255,255,255,.85)" font-size="12" text-anchor="end">${nf.format(v)}</text>`);
+  serie.forEach((d, i) => {
+    const fds = [0, 6].includes(parse(d.d).getDay()), h = Math.max(d.n ? 1.5 : 0, ih - (y(d.n) - m.t));
+    g += `<rect x="${m.l + i * bw + bw * .12}" y="${m.t + ih - h}" width="${Math.max(1, bw * .76)}" height="${h}" rx="${Math.min(3, bw / 4)}" fill="rgba(255,255,255,${fds ? .32 : .6})"/>`;
+  });
+  const mm = serie.map((d, i) => { const j = serie.slice(Math.max(0, i - 6), i + 1); return j.reduce((a, x) => a + x.n, 0) / j.length; });
+  g += `<path d="${mm.map((v, i) => (i ? 'L' : 'M') + (m.l + i * bw + bw / 2).toFixed(1) + ' ' + y(v).toFixed(1)).join('')}" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>`;
+  const nLab = Math.max(2, Math.floor(iw / (estreito ? 70 : 90))), cada = Math.max(1, Math.ceil(serie.length / nLab));
+  serie.forEach((d, i) => { if (i % cada === 0) g += `<text x="${m.l + i * bw + bw / 2}" y="${H - 6}" fill="rgba(255,255,255,.85)" font-size="12" text-anchor="middle">${brCurto(d.d)}</text>`; });
+  svg.innerHTML = g;
+  svg.onmousemove = e => {
+    const r = svg.getBoundingClientRect(), i = Math.floor((e.clientX - r.left - m.l) / bw);
+    const d = serie[i]; if (!d) { tip.style.display = 'none'; return; }
+    tip.innerHTML = `<b>${nf.format(d.n)}</b>${SEM[parse(d.d).getDay()]}, ${br(d.d)} · média 7d ${nf.format(Math.round(mm[i]))}`;
+    tip.style.display = 'block'; tip.style.left = Math.min(Math.max(m.l + i * bw + bw / 2, 90), W - 90) + 'px'; tip.style.top = y(d.n) + 'px';
+  };
+  svg.onmouseleave = () => tip.style.display = 'none';
+}
+const roDia = new ResizeObserver(desenharDia); roDia.observe(svg);
+
+/* ---------- Render do resumo ---------- */
+function barras(el, itens, total, ativo, onClick) {
+  const max = Math.max(...itens.map(x => x.n), 1);
+  el.innerHTML = itens.length ? itens.map(x => `<button type="button" class="barra" data-k="${esc(x.k)}" aria-pressed="${!!ativo && x.k === ativo}" title="${esc(x.titulo || x.rot)}">
+    <span class="rot">${esc(x.rot)}</span><span class="trilho"><i style="width:${(x.n / max * 100).toFixed(1)}%"></i></span>
+    <span class="v">${nf.format(x.n)} <small>${total ? Math.round(x.n / total * 100) : 0}%</small></span></button>`).join('') : '<div class="vazio">Sem envios com esses filtros.</div>';
+  el.onclick = e => { const b = e.target.closest('.barra'); if (b) onClick(b.dataset.k); };
+}
+function renderResumo(r) {
+  const dias = Math.round((parse(r.fim) - parse(r.ini)) / 864e5) + 1;
+  const mapa = new Map(r.dias.map(d => [d.d.slice(0, 10), d.n]));
+  serie = []; for (let d = r.ini; d <= r.fim && d <= hoje; d = addD(d, 1)) serie.push({ d, n: mapa.get(d) || 0 });
+  const delta = r.anterior ? (r.total - r.anterior) / r.anterior : null;
+  const ativos = serie.filter(d => d.n), pico = ativos.reduce((a, d) => d.n > a.n ? d : a, { n: 0, d: '' });
+  const ufsValidas = r.ufs.filter(u => u.uf !== 'ND');
+  const top = ufsValidas[0];
+  $('#titulo').textContent = !r.total ? 'Nenhum envio encontrado com esses filtros'
+    : delta == null ? `${nf.format(r.total)} envios no período`
+    : delta > .05 ? `Expedição em alta: ${pf.format(delta)} sobre o período anterior`
+    : delta < -.05 ? `Expedição em queda: ${pf.format(delta)} sobre o período anterior`
+    : 'Expedição estável em relação ao período anterior';
+  $('#subtitulo').textContent = r.total ? `De ${br(r.ini)} a ${br(r.fim)} (${dias} dias), comparado com os ${dias} dias anteriores (${nf.format(r.anterior)} envios).` +
+    (top ? ` ${NOMES[top.uf]} recebeu ${Math.round(top.n / r.total * 100)}% dos pacotes.` : '') : 'Ajuste o período ou limpe os filtros para ver os envios.';
+  const k = [
+    ['Objetos postados', nf.format(r.total), delta == null ? 'sem base de comparação' : `${delta >= 0 ? '▲' : '▼'} ${pf.format(delta)} vs. ${nf.format(r.anterior)}`],
+    ['Média por dia com postagem', nf.format(ativos.length ? Math.round(r.total / ativos.length) : 0), `${ativos.length} de ${serie.length} dias com postagem`],
+    ['Maior dia', nf.format(pico.n), pico.d ? `${SEM[parse(pico.d).getDay()]}, ${br(pico.d)}` : '—'],
+    ['CEPs atendidos', nf.format(r.ceps), `${ufsValidas.length} estados`]
+  ];
+  $('#kpis').innerHTML = k.map(([a, b, c]) => `<div class="kpi"><small>${a}</small><div class="num">${b}</div><em>${esc(c)}</em></div>`).join('');
+  desenharDia();
+
+  const reg = new Map(); for (const u of r.ufs) { const g = REGIAO[u.uf] || 'Outros'; reg.set(g, (reg.get(g) || 0) + u.n); }
+  const regs = [...reg].sort((a, b) => b[1] - a[1]);
+  $('#regioes').innerHTML = regs.map(([g, n]) => `<i style="width:${n / r.total * 100}%;background:${COR_REG[g]}" title="${g}: ${nf.format(n)}"></i>`).join('');
+  $('#legReg').innerHTML = regs.map(([g, n]) => `<span><i style="background:${COR_REG[g]}"></i>${g} ${Math.round(n / r.total * 100)}%</span>`).join('');
+  const ufItens = r.ufs.slice(0, 12).map(u => ({ k: u.uf, rot: u.uf === 'ND' ? 'Não identificado' : `${u.uf} · ${NOMES[u.uf]}`, n: u.n }));
+  if (r.ufs.length > 12) ufItens.push({ k: '', rot: `Outros ${r.ufs.length - 12} estados`, n: r.ufs.slice(12).reduce((a, u) => a + u.n, 0) });
+  barras($('#barUf'), ufItens, r.total, st.uf, k => { if (k === 'ND') return; st.uf = st.uf === k ? '' : k; $('#fUf').value = st.uf; recarregar(); });
+  barras($('#barDepto'), r.deptos.slice(0, 10).map(d => ({ k: d.r, rot: curtoDepto(d.r), titulo: d.r, n: d.n })), r.total, st.depto,
+    k => { st.depto = st.depto === k ? '' : k; garantirOpcao(st.depto); $('#fDepto').value = st.depto; recarregar(); });
+
+  const sem = [0, 0, 0, 0, 0, 0, 0]; for (const d of serie) sem[parse(d.d).getDay()] += d.n;
+  const ms = Math.max(...sem, 1);
+  $('#semana').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(i => `<div><b>${nf.format(sem[i])}</b><span style="height:${sem[i] / ms * 100}%"></span>${SEM[i]}</div>`).join('');
+  $('#rodape').textContent = `AGF Morada dos Lagos · Portal de envios Wepink (SAVI Cosméticos Ltda.) · Atualizado em ${new Date(r.geradoEm).toLocaleString('pt-BR')}` + (st.demo ? ' · dados de demonstração' : '');
+}
+
+/* ---------- Tabela ---------- */
+const TRUCK = s => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>`;
+const ETAPAS = ['Sem movimentação', 'Postado', 'Em trânsito', 'Saiu para entrega', 'Entregue'];
+const ESTILO = {
+  ok: 'bg-[color-mix(in_srgb,var(--ok)_14%,transparent)] text-[var(--ok)]',
+  alerta: 'bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] text-[var(--warn)]',
+  transito: 'bg-[var(--soft)] text-[var(--deep)]',
+  nada: 'bg-[var(--panel)] text-[var(--mut)]'
+};
+function tipoStatus(l) {
+  if (!l || !l.status) return ['Não consultado', 'nada'];
+  if (l.entregue) return ['Entregue', 'ok'];
+  if (l.alerta) return ['Atenção', 'alerta'];
+  return [ETAPAS[+l.etapa || 0], 'transito'];
+}
+const dataHora = s => s ? `${br(s)} ${String(s).slice(11, 16)}`.trim() : '';
+function badge(l, grande) {
+  const [rot, k] = tipoStatus(l);
+  const pulsa = k === 'transito' ? 'motion-safe:animate-pulse' : '';
+  const tam = grande ? 'px-3.5 py-1.5 text-sm' : 'px-2.5 py-1 text-xs';
+  const titulo = l && l.status ? `${l.status}${l.consultado || l.consultadoEm ? ' · consultado em ' + dataHora(l.consultado || l.consultadoEm) : ''}` : 'Clique em Rastrear para consultar';
+  return `<span class="badge inline-flex items-center gap-1.5 whitespace-nowrap rounded-full font-semibold transition-colors duration-500 ${tam} ${ESTILO[k]}" title="${esc(titulo)}"><i class="h-2 w-2 rounded-full bg-current ${pulsa}"></i>${rot}</span>`;
+}
+let linhasAtuais = [];
+const codDe = r => { let s = String(r || '').trim().toUpperCase(); if (/^[A-Z]{2}\d{9}$/.test(s)) s += 'BR'; return s; };
+function renderTabela(t) {
+  linhasAtuais = t.linhas;
+  $('#tbody').innerHTML = t.linhas.length ? t.linhas.map((l, i) => `<tr data-i="${i}">
+    <td><div class="reg-cel"><span class="reg">${esc(codDe(l.registro))}</span>
+      <button type="button" class="rastrear inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--line)] bg-transparent px-3 text-[13px] font-semibold text-[var(--deep)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#e5007e] hover:bg-[var(--soft)] hover:shadow-md active:translate-y-0 motion-reduce:transition-none">${TRUCK(15)}Rastrear</button></div></td>
+    <td class="n">${br(l.data)} ${esc(String(l.data || '').slice(11, 16))}</td><td class="n">${fmtCep(l.cep)}</td><td>${cepUF(l.cep)}</td>
+    <td class="st">${badge(l)}</td><td>${esc(l.remetente)}</td></tr>`).join('')
+    : '<tr><td colspan="6" class="vazio">Nenhum objeto encontrado.</td></tr>';
+  const de = t.total ? (t.pag - 1) * t.tam + 1 : 0, ate = Math.min(t.total, t.pag * t.tam);
+  $('#pagInfo').textContent = `${nf.format(de)}–${nf.format(ate)} de ${nf.format(t.total)} objetos`;
+  $('#notaTab').textContent = `Período de ${br(st.ini)} a ${br(st.fim)}` + (st.uf ? ` · ${NOMES[st.uf]}` : '') + (st.depto ? ` · ${curtoDepto(st.depto)}` : '') + (st.q ? ` · busca “${st.q}”` : '');
+  $('#ant').disabled = t.pag <= 1; $('#prox').disabled = ate >= t.total;
+}
+function atualizarLinha(cod, d) {
+  linhasAtuais.forEach((l, i) => {
+    if (codDe(l.registro) !== cod) return;
+    Object.assign(l, { status: d.status, etapa: d.etapa, entregue: d.entregue, alerta: d.alerta, consultado: d.consultadoEm });
+    const td = document.querySelector(`#tbody tr[data-i="${i}"] .st`);
+    if (!td) return;
+    td.innerHTML = badge(l);
+    const b = td.firstElementChild; b.classList.add('motion-safe:animate-brilho');
+  });
+}
+$('#tbody').onclick = e => {
+  const b = e.target.closest('.rastrear'); if (!b) return;
+  const l = linhasAtuais[+b.closest('tr').dataset.i]; if (l) abrirRast(l);
+};
+
+/* ---------- Painel de rastreamento ---------- */
+let rast = null, focoAntes = null, rastSeq = 0;
+const fundo = $('#rastFundo'), painel = $('#rastPainel');
+function abrirRast(l) {
+  const cod = codDe(l.registro);
+  rast = { cod, l }; focoAntes = document.activeElement;
+  $('#rastTit').textContent = cod;
+  $('#rastDest').textContent = l.cep ? `Destino ${fmtCep(l.cep)} · ${NOMES[cepUF(l.cep)] || 'UF não identificada'} · ${curtoDepto(l.remetente)}` : 'Objeto apontado na conferência de coleta';
+  $('#rast').classList.add('aberto');
+  requestAnimationFrame(() => requestAnimationFrame(() => { fundo.classList.replace('opacity-0', 'opacity-100'); painel.classList.replace('translate-x-full', 'translate-x-0'); }));
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => painel.focus(), 60);
+  consultarRast(false);
+}
+function fecharRast() {
+  if (!rast) return;
+  fundo.classList.replace('opacity-100', 'opacity-0'); painel.classList.replace('translate-x-0', 'translate-x-full');
+  $('#rast').classList.remove('aberto');
+  document.body.style.overflow = colAberta ? 'hidden' : ''; rast = null; rastSeq++;
+  if (focoAntes) focoAntes.focus();
+}
+$('#rast').addEventListener('click', e => { if (e.target.closest('[data-fechar]')) fecharRast(); });
+$('#rastCopiar').onclick = async () => { try { await navigator.clipboard.writeText(rast.cod); aviso('Código copiado.'); } catch { aviso('Código: ' + rast.cod); } };
+$('#rastSite').onclick = async () => { try { await navigator.clipboard.writeText(rast.cod); aviso('Código copiado. Cole no campo de rastreio dos Correios.'); } catch {} };
+$('#rastAtualizar').onclick = () => consultarRast(true);
+
+function carregandoHTML(atualizando) {
+  return `<div class="space-y-5" aria-busy="true">
+    <div class="relative h-16 overflow-hidden rounded-2xl bg-[var(--soft)]">
+      <div class="absolute inset-x-5 top-[60%] h-0.5 bg-[repeating-linear-gradient(90deg,var(--pink)_0_10px,transparent_10px_18px)] opacity-40"></div>
+      <div class="absolute top-[18%] text-[var(--pink)] motion-safe:animate-caminhao">${TRUCK(34)}</div>
+    </div>
+    <p class="m-0 text-center text-sm text-[var(--mut)]">${atualizando ? 'Buscando o status mais recente nos Correios…' : 'Consultando o rastreamento…'}</p>
+    <div class="h-7 w-3/4 rounded-lg bg-[var(--panel)] motion-safe:animate-pulse"></div>
+    <div class="h-4 w-1/2 rounded-lg bg-[var(--panel)] motion-safe:animate-pulse"></div>
+    <div class="grid grid-cols-2 gap-3">${'<div class="h-16 rounded-2xl bg-[var(--panel)] motion-safe:animate-pulse"></div>'.repeat(4)}</div>
+    ${'<div class="flex gap-3"><div class="h-4 w-4 rounded-full bg-[var(--panel)] motion-safe:animate-pulse"></div><div class="h-10 flex-1 rounded-lg bg-[var(--panel)] motion-safe:animate-pulse"></div></div>'.repeat(3)}
+  </div>`;
+}
+const PASSOS = ['Postado', 'Em trânsito', 'Saiu para entrega', 'Entregue'];
+const PASSO_OFF = 'border-[var(--line)] bg-[var(--bg)] text-transparent';
+const PASSO_ON = 'border-[#e5007e] bg-[#e5007e] text-white scale-110';
+function resultadoHTML(d) {
+  const atrasado = d.prazo && !d.entregue && d.prazo < hoje;
+  const cards = [
+    ['Postado nos Correios', dataHora(d.postagem) || '—'],
+    ['Previsão de entrega', d.prazo ? br(d.prazo) + (atrasado ? ' · <span class="text-[var(--bad)]">vencida</span>' : '') : '—'],
+    ['Serviço', esc(d.servico) || '—'],
+    ['Último evento', dataHora(d.ultimoEvento) || '—']
+  ];
+  const ev = d.eventos || [];
+  return `<div class="space-y-7">
+    ${d.aviso ? `<div class="rounded-xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] px-4 py-3 text-sm text-[var(--warn)] motion-safe:animate-subir">${esc(d.aviso)}</div>` : ''}
+    <section class="motion-safe:animate-subir">
+      ${badge(d, true)}
+      <h3 class="m-0 mt-3 text-[24px] leading-tight font-bold">${esc(d.status)}</h3>
+      ${d.local || d.detalhe ? `<p class="m-0 mt-1.5 text-[15px] text-[var(--mut)]">${esc([d.local, d.detalhe].filter(Boolean).join(' · '))}</p>` : ''}
+      ${d.mensagem ? `<p class="m-0 mt-1.5 text-[15px] text-[var(--mut)]">${esc(d.mensagem)}</p>` : ''}
+    </section>
+    <section class="relative motion-safe:animate-subir [animation-delay:90ms]" aria-label="Etapa da entrega">
+      <div class="absolute left-[12.5%] right-[12.5%] top-[9px] h-1.5 overflow-hidden rounded-full bg-[var(--panel)]">
+        <div id="rastBarra" class="h-full w-0 rounded-full bg-gradient-to-r from-[#ff6fb5] to-[#e5007e] transition-[width] duration-[1200ms] ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none" data-w="${d.etapa > 1 ? ((Math.min(d.etapa, 4) - 1) / 3 * 100).toFixed(1) : 0}"></div>
+      </div>
+      <ol class="relative m-0 grid list-none grid-cols-4 p-0">
+        ${PASSOS.map((p, i) => `<li class="flex flex-col items-center gap-2 text-center">
+          <span class="passo grid h-6 w-6 place-items-center rounded-full border-2 transition-all duration-500 ${PASSO_OFF}" style="transition-delay:${300 + i * 260}ms" data-on="${i < d.etapa ? 1 : 0}" ${i === d.etapa - 1 && !d.entregue ? 'data-atual="1"' : ''}>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <span class="text-[12px] leading-tight ${i < d.etapa ? 'font-semibold text-[var(--ink)]' : 'text-[var(--mut)]'}">${p}</span></li>`).join('')}
+      </ol>
+    </section>
+    <dl class="m-0 grid grid-cols-2 gap-3 motion-safe:animate-subir [animation-delay:160ms]">
+      ${cards.map(([a, b]) => `<div class="rounded-2xl bg-[var(--panel)] p-4 transition duration-300 hover:-translate-y-0.5 hover:shadow-md"><dt class="text-xs text-[var(--mut)]">${a}</dt><dd class="m-0 mt-1 font-semibold">${b}</dd></div>`).join('')}
+    </dl>
+    <section>
+      <h3 class="m-0 mb-4 text-lg font-semibold">Histórico</h3>
+      ${ev.length ? `<ol class="m-0 list-none p-0">${ev.map((e, i) => `<li class="relative pb-5 pl-8 motion-safe:animate-subir" style="animation-delay:${240 + i * 70}ms">
+        ${i < ev.length - 1 ? '<span class="absolute top-5 bottom-0 left-[7px] w-0.5 bg-[var(--line)]"></span>' : ''}
+        <span class="absolute top-1 left-0 h-4 w-4 rounded-full border-[3px] ${i === 0 ? 'border-[#e5007e] bg-[#e5007e] shadow-[0_0_0_4px_var(--soft)]' : 'border-[var(--line)] bg-[var(--bg)]'}"></span>
+        <p class="m-0 font-semibold leading-snug">${esc(e.descricao)}</p>
+        ${e.local || e.destino ? `<p class="m-0 mt-0.5 text-sm text-[var(--mut)]">${esc(e.local)}${e.destino ? ' → ' + esc(e.destino) : ''}</p>` : ''}
+        ${e.detalhe ? `<p class="m-0 mt-0.5 text-sm text-[var(--mut)]">${esc(e.detalhe)}</p>` : ''}
+        <p class="m-0 mt-0.5 text-xs text-[var(--mut)]">${br(e.data)} às ${esc(String(e.data).slice(11, 16))}</p></li>`).join('')}</ol>`
+        : '<p class="m-0 text-sm text-[var(--mut)]">Os Correios ainda não registraram eventos para este objeto.</p>'}
+    </section>
+    <p class="m-0 border-t border-[var(--line)] pt-4 text-xs text-[var(--mut)]">${d.origem === 'salvo' ? 'Última consulta salva' : 'Consultado agora nos Correios'} em ${dataHora(d.consultadoEm)}${d.salvo ? ' · status gravado no banco' : ' · tabela de rastreamento ainda não criada, status não foi gravado'}.</p>
+  </div>`;
+}
+function animarResultado() {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const b = $('#rastBarra'); if (b) b.style.width = b.dataset.w + '%';
+    for (const p of document.querySelectorAll('#rastCorpo .passo')) {
+      if (p.dataset.on !== '1') continue;
+      p.classList.remove(...PASSO_OFF.split(' ')); p.classList.add(...PASSO_ON.split(' '));
+      if (p.dataset.atual) p.classList.add('motion-safe:animate-pulso');
+    }
+  }));
+}
+async function consultarRast(atualizar) {
+  if (!rast) return;
+  const meu = ++rastSeq, corpo = $('#rastCorpo'), bt = $('#rastAtualizar');
+  corpo.innerHTML = carregandoHTML(atualizar); bt.disabled = true;
+  const t0 = Date.now();
+  try {
+    const d = await api('rastreio', { cod: rast.cod, atualizar: atualizar ? 1 : '' });
+    await new Promise(r => setTimeout(r, Math.max(0, (d.origem === 'salvo' ? 350 : 700) - (Date.now() - t0))));
+    if (meu !== rastSeq) return;
+    corpo.innerHTML = resultadoHTML(d); corpo.scrollTop = 0; animarResultado();
+    atualizarLinha(rast.cod, d);
+  } catch (e) {
+    if (meu !== rastSeq || e.message === 'login') return;
+    corpo.innerHTML = `<div class="grid place-items-center gap-3 py-10 text-center motion-safe:animate-subir">
+      <div class="grid h-14 w-14 place-items-center rounded-full bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] text-[var(--warn)]">${TRUCK(28)}</div>
+      <p class="m-0 max-w-[32ch] font-semibold">${esc(e.message)}</p>
+      <button type="button" class="acao sec tentar">Tentar de novo</button></div>`;
+  } finally { if (meu === rastSeq) bt.disabled = false; }
+}
+$('#rastCorpo').addEventListener('click', e => { if (e.target.closest('.tentar')) consultarRast(true); });
+
+/* ---------- Rastrear a página inteira ---------- */
+let loteAtivo = false;
+const lote = $('#lote');
+const mostrarLote = v => { lote.classList.toggle('opacity-0', !v); lote.classList.toggle('translate-y-4', !v); lote.classList.toggle('opacity-100', v); lote.classList.toggle('translate-y-0', v); };
+$('#loteParar').onclick = () => { loteAtivo = false; };
+$('#rastPagina').onclick = async () => {
+  if (loteAtivo || !linhasAtuais.length) return;
+  const fila = linhasAtuais.map(l => codDe(l.registro)), total = fila.length;
+  let feitos = 0, falhas = 0; loteAtivo = true; $('#loteBarra').style.width = '0%'; mostrarLote(true);
+  const passo = () => { $('#loteTxt').textContent = `Rastreando ${feitos} de ${total}` + (falhas ? ` · ${falhas} sem resposta` : ''); $('#loteBarra').style.width = (feitos / total * 100) + '%'; };
+  passo();
+  const trabalhador = async () => {
+    while (loteAtivo && fila.length) {
+      const cod = fila.shift();
+      try { atualizarLinha(cod, await api('rastreio', { cod })); } catch (e) { falhas++; if (e.message === 'login') loteAtivo = false; }
+      feitos++; passo();
+    }
+  };
+  await Promise.all([trabalhador(), trabalhador(), trabalhador()]);
+  $('#loteTxt').textContent = loteAtivo ? `Pronto: ${feitos - falhas} objetos atualizados` + (falhas ? `, ${falhas} sem resposta` : '') : 'Rastreamento interrompido';
+  loteAtivo = false; setTimeout(() => mostrarLote(false), 2600);
+};
+
+/* ---------- Carregamento ---------- */
+let seq = 0;
+async function carregarTabela() {
+  const meu = ++seq;
+  try { const t = await api('envios', params({ pag: st.pag, tam: st.tam, ord: st.ord })); if (meu === seq) renderTabela(t); } catch (e) { mostrarErro(e); }
+}
+async function recarregar() {
+  st.pag = 1; $('#main').classList.add('carregando'); $('#erro').style.display = 'none';
+  try { const [r] = await Promise.all([api('resumo', params()), carregarTabela()]); renderResumo(r); }
+  catch (e) { mostrarErro(e); }
+  finally { $('#main').classList.remove('carregando'); }
+}
+function mostrarErro(e) { if (e.message === 'login') return; const el = $('#erro'); el.textContent = e.message; el.style.display = 'block'; }
+let tt; function aviso(t) { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; clearTimeout(tt); tt = setTimeout(() => el.style.display = 'none', 3500); }
+
+/* ---------- Filtros ---------- */
+function aplicarPreset(p) {
+  const d = new Date(); st.fim = hoje;
+  if (/^\d+$/.test(p)) st.ini = addD(hoje, -(+p - 1));
+  else if (p === 'mes') st.ini = ymd(new Date(d.getFullYear(), d.getMonth(), 1));
+  else if (p === 'mesant') { st.ini = ymd(new Date(d.getFullYear(), d.getMonth() - 1, 1)); st.fim = ymd(new Date(d.getFullYear(), d.getMonth(), 0)); }
+  else if (p === 'ano') st.ini = ymd(new Date(d.getFullYear(), 0, 1));
+  st.preset = p; sincronizar(); recarregar();
+}
+function sincronizar() {
+  $('#fIni').value = st.ini; $('#fFim').value = st.fim;
+  for (const b of document.querySelectorAll('#presets button')) b.setAttribute('aria-pressed', b.dataset.p === st.preset);
+}
+function garantirOpcao(v) { const s = $('#fDepto'); if (v && ![...s.options].some(o => o.value === v)) s.add(new Option(curtoDepto(v), v)); }
+$('#presets').onclick = e => { const b = e.target.closest('button'); if (b) aplicarPreset(b.dataset.p); };
+for (const id of ['#fIni', '#fFim']) $(id).onchange = () => { if (!$('#fIni').value || !$('#fFim').value) return; st.ini = $('#fIni').value; st.fim = $('#fFim').value; if (st.ini > st.fim) [st.ini, st.fim] = [st.fim, st.ini]; st.preset = ''; sincronizar(); recarregar(); };
+$('#fUf').onchange = e => { st.uf = e.target.value; recarregar(); };
+$('#fDepto').onchange = e => { st.depto = e.target.value; recarregar(); };
+let tq; $('#fQ').oninput = e => { clearTimeout(tq); tq = setTimeout(() => { st.q = e.target.value.trim(); recarregar(); }, 400); };
+$('#fOrd').onchange = e => { st.ord = e.target.value; st.pag = 1; carregarTabela(); };
+$('#fTam').onchange = e => { st.tam = +e.target.value; st.pag = 1; carregarTabela(); };
+$('#ant').onclick = () => { st.pag--; carregarTabela(); };
+$('#prox').onclick = () => { st.pag++; carregarTabela(); };
+$('#limpar').onclick = () => { st.uf = st.depto = st.q = ''; $('#fUf').value = $('#fDepto').value = $('#fQ').value = ''; aplicarPreset('30'); };
+$('#imprimir').onclick = () => { try { window.print(); } catch { aviso('Use Ctrl+P para imprimir.'); } };
+$('#exportar').onclick = () => {
+  if (!st.demo) { location.href = 'api/export.csv?' + new URLSearchParams(Object.entries(params({ ord: st.ord })).filter(([, v]) => v)); return; }
+  aviso('Na demonstração a exportação fica desativada. No portal instalado ela baixa um CSV que abre no Excel.');
+};
+$('#fUf').insertAdjacentHTML('beforeend', Object.keys(NOMES).filter(u => u !== 'ND').sort().map(u => `<option value="${u}">${u} · ${NOMES[u]}</option>`).join(''));
+
+/* ---------- Perfis e navegação ---------- */
+const PERFIL_NOME = { cliente: 'Cliente Wepink', transporte: 'Transporte', operacao: 'Operação', admin: 'Administrador' };
+const PERFIL_DESC = {
+  cliente: 'Solicita coletas, acompanha envios e rastreios e dá ciência das pendências.',
+  transporte: 'Agenda e confirma as coletas, com motorista, placa e horário.',
+  operacao: 'Lança os embarques, confere o tratamento e aponta objetos com problema.',
+  admin: 'Faz tudo e gerencia os usuários do portal.'
+};
+const PODE = {
+  solicitar: ['cliente', 'transporte', 'operacao', 'admin'], agendar: ['transporte', 'admin'], coletar: ['transporte', 'admin'],
+  cancelar: ['cliente', 'transporte', 'admin'], embarque: ['operacao', 'admin'], conferir: ['operacao', 'admin'],
+  finalizar: ['operacao', 'admin'], ciente: ['cliente', 'admin'], resolver: ['operacao', 'admin'], usuarios: ['admin']
+};
+const pode = a => !!st.me && PODE[a].includes(st.me.perfil);
+const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', usuarios: '#vUsuarios' };
+let viewAtual = '';
+function rotear() {
+  const h = location.hash.replace('#', '');
+  let v = VIEWS[h] ? h : /^coleta-\d+$/.test(h) ? 'coletas' : '';
+  if (!v) v = st.me && ['transporte', 'operacao'].includes(st.me.perfil) ? 'coletas' : 'envios';
+  if (v === 'usuarios' && !pode('usuarios')) v = 'coletas';
+  const mudou = v !== viewAtual; viewAtual = v;
+  for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
+  for (const a of document.querySelectorAll('#abas a')) a.toggleAttribute('aria-current', false), a.dataset.v === v && a.setAttribute('aria-current', 'page');
+  if (mudou && v === 'envios') { desenharDia(); }
+  if (mudou && v === 'coletas') carregarColetas();
+  if (mudou && v === 'usuarios') carregarUsuarios();
+  const m = /^coleta-(\d+)$/.exec(h);
+  if (m && (!colAberta || colAberta.id !== +m[1])) abrirColeta(+m[1]);
+}
+window.addEventListener('hashchange', rotear);
+function aplicarPerfil() {
+  $('#abas a[data-v=usuarios]').hidden = !pode('usuarios');
+  $('#usuario').textContent = `${st.me.nome} · ${PERFIL_NOME[st.me.perfil] || st.me.perfil}`;
+  $('#novaColeta span').textContent = st.me.perfil === 'cliente' ? 'Solicitar coleta' : 'Nova coleta';
+  $('#novaColeta').hidden = !pode('solicitar');
+}
+
+/* ---------- POST ---------- */
+async function apiPost(rota, corpo) {
+  if (st.demo) return demoCol('POST', rota, {}, corpo || {});
+  const r = await fetch('api/' + rota, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo || {}) });
+  if (r.status === 401) { abrirLogin(); throw new Error('login'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.erro || 'Erro ' + r.status);
+  return j;
+}
+
+/* ---------- Status ---------- */
+const ST_COL = {
+  solicitada: ['Solicitada', 'bg-white text-[#8c004c]'], agendada: ['Agendada', 'bg-white text-[#8c004c]'],
+  coletada: ['Coletada', 'bg-[#16101a] text-white'], em_tratamento: ['Em tratamento', 'bg-[#16101a] text-white'],
+  pendente: ['Com pendências', 'bg-[#fbbf24] text-[#3b2300]'], concluida: ['Concluída', 'bg-[#0b7a43] text-white'],
+  cancelada: ['Cancelada', 'bg-white/70 text-[#6d5f69] line-through']
+};
+const ST_COL_CLARO = {
+  solicitada: 'bg-[var(--soft)] text-[var(--deep)]', agendada: 'bg-[var(--soft)] text-[var(--deep)]',
+  coletada: 'bg-[var(--ink)] text-[var(--bg)]', em_tratamento: 'bg-[var(--ink)] text-[var(--bg)]',
+  pendente: ESTILO.alerta, concluida: ESTILO.ok, cancelada: 'bg-[var(--panel)] text-[var(--mut)] line-through'
+};
+const pillCol = (s, claro) => `<span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold ${claro ? ST_COL_CLARO[s] : ST_COL[s][1]}">${ST_COL[s] ? ST_COL[s][0] : s}</span>`;
+const PASSOS_COL = ['Solicitada', 'Coletada', 'Em tratamento', 'Concluída'];
+const passoCol = s => ({ solicitada: 1, agendada: 1, coletada: 2, em_tratamento: 3, pendente: 4, concluida: 4 })[s] || 0;
+const brD = s => s ? `${br(s)}${String(s).length > 10 ? ' ' + String(s).slice(11, 16) : ''}` : '—';
+const semana = s => SEM[parse(s).getDay()];
+
+/* ---------- Lista de coletas ---------- */
+const colSt = { per: 30, status: '' };
+async function carregarColetas() {
+  const ini = addD(hoje, -(colSt.per - 1));
+  for (const b of document.querySelectorAll('#colFiltros [data-per]')) b.setAttribute('aria-pressed', +b.dataset.per === colSt.per);
+  for (const b of document.querySelectorAll('#colFiltros [data-st]')) b.setAttribute('aria-pressed', b.dataset.st === colSt.status);
+  $('#colLista').classList.add('opacity-50');
+  try {
+    const r = await api('coletas', { ini, fim: hoje, status: colSt.status });
+    const k = r.kpis;
+    $('#colSub').textContent = colSt.status === 'abertas' ? 'Todas as coletas ainda em andamento, de qualquer data.' : `Coletas de ${br(r.ini)} a ${br(r.fim)}.`;
+    $('#colKpis').innerHTML = [
+      ['Total de objetos postados', nf.format(k.objetos), `${nf.format(k.embarques)} embarques`],
+      ['Média por caminhão', nf.format(k.media), 'objetos por embarque'],
+      ['Coletas', nf.format(k.coletas), 'no período, sem canceladas'],
+      ['Pendências em aberto', nf.format(k.pendAbertas), k.pendAbertas ? 'objetos aguardando solução' : 'nenhum objeto com problema']
+    ].map(([a, b, c]) => `<div class="kpi"><small>${a}</small><div class="num">${b}</div><em>${c}</em></div>`).join('');
+    $('#colLista').innerHTML = r.coletas.length ? r.coletas.map((c, i) => cardColeta(c, i)).join('')
+      : `<div class="col-span-full grid place-items-center gap-2 rounded-3xl border-2 border-dashed border-[var(--line)] py-14 text-center text-[var(--mut)]">
+          <p class="m-0 text-lg font-semibold text-[var(--ink)]">Nenhuma coleta neste filtro</p>
+          <p class="m-0 text-sm">${pode('solicitar') ? 'Use o botão “' + $('#novaColeta span').textContent + '” para registrar a próxima.' : 'Ajuste o período ou a situação.'}</p></div>`;
+  } catch (e) {
+    $('#colLista').innerHTML = `<div class="col-span-full rounded-2xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] p-5 text-[var(--warn)]">${esc(e.message)}</div>`;
+  } finally { $('#colLista').classList.remove('opacity-50'); }
+}
+function cardColeta(c, i) {
+  const p = passoCol(c.status), alerta = c.status === 'pendente';
+  const barra = c.status === 'cancelada' ? 0 : Math.max(0, (p - 1) / 3 * 100);
+  return `<button type="button" data-col="${c.id}" class="group relative flex flex-col gap-4 rounded-3xl border border-[var(--line)] bg-[var(--bg)] p-5 text-left text-[var(--ink)] shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#e5007e] hover:shadow-[0_14px_40px_rgba(229,0,126,.18)] motion-safe:animate-subir" style="animation-delay:${Math.min(i, 12) * 45}ms">
+    <div class="flex items-start justify-between gap-3">
+      <div><p class="m-0 text-xs text-[var(--mut)]">Coleta nº ${c.id}</p>
+        <p class="m-0 text-[22px] leading-tight font-bold" style="font-family:Outfit,sans-serif">${semana(c.data)}, ${br(c.data)}</p></div>
+      ${pillCol(c.status, true)}
+    </div>
+    <div class="h-1.5 overflow-hidden rounded-full bg-[var(--panel)]"><div class="h-full rounded-full ${alerta ? 'bg-[var(--warn)]' : 'bg-gradient-to-r from-[#ff6fb5] to-[#e5007e]'} transition-[width] duration-700" style="width:${barra}%"></div></div>
+    <dl class="m-0 grid grid-cols-3 gap-2 text-center">
+      <div class="rounded-xl bg-[var(--panel)] px-2 py-2"><dt class="text-[11px] text-[var(--mut)]">Embarques</dt><dd class="m-0 text-lg font-bold">${nf.format(c.embarques)}</dd></div>
+      <div class="rounded-xl bg-[var(--panel)] px-2 py-2"><dt class="text-[11px] text-[var(--mut)]">Objetos</dt><dd class="m-0 text-lg font-bold">${nf.format(c.objetos || c.previstos || 0)}${!c.objetos && c.previstos ? '<span class="text-[11px] font-normal text-[var(--mut)]"> prev.</span>' : ''}</dd></div>
+      <div class="rounded-xl ${c.pendAbertas ? 'bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] text-[var(--warn)]' : 'bg-[var(--panel)]'} px-2 py-2"><dt class="text-[11px] ${c.pendAbertas ? '' : 'text-[var(--mut)]'}">Pendências</dt><dd class="m-0 text-lg font-bold">${nf.format(c.pendAbertas)}</dd></div>
+    </dl>
+    <p class="m-0 text-sm text-[var(--mut)]">${esc([c.horario ? 'Coletada às ' + c.horario : c.horarioPrevisto ? 'Previsão ' + c.horarioPrevisto : 'Aguardando transporte', c.motorista, c.placa].filter(Boolean).join(' · '))}</p>
+    <span class="absolute right-5 bottom-5 text-[var(--deep)] opacity-0 transition duration-300 group-hover:translate-x-1 group-hover:opacity-100">→</span>
+  </button>`;
+}
+$('#colLista').onclick = e => { const b = e.target.closest('[data-col]'); if (b) location.hash = 'coleta-' + b.dataset.col; };
+$('#colFiltros').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.per) colSt.per = +b.dataset.per; else colSt.status = b.dataset.st;
+  carregarColetas();
+};
+
+/* ---------- Modal genérico ---------- */
+let modalAcao = null;
+function abrirModal(titulo, corpo, okTxt, acao) {
+  $('#modalTit').textContent = titulo; $('#modalCorpo').innerHTML = corpo; $('#modalErro').textContent = ''; $('#modalOk').textContent = okTxt || 'Salvar';
+  modalAcao = acao;
+  const m = $('#modal'); m.classList.add('aberto');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    m.querySelector('.modalFundo').classList.replace('opacity-0', 'opacity-100');
+    const f = $('#modalForm'); f.classList.remove('opacity-0', 'scale-95', 'translate-y-4'); f.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+  }));
+  setTimeout(() => { const i = $('#modalCorpo').querySelector('input,select,textarea'); if (i) i.focus(); }, 80);
+}
+function fecharModal() {
+  const m = $('#modal'); if (!m.classList.contains('aberto')) return;
+  m.querySelector('.modalFundo').classList.replace('opacity-100', 'opacity-0');
+  const f = $('#modalForm'); f.classList.add('opacity-0', 'scale-95', 'translate-y-4'); f.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+  m.classList.remove('aberto'); modalAcao = null;
+}
+$('#modal').addEventListener('click', e => { if (e.target.closest('[data-fechar]')) fecharModal(); });
+$('#modalForm').onsubmit = async e => {
+  e.preventDefault(); if (!modalAcao) return;
+  const dados = Object.fromEntries(new FormData($('#modalForm')));
+  const bt = $('#modalOk'); bt.disabled = true; $('#modalErro').textContent = '';
+  try { await modalAcao(dados); fecharModal(); } catch (err) { if (err.message !== 'login') $('#modalErro').textContent = err.message; } finally { bt.disabled = false; }
+};
+const campo = (rot, html, extra = '') => `<label class="campo ${extra}">${rot}${html}</label>`;
+
+$('#novaColeta').onclick = () => abrirModal(st.me.perfil === 'cliente' ? 'Solicitar coleta' : 'Nova coleta', `
+  ${campo('Data da coleta', `<input type="date" name="data" required value="${hoje}" min="${addD(hoje, -7)}">`)}
+  ${campo('Volumes previstos (opcional)', '<input type="number" name="previstos" min="0" inputmode="numeric" placeholder="Ex.: 1.900">')}
+  ${campo('Observações para o transporte', '<textarea name="obs" maxlength="1000" placeholder="Ex.: carga pronta a partir das 14h, doca 2"></textarea>')}`,
+  st.me.perfil === 'cliente' ? 'Enviar solicitação' : 'Criar coleta', async d => {
+    const r = await apiPost('coletas', d);
+    aviso(`Coleta nº ${r.id} registrada. O transporte foi avisado.`);
+    carregarColetas(); atualizarNotificacoes();
+  });
+
+/* ---------- Gaveta da coleta ---------- */
+let colAberta = null, colFoco = null;
+const colFundo = $('#colFundo'), colPainel = $('#colPainel');
+function abrirColeta(id) {
+  if (!colAberta) {
+    colFoco = document.activeElement;
+    $('#col').classList.add('aberto');
+    requestAnimationFrame(() => requestAnimationFrame(() => { colFundo.classList.replace('opacity-0', 'opacity-100'); colPainel.classList.replace('translate-x-full', 'translate-x-0'); }));
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => colPainel.focus(), 60);
+  }
+  colAberta = { id };
+  $('#colTit').textContent = `Coleta nº ${id}`; $('#colStatus').innerHTML = ''; $('#colData').textContent = '';
+  $('#colCorpo').innerHTML = `<div class="space-y-4">${'<div class="h-20 rounded-2xl bg-[var(--panel)] motion-safe:animate-pulse"></div>'.repeat(4)}</div>`;
+  recarregarColeta();
+}
+function fecharColeta() {
+  if (!colAberta) return;
+  colFundo.classList.replace('opacity-100', 'opacity-0'); colPainel.classList.replace('translate-x-0', 'translate-x-full');
+  $('#col').classList.remove('aberto'); colAberta = null;
+  if (!rast) document.body.style.overflow = '';
+  if (/^#coleta-/.test(location.hash)) history.replaceState(null, '', '#coletas');
+  if (colFoco) colFoco.focus();
+}
+$('#col').addEventListener('click', e => { if (e.target.closest('[data-fechar]')) fecharColeta(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if ($('#modal').classList.contains('aberto')) fecharModal(); else if (rast) fecharRast(); else if (colAberta) fecharColeta(); else fecharNotif();
+});
+
+async function recarregarColeta(manterScroll) {
+  if (!colAberta) return;
+  const id = colAberta.id, sc = $('#colCorpo').scrollTop;
+  try {
+    const d = await api('coletas/' + id);
+    if (!colAberta || colAberta.id !== id) return;
+    colAberta.d = d;
+    $('#colStatus').innerHTML = pillCol(d.coleta.status);
+    $('#colData').textContent = `${semana(d.coleta.data)}, ${br(d.coleta.data)}` + (d.coleta.horario ? ` · coletada às ${d.coleta.horario}` : '');
+    $('#colCorpo').innerHTML = htmlColeta(d);
+    if (manterScroll) $('#colCorpo').scrollTop = sc;
+    requestAnimationFrame(() => requestAnimationFrame(() => { const b = $('#colBarra'); if (b) b.style.width = b.dataset.w + '%'; }));
+  } catch (e) {
+    if (e.message === 'login') return;
+    $('#colCorpo').innerHTML = `<div class="rounded-2xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] p-5 text-[var(--warn)]">${esc(e.message)}</div>`;
+  }
+}
+
+const secao = (titulo, corpo, extra = '', delay = 0) => `<section class="motion-safe:animate-subir ${extra}" style="animation-delay:${delay}ms"><h3 class="m-0 mb-3 text-lg font-semibold">${titulo}</h3>${corpo}</section>`;
+const cartao = (a, b) => `<div class="rounded-2xl bg-[var(--panel)] p-4"><dt class="text-xs text-[var(--mut)]">${a}</dt><dd class="m-0 mt-1 font-semibold">${b || '—'}</dd></div>`;
+const inp = 'w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-base text-[var(--ink)] transition focus:border-[#e5007e] focus:outline-none focus:ring-4 focus:ring-[#e5007e]/15';
+const btn = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-0 bg-[#e5007e] px-5 text-[15px] font-semibold text-white shadow-md transition duration-200 hover:-translate-y-0.5 hover:bg-[#c8006e] hover:shadow-lg active:translate-y-0 disabled:opacity-50';
+const btnSec = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-transparent px-5 text-[15px] font-semibold text-[var(--ink)] transition duration-200 hover:border-[var(--ink)] disabled:opacity-50';
+const btnMini = 'inline-flex min-h-9 items-center rounded-full border border-[var(--line)] bg-transparent px-3 text-[13px] font-semibold text-[var(--deep)] transition hover:border-[#e5007e] hover:bg-[var(--soft)]';
+
+function htmlColeta(d) {
+  const c = d.coleta, s = c.status, p = passoCol(s);
+  const total = d.embarques.reduce((a, e) => a + e.qtd, 0), conferidos = d.embarques.filter(e => e.conferido).length;
+  const abertas = d.pendencias.filter(x => x.status === 'aberta'), naoResolvidas = d.pendencias.filter(x => x.status !== 'resolvida');
+  const larg = s === 'cancelada' ? 0 : Math.max(0, (p - 1) / 3 * 100);
+  let h = '<div class="space-y-8">';
+
+  // etapas
+  h += `<section class="relative motion-safe:animate-subir" aria-label="Etapas">
+    <div class="absolute left-[12.5%] right-[12.5%] top-[11px] h-1.5 overflow-hidden rounded-full bg-[var(--panel)]">
+      <div id="colBarra" data-w="${larg}" class="h-full w-0 rounded-full ${s === 'pendente' ? 'bg-[var(--warn)]' : 'bg-gradient-to-r from-[#ff6fb5] to-[#e5007e]'} transition-[width] duration-[1200ms] ease-[cubic-bezier(.22,1,.36,1)]"></div></div>
+    <ol class="relative m-0 grid list-none grid-cols-4 p-0">${PASSOS_COL.map((t, i) => {
+      const feito = s !== 'cancelada' && i < p, atual = i === p - 1 && s !== 'concluida';
+      const rot = i === 0 && s === 'agendada' ? 'Agendada' : i === 3 && s === 'pendente' ? 'Com pendências' : t;
+      return `<li class="flex flex-col items-center gap-2 text-center">
+        <span class="grid h-7 w-7 place-items-center rounded-full border-2 text-[12px] font-bold transition-all duration-500 ${feito ? (s === 'pendente' && i === 3 ? 'border-[var(--warn)] bg-[var(--warn)] text-white' : 'border-[#e5007e] bg-[#e5007e] text-white') : 'border-[var(--line)] bg-[var(--bg)] text-[var(--mut)]'} ${atual ? 'motion-safe:animate-pulso' : ''}">${feito ? '✓' : i + 1}</span>
+        <span class="text-[12px] leading-tight ${feito ? 'font-semibold' : 'text-[var(--mut)]'}">${rot}</span></li>`;
+    }).join('')}</ol></section>`;
+  if (s === 'cancelada') h += `<div class="rounded-2xl bg-[var(--panel)] p-4 text-sm">Cancelada em ${brD(c.canceladoEm)}. Motivo: ${esc(c.motivoCancelamento)}</div>`;
+
+  // próxima ação
+  h += acaoColeta(d, { total, conferidos, abertas, naoResolvidas });
+
+  // embarques (modelo da planilha)
+  if (d.embarques.length || ['coletada', 'em_tratamento'].includes(s)) {
+    const podeConf = pode('conferir') && s === 'em_tratamento';
+    h += secao(`Embarques <span class="text-sm font-normal text-[var(--mut)]">· ${conferidos} de ${d.embarques.length} conferidos</span>`, `
+      <div class="scroll rounded-2xl border border-[var(--line)]"><table class="planilha">
+        <thead><tr><th>Data</th><th>Nº do embarque</th><th>Quant. objetos</th><th>Horário da coleta</th><th>Conferência</th></tr></thead>
+        <tbody>${d.embarques.map(e => `<tr class="transition-colors hover:bg-[var(--panel)]">
+          <td>${br(e.data)}</td><td class="font-semibold">${esc(e.numero)}</td><td>${nf.format(e.qtd)}</td><td>${e.horario || '—'}</td>
+          <td>${e.conferido ? (e.tudoOk ? `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ESTILO.ok}">Tudo tratado</span>`
+            : `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ESTILO.alerta}" title="${esc(e.obs || '')}">${nf.format(e.tratados)} de ${nf.format(e.qtd)} · ${e.pendencias} com problema</span>`)
+            : podeConf ? `<span class="inline-flex flex-wrap justify-center gap-1.5"><button type="button" class="${btnMini}" data-conferir="${e.id}">Conferir</button><button type="button" class="${btnMini} !text-[var(--mut)]" data-excluir="${e.id}" aria-label="Excluir embarque ${esc(e.numero)}">Excluir</button></span>`
+            : '<span class="text-xs text-[var(--mut)]">Aguardando conferência</span>'}</td></tr>
+`).join('')
+          || '<tr><td colspan="5" class="!py-6 text-[var(--mut)]">Nenhum embarque lançado ainda.</td></tr>'}</tbody>
+        <tfoot><tr><td colspan="2" style="text-align:right">Quant. total</td><td>${nf.format(total)}</td><td colspan="2">${d.embarques.length ? 'média ' + nf.format(Math.round(total / d.embarques.length)) + ' por embarque' : ''}</td></tr></tfoot>
+      </table></div>
+      <div id="confArea" class="mt-3"></div>
+      ${pode('embarque') && ['coletada', 'em_tratamento'].includes(s) ? `
+      <form id="formEmbarque" class="mt-4 grid items-end gap-3 rounded-2xl border border-dashed border-[#e5007e]/50 bg-[var(--soft)]/40 p-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))]">
+        ${campo('Nº do embarque', `<input name="numero" required maxlength="30" class="${inp}" placeholder="300217" autocomplete="off">`)}
+        ${campo('Quant. objetos', `<input name="qtd" type="number" min="0" required class="${inp}" placeholder="330" inputmode="numeric">`)}
+        ${campo('Horário da coleta', `<input name="horario" type="time" value="${c.horario || ''}" class="${inp}">`)}
+        ${campo('Data', `<input name="data" type="date" value="${c.data}" class="${inp}">`)}
+        <button type="submit" class="${btn}">Lançar embarque</button>
+      </form>` : ''}`, '', 80);
+  }
+
+  // pendências
+  if (d.pendencias.length) {
+    const ST_P = { aberta: ['Aguardando cliente', ESTILO.alerta], ciente: ['Cliente ciente', ESTILO.transito], resolvida: ['Resolvida', ESTILO.ok] };
+    h += secao(`Objetos com problema <span class="text-sm font-normal text-[var(--mut)]">· ${naoResolvidas.length} em aberto de ${d.pendencias.length}</span>`,
+      `<ul class="m-0 grid list-none gap-3 p-0">${d.pendencias.map(x => `<li class="rounded-2xl border border-[var(--line)] p-4 transition hover:shadow-md" data-pend="${x.id}">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="reg">${esc(x.cod)}</span>
+          <button type="button" class="${btnMini}" data-rastrear-cod="${esc(x.cod)}">Rastrear</button>
+          <span class="ml-auto inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ST_P[x.status][1]}">${ST_P[x.status][0]}</span>
+        </div>
+        <p class="m-0 mt-2 font-semibold">${esc(x.motivo)}</p>
+        <p class="m-0 text-sm text-[var(--mut)]">Embarque ${esc(x.embarque)} · apontado em ${brD(x.criadoEm)}${x.obs ? ' · ' + esc(x.obs) : ''}</p>
+        ${x.cienteEm ? `<p class="m-0 mt-2 text-sm"><b>Cliente:</b> ${x.resposta ? esc(x.resposta) : 'ciente'} <span class="text-[var(--mut)]">· ${esc(x.cientePor || '')} em ${brD(x.cienteEm)}</span></p>` : ''}
+        ${x.resolvidoEm ? `<p class="m-0 mt-1 text-sm"><b>Solução:</b> ${esc(x.solucao)} <span class="text-[var(--mut)]">· ${esc(x.resolvidoPor || '')} em ${brD(x.resolvidoEm)}</span></p>` : ''}
+        ${x.status === 'aberta' && pode('ciente') ? `<form class="pend-form mt-3 flex flex-wrap gap-2" data-acao="ciente" data-id="${x.id}"><input name="txt" class="${inp} !w-auto flex-1" maxlength="500" placeholder="Resposta ou orientação (opcional)"><button class="${btn}">Ciente</button></form>` : ''}
+        ${x.status !== 'resolvida' && pode('resolver') ? `<form class="pend-form mt-3 flex flex-wrap gap-2" data-acao="resolver" data-id="${x.id}"><input name="txt" class="${inp} !w-auto flex-1" maxlength="500" required placeholder="Como foi resolvido? Ex.: reetiquetado e postado"><button class="${btnSec}">Resolver</button></form>` : ''}
+      </li>`).join('')}</ul>`, '', 120);
+  }
+
+  // detalhes
+  h += secao('Detalhes', `<dl class="m-0 grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))]">
+    ${cartao('Solicitada por', esc(c.solicitante || '—') + `<span class="block text-xs font-normal text-[var(--mut)]">${brD(c.solicitadoEm)}</span>`)}
+    ${cartao('Volumes previstos', c.previstos != null ? nf.format(c.previstos) : '—')}
+    ${cartao('Horário previsto', c.horarioPrevisto)}
+    ${cartao('Horário da coleta', c.horario ? c.horario + (c.coletadoPor ? `<span class="block text-xs font-normal text-[var(--mut)]">confirmado por ${esc(c.coletadoPor)}</span>` : '') : '')}
+    ${cartao('Motorista', esc(c.motorista || ''))}${cartao('Placa', esc(c.placa || ''))}
+    ${c.finalizadoEm ? cartao('Tratamento finalizado', `${brD(c.finalizadoEm)}<span class="block text-xs font-normal text-[var(--mut)]">${esc(c.finalizadoPor || '')}</span>`) : ''}
+  </dl>
+  ${[['Observação do cliente', c.obsCliente], ['Observação do transporte', c.obsTransporte], ['Observação da operação', c.obsOperacao]].filter(x => x[1]).map(([a, b]) => `<p class="m-0 mt-3 text-sm"><b>${a}:</b> ${esc(b)}</p>`).join('')}`, '', 160);
+
+  // histórico
+  h += secao('Histórico', `<ol class="m-0 list-none p-0">${d.historico.map((x, i) => `<li class="relative pb-4 pl-7">
+    ${i < d.historico.length - 1 ? '<span class="absolute top-4 bottom-0 left-[5px] w-0.5 bg-[var(--line)]"></span>' : ''}
+    <span class="absolute top-1.5 left-0 h-3 w-3 rounded-full ${i === 0 ? 'bg-[#e5007e]' : 'bg-[var(--line)]'}"></span>
+    <p class="m-0 font-semibold leading-snug">${esc(x.acao)}</p>
+    ${x.detalhe ? `<p class="m-0 text-sm text-[var(--mut)]">${esc(x.detalhe)}</p>` : ''}
+    <p class="m-0 text-xs text-[var(--mut)]">${esc(x.usuario || '')} · ${PERFIL_NOME[x.perfil] || ''} · ${brD(x.em)}</p></li>`).join('')}</ol>`, '', 200);
+  return h + '</div>';
+}
+
+function acaoColeta(d, x) {
+  const c = d.coleta, s = c.status;
+  const caixa = (titulo, texto, corpo) => `<section class="motion-safe:animate-subir rounded-3xl bg-[var(--soft)] p-5 ring-1 ring-[#e5007e]/25" style="animation-delay:40ms">
+    <p class="m-0 text-xs font-semibold text-[var(--deep)]">Sua próxima ação</p>
+    <p class="m-0 mt-1 text-[20px] leading-tight font-bold" style="font-family:Outfit,sans-serif">${titulo}</p>
+    ${texto ? `<p class="m-0 mt-1 text-sm text-[var(--mut)]">${texto}</p>` : ''}<div class="mt-4">${corpo}</div></section>`;
+  const espera = t => `<section class="motion-safe:animate-subir flex items-center gap-3 rounded-2xl bg-[var(--panel)] p-4 text-sm text-[var(--mut)]"><span class="h-2.5 w-2.5 shrink-0 rounded-full bg-[#e5007e] motion-safe:animate-pulse"></span>${t}</section>`;
+  if (['solicitada', 'agendada'].includes(s)) {
+    if (pode('coletar')) return caixa(s === 'agendada' ? 'Confirme a coleta' : 'Agende ou confirme a coleta',
+      c.obsCliente ? 'Recado do cliente: ' + esc(c.obsCliente) : 'Informe motorista, placa e horário.', `
+      <form id="formTransporte" class="grid items-end gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))]">
+        ${campo('Motorista', `<input name="motorista" maxlength="120" class="${inp}" value="${esc(c.motorista || '')}">`)}
+        ${campo('Placa', `<input name="placa" maxlength="10" class="${inp} uppercase" value="${esc(c.placa || '')}" placeholder="ABC1D23">`)}
+        ${campo('Horário', `<input name="horario" type="time" class="${inp}" value="${c.horario || c.horarioPrevisto || ''}" required>`)}
+        ${campo('Observação', `<input name="obs" maxlength="500" class="${inp}">`, 'col-span-full')}
+        <div class="col-span-full flex flex-wrap gap-3">
+          <button type="submit" class="${btn}" data-modo="coletar">Carga coletada neste horário</button>
+          <button type="submit" class="${btnSec}" data-modo="agendar">Só agendar para este horário</button>
+          ${pode('cancelar') ? `<button type="button" class="${btnSec} !text-[var(--bad)]" id="btCancelar">Cancelar coleta</button>` : ''}
+        </div></form>`);
+    if (st.me.perfil === 'cliente') return espera(s === 'agendada' ? `Coleta agendada${c.horarioPrevisto ? ' para ' + c.horarioPrevisto : ''}${c.motorista ? ' com ' + esc(c.motorista) : ''}.` : 'Solicitação enviada. Aguardando o transporte agendar.')
+      + (s === 'solicitada' && pode('cancelar') ? `<button type="button" class="${btnSec} mt-3 !text-[var(--bad)]" id="btCancelar">Cancelar solicitação</button>` : '');
+    return espera('Aguardando o transporte confirmar a coleta.');
+  }
+  if (s === 'coletada') return pode('embarque') ? caixa('Lance os embarques', `Carga coletada às ${c.horario}. Lance cada embarque com a quantidade de objetos, logo abaixo.`, '') : espera('Carga coletada. A operação vai lançar os embarques e tratar a carga.');
+  if (s === 'em_tratamento') {
+    if (pode('finalizar')) {
+      const falta = d.embarques.length - x.conferidos;
+      return caixa(falta ? `Confira ${falta} embarque${falta > 1 ? 's' : ''}` : 'Finalize o tratamento',
+        falta ? 'Em cada embarque, informe se todos os objetos foram tratados. Os que deram problema viram pendência para o cliente.' : (x.naoResolvidas.length ? `${x.naoResolvidas.length} objeto${x.naoResolvidas.length > 1 ? 's' : ''} com problema: o cliente será notificado ao finalizar.` : 'Todos os embarques conferidos sem problemas.'),
+        falta ? '' : `<form id="formFinalizar" class="flex flex-wrap gap-3"><input name="obs" maxlength="1000" class="${inp} !w-auto flex-1" placeholder="Observação (opcional)"><button class="${btn}">Finalizar tratamento</button></form>`);
+    }
+    return espera(`A operação está tratando a carga: ${x.conferidos} de ${d.embarques.length} embarques conferidos.`);
+  }
+  if (s === 'pendente') {
+    if (pode('ciente') && x.abertas.length) return caixa(`${x.abertas.length} objeto${x.abertas.length > 1 ? 's' : ''} com problema`, 'A operação encontrou objetos que não puderam ser tratados. Veja a lista abaixo e dê ciência.',
+      `<form id="formCienteTodas" class="flex flex-wrap gap-3"><input name="resposta" maxlength="500" class="${inp} !w-auto flex-1" placeholder="Orientação para a AGF (opcional)"><button class="${btn}">Ciente de todos</button></form>`);
+    if (pode('resolver')) return caixa('Resolva as pendências', `${x.naoResolvidas.length} objeto${x.naoResolvidas.length > 1 ? 's' : ''} em aberto. Registre a solução de cada um; a coleta é concluída quando todas forem resolvidas.`, '');
+    return espera('Pendências em tratamento pela AGF.');
+  }
+  if (s === 'concluida') return `<section class="motion-safe:animate-subir flex items-center gap-3 rounded-2xl p-4 text-sm font-semibold ${ESTILO.ok}">✓ Coleta concluída: ${nf.format(x.total)} objetos em ${d.embarques.length} embarques${d.pendencias.length ? `, ${d.pendencias.length} pendência${d.pendencias.length > 1 ? 's' : ''} resolvida${d.pendencias.length > 1 ? 's' : ''}` : ', todos tratados'}.</section>`;
+  return '';
+}
+
+/* ---------- Ações dentro da gaveta ---------- */
+async function acao(fn, msg) {
+  try { await fn(); if (msg) aviso(msg); await recarregarColeta(true); carregarColetasSeVisivel(); atualizarNotificacoes(); }
+  catch (e) { if (e.message !== 'login') aviso(e.message); }
+}
+const carregarColetasSeVisivel = () => { if (viewAtual === 'coletas') carregarColetas(); };
+$('#colCorpo').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target, dados = Object.fromEntries(new FormData(f)), id = colAberta.id;
+  for (const b of f.querySelectorAll('button')) b.disabled = true;
+  const liberar = () => { for (const b of f.querySelectorAll('button')) b.disabled = false; };
+  if (f.id === 'formTransporte') {
+    const modo = e.submitter && e.submitter.dataset.modo || 'coletar';
+    if (!dados.horario) { liberar(); return aviso('Informe o horário.'); }
+    return acao(() => modo === 'coletar' ? apiPost(`coletas/${id}/coletar`, dados) : apiPost(`coletas/${id}/agendar`, { ...dados, horarioPrevisto: dados.horario }),
+      modo === 'coletar' ? 'Coleta confirmada. A operação foi avisada.' : 'Coleta agendada.').finally(liberar);
+  }
+  if (f.id === 'formEmbarque') return acao(() => apiPost(`coletas/${id}/embarques`, dados), `Embarque ${dados.numero} lançado.`).then(() => { const n = $('#formEmbarque [name=numero]'); if (n) n.focus(); }).finally(liberar);
+  if (f.id === 'formFinalizar') return acao(() => apiPost(`coletas/${id}/finalizar`, dados), 'Tratamento finalizado.').finally(liberar);
+  if (f.id === 'formCienteTodas') return acao(() => apiPost(`coletas/${id}/ciente-todas`, dados), 'Ciência registrada. A AGF foi avisada.').finally(liberar);
+  if (f.classList.contains('pend-form')) {
+    const a = f.dataset.acao;
+    return acao(() => apiPost(`pendencias/${f.dataset.id}/${a}`, a === 'ciente' ? { resposta: dados.txt } : { solucao: dados.txt }), a === 'ciente' ? 'Ciência registrada.' : 'Pendência resolvida.').finally(liberar);
+  }
+  if (f.classList.contains('form-conf')) return salvarConferencia(f).finally(liberar);
+  liberar();
+});
+$('#colCorpo').addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#btCancelar')) return abrirModal('Cancelar coleta', campo('Motivo do cancelamento', '<textarea name="motivo" required maxlength="500"></textarea>'), 'Cancelar coleta',
+    async d => { await apiPost(`coletas/${colAberta.id}/cancelar`, d); aviso('Coleta cancelada.'); await recarregarColeta(); carregarColetasSeVisivel(); atualizarNotificacoes(); });
+  const ex = t.closest('[data-excluir]');
+  if (ex) return abrirModal('Excluir embarque?', '<p class="m-0 text-[var(--mut)]">O embarque será removido desta coleta. Use quando foi lançado errado.</p>', 'Excluir',
+    async () => { await apiPost(`embarques/${ex.dataset.excluir}/excluir`); aviso('Embarque excluído.'); await recarregarColeta(true); carregarColetasSeVisivel(); });
+  const cf = t.closest('[data-conferir]');
+  if (cf) return abrirConferencia(+cf.dataset.conferir);
+  const rc = t.closest('[data-rastrear-cod]');
+  if (rc) return abrirRast({ registro: rc.dataset.rastrearCod, cep: '', remetente: '' });
+  if (t.closest('.conf-fechar')) { $('#confArea').innerHTML = ''; $('#confArea').dataset.eid = ''; return; }
+  const add = t.closest('.conf-add');
+  if (add) return adicionarObjetos(add.closest('form'));
+  const rm = t.closest('.conf-rm');
+  if (rm) { const li = rm.closest('li'), f = rm.closest('form'); li.remove(); atualizarContagem(f); }
+});
+$('#colCorpo').addEventListener('change', e => {
+  const f = e.target.closest('.form-conf'); if (!f) return;
+  if (e.target.name === 'tudoOk') f.querySelector('.conf-prob').hidden = e.target.value === '1';
+  if (e.target.name === 'motivoPadrao') for (const s of f.querySelectorAll('.conf-lista select')) if (!s.dataset.mexido) s.value = e.target.value;
+  if (e.target.matches('.conf-lista select')) e.target.dataset.mexido = '1';
+});
+
+/* ---------- Conferência de embarque ---------- */
+function abrirConferencia(eid) {
+  const d = colAberta.d, e = d.embarques.find(x => x.id === eid);
+  const area = $('#confArea');
+  if (area.dataset.eid === String(eid) && area.firstElementChild) { area.innerHTML = ''; area.dataset.eid = ''; return; }
+  area.dataset.eid = eid;
+  const ops = d.motivos.map(m => `<option>${esc(m)}</option>`).join('');
+  area.innerHTML = `<form class="form-conf grid gap-4 rounded-2xl border-2 border-[#e5007e] bg-[var(--soft)]/50 p-4 motion-safe:animate-subir" data-eid="${eid}" data-qtd="${e.qtd}">
+    <p class="m-0 font-semibold">Conferência do embarque ${esc(e.numero)} · ${nf.format(e.qtd)} objetos</p>
+    <div class="grid gap-2 sm:grid-cols-2">
+      <label class="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg)] px-4 transition has-[:checked]:border-[#0b7a43] has-[:checked]:ring-4 has-[:checked]:ring-[#0b7a43]/15"><input type="radio" name="tudoOk" value="1" checked class="h-5 w-5 accent-[#0b7a43]"> Todos os objetos foram tratados</label>
+      <label class="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg)] px-4 transition has-[:checked]:border-[#b45309] has-[:checked]:ring-4 has-[:checked]:ring-[#b45309]/15"><input type="radio" name="tudoOk" value="0" class="h-5 w-5 accent-[#b45309]"> Houve objetos com problema</label>
+    </div>
+    <div class="conf-prob grid gap-3" hidden>
+      <div class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,220px)]">
+        ${campo('Códigos dos objetos com problema (um por linha, ou separados por espaço)', `<textarea name="colar" class="${inp} font-mono" placeholder="AE164175886BR&#10;AE188562111BR"></textarea>`)}
+        <div class="grid content-start gap-3">${campo('Motivo', `<select name="motivoPadrao" class="${inp}">${ops}</select>`)}<button type="button" class="conf-add ${btnSec}">Adicionar à lista</button></div>
+      </div>
+      <ul class="conf-lista m-0 grid max-h-[320px] list-none gap-2 overflow-y-auto p-0"></ul>
+      <div class="flex flex-wrap items-end gap-3">
+        ${campo('Objetos tratados', `<input name="tratados" type="number" min="0" max="${e.qtd}" class="${inp} !w-32" value="${e.qtd}">`)}
+        <p class="conf-cont m-0 pb-2 text-sm text-[var(--mut)]">Nenhum objeto na lista.</p>
+      </div>
+    </div>
+    ${campo('Observação da conferência (opcional)', `<input name="obs" maxlength="1000" class="${inp}">`)}
+    <div class="flex flex-wrap gap-3"><button type="submit" class="${btn}">Salvar conferência</button><button type="button" class="conf-fechar ${btnSec}">Fechar</button></div>
+  </form>`;
+  area.firstElementChild.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+}
+function adicionarObjetos(f) {
+  const ta = f.querySelector('[name=colar]'), motivo = f.querySelector('[name=motivoPadrao]').value;
+  const ops = colAberta.d.motivos.map(m => `<option${m === motivo ? ' selected' : ''}>${esc(m)}</option>`).join('');
+  const ja = new Set([...f.querySelectorAll('.conf-lista li')].map(li => li.dataset.cod));
+  const invalidos = [];
+  for (const bruto of ta.value.split(/[\s,;]+/).filter(Boolean)) {
+    const cod = codDe(bruto.replace(/[^A-Za-z0-9]/g, ''));
+    if (!/^[A-Z]{2}\d{9}[A-Z]{2}$/.test(cod)) { invalidos.push(bruto); continue; }
+    if (ja.has(cod)) continue; ja.add(cod);
+    f.querySelector('.conf-lista').insertAdjacentHTML('beforeend', `<li data-cod="${cod}" class="grid items-center gap-2 rounded-xl bg-[var(--bg)] p-2 pl-3 motion-safe:animate-subir sm:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)_auto]">
+      <span class="reg">${cod}</span><select class="${inp} !py-1.5 text-sm">${ops}</select><input class="${inp} !py-1.5 text-sm" maxlength="500" placeholder="Observação">
+      <button type="button" class="conf-rm grid h-9 w-9 place-items-center rounded-full border-0 bg-transparent text-[var(--mut)] transition hover:bg-[var(--panel)] hover:text-[var(--bad)]" aria-label="Remover ${cod}">✕</button></li>`);
+  }
+  ta.value = invalidos.join('\n');
+  if (invalidos.length) aviso(`${invalidos.length} código${invalidos.length > 1 ? 's' : ''} inválido${invalidos.length > 1 ? 's' : ''} ficaram no campo para correção.`);
+  atualizarContagem(f);
+}
+function atualizarContagem(f) {
+  const n = f.querySelectorAll('.conf-lista li').length, q = +f.dataset.qtd;
+  f.querySelector('.conf-cont').textContent = n ? `${n} objeto${n > 1 ? 's' : ''} com problema na lista.` : 'Nenhum objeto na lista.';
+  f.querySelector('[name=tratados]').value = Math.max(0, q - n);
+}
+async function salvarConferencia(f) {
+  const ok = f.querySelector('[name=tudoOk]:checked').value === '1';
+  if (!ok && f.querySelector('[name=colar]').value.trim()) adicionarObjetos(f);
+  const objetos = [...f.querySelectorAll('.conf-lista li')].map(li => ({ cod: li.dataset.cod, motivo: li.querySelector('select').value, obs: li.querySelector('input').value }));
+  if (!ok && !objetos.length) return aviso('Adicione os códigos dos objetos com problema.');
+  await acao(() => apiPost(`embarques/${f.dataset.eid}/conferir`, { tudoOk: ok, objetos, tratados: f.querySelector('[name=tratados]').value, obs: f.querySelector('[name=obs]').value }),
+    ok ? 'Embarque conferido: todos tratados.' : `Embarque conferido com ${objetos.length} objeto${objetos.length > 1 ? 's' : ''} com problema.`);
+}
+
+/* ---------- Impressão do protocolo (modelo da planilha) ---------- */
+$('#colImprimir').onclick = () => {
+  const d = colAberta && colAberta.d; if (!d) return;
+  const c = d.coleta, total = d.embarques.reduce((a, e) => a + e.qtd, 0), n = d.embarques.length;
+  const navy = '#173a5e', linhas = Math.max(n, 12);
+  $('#protocolo').innerHTML = `<div style="font:14px/1.4 Inter,Arial,sans-serif;color:#111;padding:8px">
+    <div style="display:flex;align-items:stretch;-webkit-print-color-adjust:exact;print-color-adjust:exact">
+      <div style="background:#e5007e;color:#fff;font:700 34px Outfit,Arial;padding:14px 28px;display:flex;align-items:center">wepink</div>
+      <div style="background:${navy};color:#fff;font:700 24px Outfit,Arial;flex:1;display:flex;align-items:center;justify-content:center;padding:14px">Controle de Coletas - AGF Morada dos Lagos</div></div>
+    <div style="display:flex;gap:24px;margin:18px 0;-webkit-print-color-adjust:exact;print-color-adjust:exact">
+      <div style="flex:1;background:#1d6fb0;color:#fff;border-radius:14px;padding:14px 20px"><div>Total de objetos postados</div><div style="font:700 30px Outfit,Arial">${nf.format(total)}</div></div>
+      <div style="flex:1;background:#fdca2e;color:#222;border-radius:14px;padding:14px 20px"><div>Média por caminhão</div><div style="font:700 30px Outfit,Arial">${n ? nf.format(Math.round(total / n)) : '—'}</div></div></div>
+    <table style="width:100%;border-collapse:collapse;-webkit-print-color-adjust:exact;print-color-adjust:exact">
+      <thead><tr>${['Data', 'Nº do embarque', 'Quant. objetos', 'Horário da coleta', 'Conferência'].map(t => `<th style="background:${navy};color:#fff;padding:8px;border:1px solid #333">${t}</th>`).join('')}</tr></thead>
+      <tbody>${Array.from({ length: linhas }, (_, i) => { const e = d.embarques[i]; const td = v => `<td style="border:1px solid #333;padding:6px;text-align:center;background:${i % 2 ? '#fff' : '#f2f2f2'}">${v}</td>`;
+        return `<tr>${td(e && (i === 0 || e.data !== d.embarques[i - 1].data) ? br(e.data) : '')}${td(e ? esc(e.numero) : '')}${td(e ? nf.format(e.qtd) : '')}${td(e && e.horario || '')}${td(e ? (e.conferido ? (e.tudoOk ? 'OK' : e.pendencias + ' c/ problema') : '') : '')}</tr>`; }).join('')}</tbody>
+      <tfoot><tr><td colspan="2"></td><td style="background:${navy};color:#fff;font-weight:700;text-align:center;padding:6px;border:1px solid #333">Quant. TOTAL<br>${nf.format(total)}</td><td colspan="2"></td></tr></tfoot></table>
+    <p style="margin-top:14px;color:#555">Coleta nº ${c.id} · ${br(c.data)} · situação: ${ST_COL[c.status][0]}${c.motorista ? ' · motorista ' + esc(c.motorista) : ''}${c.placa ? ' · placa ' + esc(c.placa) : ''}</p>
+    ${d.pendencias.length ? `<p style="margin:10px 0 4px;font-weight:700">Objetos com problema</p><table style="width:100%;border-collapse:collapse">${d.pendencias.map(x => `<tr><td style="border:1px solid #999;padding:4px 6px;font-family:monospace">${esc(x.cod)}</td><td style="border:1px solid #999;padding:4px 6px">${esc(x.motivo)}</td><td style="border:1px solid #999;padding:4px 6px">Embarque ${esc(x.embarque)}</td><td style="border:1px solid #999;padding:4px 6px">${x.status}</td></tr>`).join('')}</table>` : ''}
+    <div style="display:flex;gap:40px;margin-top:48px">${['Transporte', 'Operação AGF', 'Cliente Wepink'].map(t => `<div style="flex:1;border-top:1px solid #333;padding-top:4px;text-align:center">${t}</div>`).join('')}</div></div>`;
+  document.body.classList.add('imprimindo');
+  try { window.print(); } catch { aviso('Use Ctrl+P para imprimir.'); }
+  setTimeout(() => document.body.classList.remove('imprimindo'), 500);
+};
+
+/* ---------- Notificações ---------- */
+const sino = $('#sino'), notif = $('#notif');
+function fecharNotif() { notif.classList.add('opacity-0', 'scale-95', 'pointer-events-none'); notif.classList.remove('opacity-100', 'scale-100'); sino.setAttribute('aria-expanded', 'false'); }
+sino.onclick = e => {
+  e.stopPropagation();
+  const abrir = sino.getAttribute('aria-expanded') !== 'true';
+  if (!abrir) return fecharNotif();
+  const rs = sino.getBoundingClientRect(), esq = rs.right < 380, peq = innerWidth < 640;
+  Object.assign(notif.style, peq ? { position: 'fixed', left: '16px', right: '16px', top: rs.bottom + 8 + 'px', width: 'auto' } : { position: '', left: '', right: '', top: '', width: '' });
+  notif.classList.toggle('left-0', esq); notif.classList.toggle('right-0', !esq); notif.classList.toggle('origin-top-left', esq); notif.classList.toggle('origin-top-right', !esq);
+  notif.classList.remove('opacity-0', 'scale-95', 'pointer-events-none'); notif.classList.add('opacity-100', 'scale-100'); sino.setAttribute('aria-expanded', 'true');
+  atualizarNotificacoes();
+};
+document.addEventListener('click', e => { if (!e.target.closest('#notif')) fecharNotif(); });
+$('#notifLista').onclick = e => { const a = e.target.closest('[data-col]'); if (!a) return; fecharNotif(); location.hash = 'coleta-' + a.dataset.col; };
+let ultimoTotal = -1;
+async function atualizarNotificacoes() {
+  try {
+    const r = await api('notificacoes');
+    const n = $('#sinoN'); n.textContent = r.total > 9 ? '9+' : r.total; n.classList.toggle('hidden', !r.total);
+    if (r.total > ultimoTotal && ultimoTotal >= 0) { sino.classList.add('motion-safe:animate-brilho'); setTimeout(() => sino.classList.remove('motion-safe:animate-brilho'), 2000); }
+    ultimoTotal = r.total;
+    const cor = { pendencia: 'bg-[var(--warn)]', ciente: 'bg-[#e5007e]', solicitada: 'bg-[#e5007e]', agendada: 'bg-[#e5007e]', coletada: 'bg-[var(--ink)]', em_tratamento: 'bg-[var(--ink)]' };
+    $('#notifLista').innerHTML = r.itens.length ? r.itens.map(x => `<button type="button" data-col="${x.coletaId}" class="flex w-full items-start gap-3 border-0 border-b border-[var(--line)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition hover:bg-[var(--panel)]">
+      <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${cor[x.tipo] || 'bg-[#e5007e]'}"></span><span class="text-sm"><span class="block font-semibold">${esc(x.texto)}</span><span class="text-xs text-[var(--mut)]">Coleta de ${br(x.data)}</span></span></button>`).join('')
+      : `<p class="m-0 px-4 py-6 text-center text-sm text-[var(--mut)]">${r.inativo ? 'Área de coletas ainda não ativada no banco.' : 'Tudo em dia por aqui.'}</p>`;
+  } catch {}
+}
+
+/* ---------- Usuários (admin) ---------- */
+let usuarios = [];
+async function carregarUsuarios() {
+  $('#perfisInfo').innerHTML = Object.keys(PERFIL_NOME).map(p => `<div class="rounded-2xl bg-[var(--panel)] p-4"><p class="m-0 font-semibold">${PERFIL_NOME[p]}</p><p class="m-0 mt-1 text-sm text-[var(--mut)]">${PERFIL_DESC[p]}</p></div>`).join('');
+  try {
+    usuarios = (await api('usuarios')).usuarios;
+    $('#usuBody').innerHTML = usuarios.length ? usuarios.map(u => `<tr class="${u.ativo ? '' : 'opacity-55'}"><td><b>${esc(u.nome)}</b>${u.email ? `<br><span class="text-sm text-[var(--mut)]">${esc(u.email)}</span>` : ''}</td>
+      <td class="reg">${esc(u.login)}</td><td>${PERFIL_NOME[u.perfil]}</td><td>${u.ativo ? 'Ativo' : 'Desativado'}</td><td class="n">${u.ultimoAcesso ? brD(u.ultimoAcesso) : 'Nunca entrou'}</td>
+      <td><button type="button" class="${btnMini}" data-editar="${u.id}">Editar</button></td></tr>`).join('')
+      : '<tr><td colspan="6" class="vazio">Nenhum usuário cadastrado. Crie os logins do cliente, do transporte e da operação.</td></tr>';
+  } catch (e) { $('#usuBody').innerHTML = `<tr><td colspan="6" class="vazio">${esc(e.message)}</td></tr>`; }
+}
+function formUsuario(u) {
+  const ops = Object.keys(PERFIL_NOME).map(p => `<option value="${p}"${u && u.perfil === p ? ' selected' : ''}>${PERFIL_NOME[p]}</option>`).join('');
+  abrirModal(u ? 'Editar usuário' : 'Novo usuário', `
+    ${campo('Nome', `<input name="nome" required maxlength="120" value="${esc(u ? u.nome : '')}">`)}
+    ${u ? `<p class="m-0 text-sm text-[var(--mut)]">Login: <b>${esc(u.login)}</b></p>` : campo('Login', '<input name="login" required maxlength="60" autocomplete="off" placeholder="ex.: joao.transporte">')}
+    ${campo('E-mail (opcional)', `<input name="email" type="email" maxlength="160" value="${esc(u && u.email || '')}">`)}
+    ${campo('Perfil', `<select name="perfil">${ops}</select>`)}
+    ${campo(u ? 'Nova senha (deixe em branco para manter)' : 'Senha inicial (mínimo 8 caracteres)', `<input name="senha" type="text" minlength="8" autocomplete="new-password" ${u ? '' : 'required'}>`)}
+    ${u ? `<label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="ativo" value="1" ${u.ativo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Usuário ativo</label>` : ''}`,
+    u ? 'Salvar' : 'Criar usuário', async d => {
+      await apiPost('usuarios', u ? { ...d, id: u.id, ativo: d.ativo === '1' } : d);
+      aviso(u ? 'Usuário atualizado.' : `Usuário ${d.login} criado. Passe o login e a senha para a pessoa.`); carregarUsuarios();
+    });
+}
+$('#novoUsuario').onclick = () => formUsuario(null);
+$('#usuBody').onclick = e => { const b = e.target.closest('[data-editar]'); if (b) formUsuario(usuarios.find(u => u.id === +b.dataset.editar)); };
+$('#senhaBt').onclick = () => abrirModal('Trocar minha senha', `${campo('Senha atual', '<input name="atual" type="password" required autocomplete="current-password">')}${campo('Nova senha (mínimo 8 caracteres)', '<input name="nova" type="password" required minlength="8" autocomplete="new-password">')}`,
+  'Trocar senha', async d => { await apiPost('minha-senha', d); aviso('Senha alterada.'); });
+
+/* ---------- Demonstração da área de coletas ---------- */
+const DEMO_COL = { coletas: [], embarques: [], pendencias: [], historico: [], usuarios: [], seq: { c: 0, e: 0, p: 0, u: 0 } };
+const MOTIVOS_DEMO = ['Objeto não localizado na carga', 'Embalagem avariada', 'Sem etiqueta', 'Etiqueta ilegível ou danificada', 'Etiqueta duplicada', 'Endereço incompleto ou CEP inválido', 'Peso ou dimensões fora do padrão', 'Conteúdo proibido ou restrito', 'Objeto sem registro no sistema', 'Outro'];
+const agoraTxt = (dia, h) => (dia || hoje) + ' ' + (h ? h + ':00' : new Date().toTimeString().slice(0, 8));
+let histN = 0;
+function semearDemo() {
+  if (DEMO_COL.seq.c) return;
+  const U = (login, nome, perfil) => DEMO_COL.usuarios.push({ id: ++DEMO_COL.seq.u, login, nome, email: '', perfil, ativo: true, criadoEm: agoraTxt(addD(hoje, -40)), ultimoAcesso: agoraTxt(addD(hoje, -Math.floor(Math.random() * 3)), '09:12') });
+  U('wepink.logistica', 'Camila (Wepink)', 'cliente'); U('transporte.agf', 'Rogério (Transporte)', 'transporte'); U('operacao.agf', 'Patrícia (Operação)', 'operacao'); U('admin', 'Administrador AGF', 'admin');
+  const quem = p => DEMO_COL.usuarios.find(u => u.perfil === p);
+  const lotes = [[300217, 330], [332292, 163], [300221, 235], [323644, 272], [323640, 179], [300218, 280], [351539, 254], [323641, 218]];
+  const nova = (dia, status, extra = {}) => { const c = { id: ++DEMO_COL.seq.c, data: dia, status, previstos: null, obsCliente: null, solicitadoPor: quem('cliente').id, solicitadoEm: agoraTxt(addD(dia, -1), '16:40'), horarioPrevisto: null, motorista: null, placa: null, horario: null, obsTransporte: null, obsOperacao: null, ...extra }; DEMO_COL.coletas.push(c); hd(c.id, quem('cliente'), 'Coleta solicitada', `Data ${br(dia)}`, c.solicitadoEm); return c; };
+  const hd = (cid, u, acao, detalhe, em) => DEMO_COL.historico.push({ n: ++histN, coletaId: cid, usuario: u.nome, perfil: u.perfil, acao, detalhe, em: em || agoraTxt() });
+  const emb = (c, n, conf) => lotes.slice(0, n).forEach(([num, q], i) => {
+    const e = { id: ++DEMO_COL.seq.e, coletaId: c.id, data: c.data, numero: String(num + c.id * 7), qtd: q - (c.id * 13) % 40, horario: c.horario, conferido: !!conf, tudoOk: true, tratados: null, obs: null, conferidoEm: null };
+    e.tratados = e.qtd; DEMO_COL.embarques.push(e);
+  });
+  for (let k = 20; k >= 3; k -= (k > 10 ? 4 : 3)) {
+    const dia = addD(hoje, -k); if (parse(dia).getDay() === 0) continue;
+    const c = nova(dia, 'concluida', { horario: '15:' + String(10 + k).slice(-2), motorista: 'Rogério Lima', placa: 'RJX4C21', finalizadoEm: agoraTxt(addD(dia, 1), '10:20') });
+    emb(c, 6 + (k % 3), true);
+    hd(c.id, quem('transporte'), 'Carga coletada', `Horário ${c.horario} · Motorista Rogério Lima`, agoraTxt(dia, c.horario));
+    hd(c.id, quem('operacao'), 'Tratamento finalizado', `${DEMO_COL.embarques.filter(e => e.coletaId === c.id).length} embarques`, c.finalizadoEm);
+  }
+  const p1 = nova(addD(hoje, -2), 'pendente', { horario: '15:40', motorista: 'Rogério Lima', placa: 'RJX4C21', finalizadoEm: agoraTxt(addD(hoje, -1), '11:05') });
+  emb(p1, 8, true);
+  const e1 = DEMO_COL.embarques.filter(e => e.coletaId === p1.id)[2]; e1.tudoOk = false; e1.tratados = e1.qtd - 3;
+  [['AE164175886BR', 'Embalagem avariada'], ['AE188562111BR', 'Etiqueta ilegível ou danificada'], ['AE190044257BR', 'Objeto não localizado na carga']].forEach(([cod, motivo]) =>
+    DEMO_COL.pendencias.push({ id: ++DEMO_COL.seq.p, coletaId: p1.id, embarqueId: e1.id, cod, motivo, obs: null, status: 'aberta', criadoEm: agoraTxt(addD(hoje, -1), '10:58') }));
+  hd(p1.id, quem('operacao'), 'Tratamento finalizado com pendências', '3 objetos com problema, cliente notificado', p1.finalizadoEm);
+  const t = nova(addD(hoje, -1), 'em_tratamento', { horario: '16:05', motorista: 'Rogério Lima', placa: 'RJX4C21' });
+  emb(t, 5, false); DEMO_COL.embarques.filter(e => e.coletaId === t.id).slice(0, 2).forEach(e => { e.conferido = true; });
+  hd(t.id, quem('transporte'), 'Carga coletada', 'Horário 16:05', agoraTxt(addD(hoje, -1), '16:05'));
+  nova(hoje, 'agendada', { previstos: 1900, horarioPrevisto: '15:30', motorista: 'Rogério Lima', placa: 'RJX4C21', obsCliente: 'Carga pronta a partir das 14h, doca 2' });
+  nova(addD(hoje, 1), 'solicitada', { previstos: 2100 });
+}
+function demoCol(met, rota, q, b) {
+  semearDemo();
+  const D = DEMO_COL, eu = { id: 0, nome: st.me.nome, perfil: st.me.perfil };
+  const erro = m => Promise.reject(new Error(m));
+  const exige = a => { if (!pode(a)) throw new Error('Seu perfil não tem permissão para esta ação.'); };
+  const h = (cid, acao, detalhe) => D.historico.push({ n: ++histN, coletaId: cid, usuario: eu.nome, perfil: eu.perfil, acao, detalhe, em: agoraTxt() });
+  const col = id => { const c = D.coletas.find(x => x.id === +id); if (!c) throw new Error('Coleta não encontrada.'); return c; };
+  const resumo = c => { const es = D.embarques.filter(e => e.coletaId === c.id), ps = D.pendencias.filter(p => p.coletaId === c.id);
+    return { ...c, solicitante: D.usuarios.find(u => u.id === c.solicitadoPor)?.nome, embarques: es.length, objetos: es.reduce((a, e) => a + e.qtd, 0), conferidos: es.filter(e => e.conferido).length, pendencias: ps.length, pendAbertas: ps.filter(p => p.status !== 'resolvida').length }; };
+  try {
+    if (met === 'GET') {
+      if (rota === 'notificacoes') {
+        const meus = { cliente: ['pendencia'], transporte: ['solicitada', 'agendada'], operacao: ['coletada', 'em_tratamento', 'ciente'], admin: ['pendencia', 'ciente', 'solicitada', 'agendada', 'coletada', 'em_tratamento'] }[st.me.perfil];
+        const itens = [];
+        for (const c of D.coletas) {
+          const ab = D.pendencias.filter(p => p.coletaId === c.id && p.status === 'aberta').length, ci = D.pendencias.filter(p => p.coletaId === c.id && p.status === 'ciente').length;
+          if (ab && meus.includes('pendencia')) itens.push({ coletaId: c.id, tipo: 'pendencia', data: c.data, texto: `Coleta nº ${c.id}: ${ab} objeto${ab > 1 ? 's' : ''} com problema no tratamento` });
+          if (ci && meus.includes('ciente')) itens.push({ coletaId: c.id, tipo: 'ciente', data: c.data, texto: `Coleta nº ${c.id}: cliente deu ciência de ${ci} pendência${ci > 1 ? 's' : ''}` });
+          if (meus.includes(c.status)) itens.push({ coletaId: c.id, tipo: c.status, data: c.data, texto: { solicitada: `Coleta nº ${c.id} solicitada, aguardando o transporte`, agendada: `Coleta nº ${c.id} agendada, confirme quando coletar`, coletada: `Coleta nº ${c.id} chegou, lance os embarques`, em_tratamento: `Coleta nº ${c.id} em tratamento, confira e finalize` }[c.status] });
+        }
+        itens.sort((a, b) => b.data.localeCompare(a.data));
+        return Promise.resolve({ total: itens.length, itens });
+      }
+      if (rota === 'usuarios') { exige('usuarios'); return Promise.resolve({ usuarios: D.usuarios }); }
+      if (rota === 'coletas') {
+        let l = D.coletas.map(resumo);
+        l = q.status === 'abertas' ? l.filter(c => !['concluida', 'cancelada'].includes(c.status)) : l.filter(c => c.data >= q.ini && c.data <= q.fim && (!q.status || c.status === q.status));
+        l.sort((a, b) => b.data.localeCompare(a.data) || b.id - a.id);
+        const v = l.filter(c => c.status !== 'cancelada'), obj = v.reduce((a, c) => a + c.objetos, 0), emb = v.reduce((a, c) => a + c.embarques, 0);
+        return Promise.resolve({ ini: q.ini, fim: q.fim, coletas: l, kpis: { coletas: v.length, objetos: obj, embarques: emb, media: emb ? Math.round(obj / emb) : 0, pendAbertas: v.reduce((a, c) => a + c.pendAbertas, 0) } });
+      }
+      const m = /^coletas\/(\d+)$/.exec(rota);
+      if (m) {
+        const c = col(m[1]);
+        const embarques = D.embarques.filter(e => e.coletaId === c.id).map(e => ({ ...e, pendencias: D.pendencias.filter(p => p.embarqueId === e.id).length }));
+        const pendencias = D.pendencias.filter(p => p.coletaId === c.id).map(p => ({ ...p, embarque: D.embarques.find(e => e.id === p.embarqueId).numero }));
+        const historico = D.historico.filter(x => x.coletaId === c.id).sort((a, b) => b.em.localeCompare(a.em) || b.n - a.n);
+        return new Promise(ok => setTimeout(() => ok({ coleta: { ...c, solicitante: D.usuarios.find(u => u.id === c.solicitadoPor)?.nome, coletadoPor: c.horario ? 'Rogério (Transporte)' : null }, embarques, pendencias, historico, motivos: MOTIVOS_DEMO }), 250));
+      }
+    }
+    if (met === 'POST') {
+      let m;
+      if (rota === 'coletas') { exige('solicitar'); if (!b.data) throw new Error('Informe a data da coleta.');
+        const c = { id: ++D.seq.c, data: b.data, status: 'solicitada', previstos: b.previstos ? +b.previstos : null, obsCliente: b.obs || null, solicitadoPor: st.me.perfil === 'cliente' ? 1 : 4, solicitadoEm: agoraTxt() };
+        D.coletas.push(c); h(c.id, 'Coleta solicitada', `Data ${br(c.data)}`); return Promise.resolve({ id: c.id }); }
+      if ((m = /^coletas\/(\d+)\/([a-z-]+)$/.exec(rota))) {
+        const c = col(m[1]), a = m[2];
+        if (a === 'agendar') { exige('agendar'); if (!['solicitada', 'agendada'].includes(c.status)) throw new Error('Esta coleta não pode mais ser agendada.'); Object.assign(c, { status: 'agendada', horarioPrevisto: b.horarioPrevisto, motorista: b.motorista || c.motorista, placa: (b.placa || c.placa || '').toUpperCase() }); h(c.id, 'Coleta agendada', `Previsão ${b.horarioPrevisto}`); }
+        else if (a === 'coletar') { exige('coletar'); if (!['solicitada', 'agendada'].includes(c.status)) throw new Error('Esta coleta já foi confirmada.'); Object.assign(c, { status: 'coletada', horario: b.horario, motorista: b.motorista || c.motorista, placa: (b.placa || c.placa || '').toUpperCase(), obsTransporte: b.obs || c.obsTransporte }); h(c.id, 'Carga coletada', `Horário ${b.horario}`); }
+        else if (a === 'cancelar') { exige('cancelar'); Object.assign(c, { status: 'cancelada', motivoCancelamento: b.motivo, canceladoEm: agoraTxt() }); h(c.id, 'Coleta cancelada', b.motivo); }
+        else if (a === 'embarques') { exige('embarque'); if (!['coletada', 'em_tratamento'].includes(c.status)) throw new Error('Aguardando o transporte confirmar a coleta.');
+          if (!b.numero || b.qtd === '') throw new Error('Informe número e quantidade.');
+          if (D.embarques.some(e => e.coletaId === c.id && e.numero === b.numero)) throw new Error(`O embarque ${b.numero} já foi lançado nesta coleta.`);
+          D.embarques.push({ id: ++D.seq.e, coletaId: c.id, data: b.data || c.data, numero: b.numero, qtd: +b.qtd, horario: b.horario || c.horario, conferido: false }); c.status = 'em_tratamento'; h(c.id, 'Embarque lançado', `Nº ${b.numero} · ${b.qtd} objetos`); }
+        else if (a === 'finalizar') { exige('finalizar'); const es = D.embarques.filter(e => e.coletaId === c.id); if (!es.length) throw new Error('Lance ao menos um embarque.');
+          const falta = es.filter(e => !e.conferido).length; if (falta) throw new Error(`Ainda falta conferir ${falta} embarque(s).`);
+          const pend = D.pendencias.filter(p => p.coletaId === c.id && p.status !== 'resolvida').length; c.status = pend ? 'pendente' : 'concluida'; c.finalizadoEm = agoraTxt(); c.obsOperacao = b.obs || null;
+          h(c.id, pend ? 'Tratamento finalizado com pendências' : 'Tratamento finalizado', `${es.length} embarques` + (pend ? ` · ${pend} com problema, cliente notificado` : '')); }
+        else if (a === 'ciente-todas') { exige('ciente'); const l = D.pendencias.filter(p => p.coletaId === c.id && p.status === 'aberta'); l.forEach(p => Object.assign(p, { status: 'ciente', resposta: b.resposta || null, cientePor: eu.nome, cienteEm: agoraTxt() })); h(c.id, 'Cliente ciente das pendências', `${l.length} objetos`); }
+        return new Promise(ok => setTimeout(() => ok({ ok: true }), 300));
+      }
+      if ((m = /^embarques\/(\d+)\/(conferir|excluir)$/.exec(rota))) {
+        const e = D.embarques.find(x => x.id === +m[1]), c = col(e.coletaId);
+        if (m[2] === 'excluir') { exige('embarque'); D.embarques.splice(D.embarques.indexOf(e), 1); if (!D.embarques.some(x => x.coletaId === c.id)) c.status = 'coletada'; h(c.id, 'Embarque excluído', `Nº ${e.numero}`); }
+        else { exige('conferir'); if (e.conferido) throw new Error('Este embarque já foi conferido.');
+          Object.assign(e, { conferido: true, tudoOk: !!b.tudoOk, tratados: b.tudoOk ? e.qtd : +b.tratados, obs: b.obs || null });
+          if (!b.tudoOk) b.objetos.forEach(o => D.pendencias.push({ id: ++D.seq.p, coletaId: c.id, embarqueId: e.id, cod: o.cod, motivo: o.motivo, obs: o.obs || null, status: 'aberta', criadoEm: agoraTxt() }));
+          h(c.id, b.tudoOk ? 'Embarque conferido sem problemas' : 'Embarque conferido com problemas', `Nº ${e.numero}` + (b.tudoOk ? '' : ` · ${b.objetos.length} com problema`)); }
+        return new Promise(ok => setTimeout(() => ok({ ok: true }), 300));
+      }
+      if ((m = /^pendencias\/(\d+)\/(ciente|resolver)$/.exec(rota))) {
+        const p = D.pendencias.find(x => x.id === +m[1]), c = col(p.coletaId);
+        if (m[2] === 'ciente') { exige('ciente'); Object.assign(p, { status: 'ciente', resposta: b.resposta || null, cientePor: eu.nome, cienteEm: agoraTxt() }); h(c.id, 'Cliente ciente da pendência', p.cod); }
+        else { exige('resolver'); if (!b.solucao) throw new Error('Descreva como a pendência foi resolvida.'); Object.assign(p, { status: 'resolvida', solucao: b.solucao, resolvidoPor: eu.nome, resolvidoEm: agoraTxt() }); h(c.id, 'Pendência resolvida', `${p.cod} · ${b.solucao}`);
+          if (c.status === 'pendente' && !D.pendencias.some(x => x.coletaId === c.id && x.status !== 'resolvida')) { c.status = 'concluida'; h(c.id, 'Coleta concluída', 'Todas as pendências foram resolvidas'); } }
+        return new Promise(ok => setTimeout(() => ok({ ok: true }), 300));
+      }
+      if (rota === 'usuarios') { exige('usuarios');
+        if (b.id) Object.assign(D.usuarios.find(u => u.id === b.id), { nome: b.nome, email: b.email, perfil: b.perfil, ativo: b.ativo });
+        else { if (D.usuarios.some(u => u.login === b.login)) throw new Error(`O login ${b.login} já existe.`); D.usuarios.push({ id: ++D.seq.u, login: b.login, nome: b.nome, email: b.email, perfil: b.perfil, ativo: true, criadoEm: agoraTxt(), ultimoAcesso: null }); }
+        return Promise.resolve({ ok: true }); }
+      if (rota === 'minha-senha') throw new Error('Na demonstração não há senha para trocar.');
+    }
+    return erro('Rota não encontrada');
+  } catch (e) { return erro(e.message); }
+}
+
+/* ---------- Login ---------- */
+function abrirLogin() { $('#login').style.display = 'grid'; setTimeout(() => $('#lu').focus(), 50); }
+$('#loginForm').onsubmit = async e => {
+  e.preventDefault(); $('#lmsg').textContent = '';
+  try {
+    const r = await fetch('api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usuario: $('#lu').value, senha: $('#ls').value }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { $('#lmsg').textContent = j.erro || 'Não foi possível entrar.'; return; }
+    $('#login').style.display = 'none'; $('#ls').value = ''; iniciar();
+  } catch { $('#lmsg').textContent = 'Servidor indisponível.'; }
+};
+$('#sair').onclick = async () => { if (st.demo) return aviso('Modo demonstração.'); await fetch('api/logout', { method: 'POST' }).catch(() => {}); location.reload(); };
+
+async function iniciar() {
+  try {
+    st.me = await api('me');
+    aplicarPerfil(); rotear(); atualizarNotificacoes(); setInterval(atualizarNotificacoes, 60000);
+  } catch (e) { if (e.message === 'login') return; }
+  try { const o = await api('opcoes'); $('#fDepto').insertAdjacentHTML('beforeend', o.deptos.map(d => `<option value="${esc(d)}">${esc(curtoDepto(d))}</option>`).join('')); } catch (e) { mostrarErro(e); }
+  sincronizar(); recarregar();
+}
+(async () => {
+  let real = false;
+  if (location.hash !== '#demo' && /^https?:$/.test(location.protocol)) {
+    try { const r = await fetch('api/me', { credentials: 'same-origin' }); real = r.status === 401 || (r.ok && (r.headers.get('content-type') || '').includes('json')); } catch {}
+  }
+  if (!real) { st.demo = true; $('#aviso').hidden = false; demoApi('opcoes'); st.ini = addD(hoje, -29);
+    st.me = { id: 0, usuario: 'demo', nome: 'Demonstração', perfil: 'cliente' };
+    $('#demoPerfilBox').hidden = false; $('#senhaBt').hidden = true;
+    $('#demoPerfil').onchange = e => { st.me.perfil = e.target.value; aplicarPerfil(); ultimoTotal = -1; atualizarNotificacoes();
+      if (!pode('usuarios') && viewAtual === 'usuarios') location.hash = 'coletas';
+      if (viewAtual === 'coletas') carregarColetas(); if (colAberta) recarregarColeta(true); aviso('Agora vendo como ' + PERFIL_NOME[st.me.perfil]); };
+    aplicarPerfil(); rotear(); atualizarNotificacoes();
+    const me = demoApi('opcoes'); $('#fDepto').insertAdjacentHTML('beforeend', me.deptos.map(d => `<option value="${esc(d)}">${esc(curtoDepto(d))}</option>`).join(''));
+    sincronizar(); recarregar(); return; }
+  iniciar();
+})();
+}
+</script>
+</body>
+</html>

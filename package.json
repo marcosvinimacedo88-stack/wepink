@@ -1,0 +1,20 @@
+{
+  "name": "portal-envios-wepink",
+  "version": "1.0.0",
+  "description": "Portal de envios e relatórios da Wepink (SAVI Cosméticos) — AGF Morada dos Lagos",
+  "main": "server.js",
+  "private": true,
+  "engines": {
+    "node": ">=20.6"
+  },
+  "scripts": {
+    "start": "node --env-file=.env server.js",
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "mssql": "^11.0.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.0"
+  }
+}
