@@ -71,7 +71,7 @@ async function consulta(texto, params) {
   const p = await pool();
   const req = p.request();
   for (const [nome, valor, tipo] of params) {
-    req.input(nome, tipo === 'max' ? sql.NVarChar(sql.MAX) : tipo === 'n' ? sql.NVarChar(500) : sql.VarChar(300), valor);
+    req.input(nome, tipo === 'bin' ? sql.VarBinary(sql.MAX) : tipo === 'max' ? sql.NVarChar(sql.MAX) : tipo === 'n' ? sql.NVarChar(500) : sql.VarChar(300), valor);
   }
   return (await req.query(texto)).recordset;
 }
@@ -397,7 +397,7 @@ function lerCorpo(req) {
   }
   return new Promise((ok, falha) => {
     let s = '';
-    req.on('data', c => { s += c; if (s.length > 400000) { req.destroy(); falha(new Error('corpo grande')); } });
+    req.on('data', c => { s += c; if (s.length > 4600000) { req.destroy(); falha(new Error('corpo grande')); } });
     req.on('end', () => { try { ok(JSON.parse(s || '{}')); } catch { ok({}); } });
     req.on('error', falha);
   });
@@ -444,6 +444,12 @@ async function tratar(req, res) {
       if (rota === '/api/export.csv') return await exportarCSV(q, res);
       if (rota === '/api/rastreio') { const [st, d] = await rastreio(q, s.u); return json(res, st, d); }
       const r = await coletas.rota(rota, req, q, s);
+      if (r && r[1] && r[1].__binario) {
+        const a = r[1];
+        res.writeHead(200, { 'Content-Type': a.mime, 'Content-Length': a.buffer.length, 'Cache-Control': 'private, max-age=86400',
+          'Content-Disposition': `${q.baixar ? 'attachment' : 'inline'}; filename="${encodeURIComponent(a.nome)}"` });
+        return res.end(a.buffer);
+      }
       if (r) return json(res, r[0], r[1]);
       return json(res, 404, { erro: 'Rota não encontrada' });
     }

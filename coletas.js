@@ -4,6 +4,7 @@
  * Tabelas: criar_tabelas_coletas.sql
  */
 const crypto = require('crypto');
+const wa = require('./whatsapp');
 
 module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
   const PERFIS = ['cliente', 'transporte', 'operacao', 'admin'];
@@ -22,14 +23,24 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     finalizar: ['operacao', 'admin'],
     ciente: ['cliente', 'admin'],
     resolver: ['operacao', 'admin'],
-    usuarios: ['admin']
+    usuarios: ['admin'],
+    frota: ['transporte', 'admin'],
+    caminhao: ['transporte', 'admin'],
+    protocolo: ['transporte', 'operacao', 'admin'],
+    anexar: ['transporte', 'operacao', 'admin']
   };
+  const MIMES = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'application/pdf': 'pdf' };
+  const MAX_ANEXO = 3 * 1024 * 1024;
+  const LOCAIS = String(process.env.LOCAIS_COLETA || 'Galpão;SLV;SAVI CD').split(';').map(x => x.trim()).filter(Boolean);
+  const comLocal = (local) => local ? ` (${local})` : '';
+  const brData = d => d ? String(d).slice(0, 10).split('-').reverse().join('/') : '';
+  const urlPortal = () => (process.env.PORTAL_URL || '').replace(/\/+$/, '');
 
   class Erro extends Error { constructor(status, msg) { super(msg); this.status = status; } }
   const exigir = (s, acao) => { if (!PODE[acao].includes(s.p)) throw new Erro(403, 'Seu perfil não tem permissão para esta ação.'); };
   const reData = /^\d{4}-\d{2}-\d{2}$/, reHora = /^([01]\d|2[0-3]):[0-5]\d$/;
   const txt = (v, max = 500) => { const s = String(v ?? '').trim().slice(0, max); return s || null; };
-  const int = (v, min = 0, max = 1e6) => { const n = Number(v); return Number.isInteger(n) && n >= min && n <= max ? n : null; };
+  const int = (v, min = 0, max = 1e6) => { if (v === '' || v == null || typeof v === 'boolean') return null; const n = Number(v); return Number.isInteger(n) && n >= min && n <= max ? n : null; };
   const hora = v => (reHora.test(String(v || '')) ? String(v) : null);
   const xml = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
   const hojeBR = () => new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
@@ -56,6 +67,39 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     tab = { v: !!r[0].ok, t: Date.now() };
     return tab.v;
   }
+  let tab2 = { v: null, t: 0 };
+  async function v2() {
+    if (tab2.v === true || (tab2.v === false && Date.now() - tab2.t < 30e3)) return tab2.v;
+    const r = await consulta(`SELECT CASE WHEN OBJECT_ID('dbo.PORTAL_COLETA_VEICULOS','U') IS NULL OR OBJECT_ID('dbo.PORTAL_ANEXOS','U') IS NULL
+      OR OBJECT_ID('dbo.PORTAL_WHATSAPP_LOG','U') IS NULL OR COL_LENGTH('dbo.PORTAL_USUARIOS','WHATSAPP') IS NULL
+      OR COL_LENGTH('dbo.PORTAL_EMBARQUES','COLETA_VEICULO_ID') IS NULL OR COL_LENGTH('dbo.PORTAL_COLETAS','LOCAL_COLETA') IS NULL THEN 0 ELSE 1 END ok`, []);
+    tab2 = { v: !!r[0].ok, t: Date.now() };
+    return tab2.v;
+  }
+  async function exigirV2() {
+    if (!(await v2().catch(() => false))) throw new Erro(503, 'Rode o script criar_tabelas_frota_whatsapp.sql no banco para ativar caminhões, anexos e WhatsApp.');
+  }
+
+  /* ---------- WhatsApp ---------- */
+  async function avisar(perfis, tipo, coletaId, msg) {
+    try {
+      if (!wa.provedor() || !(await v2())) return { desativado: true, enviados: 0, erros: 0 };
+      const us = await consulta(`SELECT ID id, WHATSAPP tel FROM PORTAL_USUARIOS WHERE ATIVO = 1 AND WHATSAPP_ATIVO = 1 AND WHATSAPP IS NOT NULL
+        AND PERFIL IN (${perfis.map((_, i) => '@p' + i).join(', ')})`, perfis.map((p, i) => ['p' + i, p]));
+      const res = await Promise.all(us.map(async u => {
+        const r = await wa.enviar(u.tel, msg);
+        await consulta(`INSERT INTO PORTAL_WHATSAPP_LOG (USUARIO_ID, TELEFONE, TIPO, COLETA_ID, STATUS, RESPOSTA) VALUES (@u, @t, @tp, @c, @s, @r)`,
+          [['u', String(u.id)], ['t', u.tel], ['tp', tipo], ['c', coletaId == null ? null : String(coletaId)], ['s', r.status], ['r', r.detalhe, 'n']]).catch(() => {});
+        return r;
+      }));
+      return { desativado: false, enviados: res.filter(r => r.ok).length, erros: res.filter(r => !r.ok).length };
+    } catch (e) {
+      console.error('whatsapp', tipo, e.message);
+      return { desativado: false, enviados: 0, erros: 1 };
+    }
+  }
+  const comLink = t => t + (urlPortal() ? ` Acesse: ${urlPortal()}` : ' Acesse o portal para mais detalhes.');
+
   async function exigirTabelas() {
     if (!(await tabelas().catch(() => false))) throw new Erro(503, 'A área de coletas ainda não foi ativada: rode o script criar_tabelas_coletas.sql no banco.');
   }
@@ -74,8 +118,9 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
       [['c', String(coletaId)], ['u', String(s.id ?? 0)], ['n', s.n || s.u, 'n'], ['p', s.p], ['a', acao, 'n'], ['d', detalhe || null, 'n']]);
   }
   async function coleta(id) {
+    const temV2 = await v2().catch(() => false);
     const r = await consulta(`SELECT ID id, STATUS status, CONVERT(varchar(10), DATA_COLETA, 23) data, CONVERT(varchar(5), HORARIO_COLETA, 108) horario, SOLICITADO_POR solicitadoPor
-      FROM PORTAL_COLETAS WHERE ID = @id`, [['id', String(id)]]);
+      ${temV2 ? ', LOCAL_COLETA local' : ''} FROM PORTAL_COLETAS WHERE ID = @id`, [['id', String(id)]]);
     if (!r[0]) throw new Erro(404, 'Coleta não encontrada.');
     return r[0];
   }
@@ -83,6 +128,7 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
 
   /* ---------- Consultas ---------- */
   async function listar(q) {
+    const temV2 = await v2().catch(() => false);
     const fim = reData.test(q.fim || '') ? q.fim : hojeBR();
     const ini = reData.test(q.ini || '') ? q.ini : new Date(Date.parse(fim) - 29 * 864e5).toISOString().slice(0, 10);
     const params = [['ini', ini], ['fim', fim]];
@@ -98,18 +144,28 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
         (SELECT COUNT(*) FROM PORTAL_EMBARQUES e WHERE e.COLETA_ID = c.ID AND e.CONFERIDO = 1) conferidos,
         (SELECT COUNT(*) FROM PORTAL_PENDENCIAS p WHERE p.COLETA_ID = c.ID) pendencias,
         (SELECT COUNT(*) FROM PORTAL_PENDENCIAS p WHERE p.COLETA_ID = c.ID AND p.STATUS <> 'resolvida') pendAbertas
+        ${temV2 ? `, c.LOCAL_COLETA local, (SELECT COUNT(*) FROM PORTAL_COLETA_VEICULOS v WHERE v.COLETA_ID = c.ID) caminhoes,
+        (SELECT ISNULL(SUM(v.PALETES), 0) FROM PORTAL_COLETA_VEICULOS v WHERE v.COLETA_ID = c.ID) paletes,
+        (SELECT ISNULL(SUM(v.QTD_OBJETOS), 0) FROM PORTAL_COLETA_VEICULOS v WHERE v.COLETA_ID = c.ID
+          AND NOT EXISTS (SELECT 1 FROM PORTAL_EMBARQUES e WHERE e.COLETA_VEICULO_ID = v.ID)) objetosManifesto,
+        (SELECT COUNT(*) FROM PORTAL_ANEXOS a WHERE a.COLETA_ID = c.ID AND a.TIPO = 'protocolo') protocolos` : ''}
       FROM PORTAL_COLETAS c LEFT JOIN PORTAL_USUARIOS us ON us.ID = c.SOLICITADO_POR
       WHERE ${w} ORDER BY c.DATA_COLETA DESC, c.ID DESC`, params);
+    for (const l of linhas) { l.caminhoes = l.caminhoes || 0; l.paletes = l.paletes || 0; l.objetos += l.objetosManifesto || 0; }
     const validas = linhas.filter(l => l.status !== 'cancelada');
     const objetos = validas.reduce((a, l) => a + l.objetos, 0), embarques = validas.reduce((a, l) => a + l.embarques, 0);
+    const caminhoes = validas.reduce((a, l) => a + l.caminhoes, 0), paletes = validas.reduce((a, l) => a + l.paletes, 0);
+    const base = caminhoes || embarques;
     return {
-      ini, fim, coletas: linhas,
-      kpis: { coletas: validas.length, objetos, embarques, media: embarques ? Math.round(objetos / embarques) : 0, pendAbertas: validas.reduce((a, l) => a + l.pendAbertas, 0) }
+      ini, fim, coletas: linhas, frota: temV2, locais: temV2 ? LOCAIS : [],
+      kpis: { coletas: validas.length, objetos, embarques, caminhoes, paletes, media: base ? Math.round(objetos / base) : 0, mediaPor: caminhoes ? 'caminhao' : 'embarque',
+        pendAbertas: validas.reduce((a, l) => a + l.pendAbertas, 0) }
     };
   }
 
   async function detalhe(id) {
     const nome = col => `(SELECT NOME FROM PORTAL_USUARIOS WHERE ID = c.${col})`;
+    const temV2 = await v2().catch(() => false);
     const [c] = await consulta(`
       SELECT c.ID id, CONVERT(varchar(10), c.DATA_COLETA, 23) data, c.STATUS status, c.VOLUMES_PREVISTOS previstos, c.OBS_CLIENTE obsCliente,
         ${nome('SOLICITADO_POR')} solicitante, CONVERT(varchar(19), c.SOLICITADO_EM, 120) solicitadoEm, c.SOLICITADO_POR solicitadoPor,
@@ -118,14 +174,14 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
         ${nome('AGENDADO_POR')} agendadoPor, CONVERT(varchar(19), c.AGENDADO_EM, 120) agendadoEm,
         ${nome('COLETADO_POR')} coletadoPor, CONVERT(varchar(19), c.COLETADO_EM, 120) coletadoEm,
         c.OBS_OPERACAO obsOperacao, ${nome('FINALIZADO_POR')} finalizadoPor, CONVERT(varchar(19), c.FINALIZADO_EM, 120) finalizadoEm,
-        CONVERT(varchar(19), c.CANCELADO_EM, 120) canceladoEm, c.MOTIVO_CANCELAMENTO motivoCancelamento
+        CONVERT(varchar(19), c.CANCELADO_EM, 120) canceladoEm, c.MOTIVO_CANCELAMENTO motivoCancelamento${temV2 ? ', c.LOCAL_COLETA local' : ''}
       FROM PORTAL_COLETAS c WHERE c.ID = @id`, [['id', String(id)]]);
     if (!c) throw new Erro(404, 'Coleta não encontrada.');
-    const [embarques, pendencias, historico] = await Promise.all([
+    const [embarques, pendencias, historico, caminhoes, anexos] = await Promise.all([
       consulta(`SELECT e.ID id, CONVERT(varchar(10), e.DATA, 23) data, e.NUM_EMBARQUE numero, e.QTD_OBJETOS qtd, CONVERT(varchar(5), e.HORARIO_COLETA, 108) horario,
           e.CONFERIDO conferido, e.TUDO_OK tudoOk, e.QTD_TRATADOS tratados, e.OBS_CONFERENCIA obs,
           (SELECT NOME FROM PORTAL_USUARIOS WHERE ID = e.CONFERIDO_POR) conferidoPor, CONVERT(varchar(19), e.CONFERIDO_EM, 120) conferidoEm,
-          (SELECT COUNT(*) FROM PORTAL_PENDENCIAS p WHERE p.EMBARQUE_ID = e.ID) pendencias
+          (SELECT COUNT(*) FROM PORTAL_PENDENCIAS p WHERE p.EMBARQUE_ID = e.ID) pendencias${temV2 ? ', e.COLETA_VEICULO_ID caminhaoId' : ''}
         FROM PORTAL_EMBARQUES e WHERE e.COLETA_ID = @id ORDER BY e.ID`, [['id', String(id)]]),
       consulta(`SELECT p.ID id, p.EMBARQUE_ID embarqueId, e.NUM_EMBARQUE embarque, p.COD_OBJETO cod, p.MOTIVO motivo, p.OBS obs, p.STATUS status,
           CONVERT(varchar(19), p.CRIADO_EM, 120) criadoEm, p.RESPOSTA_CLIENTE resposta, (SELECT NOME FROM PORTAL_USUARIOS WHERE ID = p.CIENTE_POR) cientePor,
@@ -133,9 +189,21 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
           CONVERT(varchar(19), p.RESOLVIDO_EM, 120) resolvidoEm
         FROM PORTAL_PENDENCIAS p JOIN PORTAL_EMBARQUES e ON e.ID = p.EMBARQUE_ID WHERE p.COLETA_ID = @id ORDER BY p.ID`, [['id', String(id)]]),
       consulta(`SELECT USUARIO usuario, PERFIL perfil, ACAO acao, DETALHE detalhe, CONVERT(varchar(19), EM, 120) em
-        FROM PORTAL_HISTORICO WHERE COLETA_ID = @id ORDER BY EM DESC, ID DESC`, [['id', String(id)]])
+        FROM PORTAL_HISTORICO WHERE COLETA_ID = @id ORDER BY EM DESC, ID DESC`, [['id', String(id)]]),
+      temV2 ? consulta(`SELECT v.ID id, v.ORDEM ordem, v.VEICULO_ID veiculoId, v.MOTORISTA_ID motoristaId, v.PLACA placa, v.MOTORISTA motorista,
+          CONVERT(varchar(5), v.HORARIO_COLETA, 108) horario, v.PALETES paletes, v.OCUPACAO_PCT ocupacao, v.QTD_OBJETOS objetosManifesto, v.OBS obs,
+          (SELECT CAPACIDADE_PALETES FROM PORTAL_VEICULOS WHERE ID = v.VEICULO_ID) capacidade,
+          (SELECT DESCRICAO FROM PORTAL_VEICULOS WHERE ID = v.VEICULO_ID) descricao,
+          (SELECT COUNT(*) FROM PORTAL_EMBARQUES e WHERE e.COLETA_VEICULO_ID = v.ID) embarques,
+          (SELECT SUM(e.QTD_OBJETOS) FROM PORTAL_EMBARQUES e WHERE e.COLETA_VEICULO_ID = v.ID) objetosEmbarques
+        FROM PORTAL_COLETA_VEICULOS v WHERE v.COLETA_ID = @id ORDER BY v.ORDEM`, [['id', String(id)]]) : [],
+      temV2 ? consulta(`SELECT a.ID id, a.TIPO tipo, a.NOME nome, a.MIME mime, a.TAMANHO tamanho, CONVERT(varchar(19), a.ENVIADO_EM, 120) enviadoEm,
+          (SELECT NOME FROM PORTAL_USUARIOS WHERE ID = a.ENVIADO_POR) enviadoPor
+        FROM PORTAL_ANEXOS a WHERE a.COLETA_ID = @id ORDER BY a.ENVIADO_EM DESC, a.ID DESC`, [['id', String(id)]]) : []
     ]);
-    return { coleta: c, embarques, pendencias, historico, motivos: MOTIVOS };
+    for (const v of caminhoes) v.objetos = v.objetosEmbarques != null ? v.objetosEmbarques : v.objetosManifesto;
+    const frota = temV2 ? await listarFrota(true) : null;
+    return { coleta: c, embarques, pendencias, historico, caminhoes, anexos, frota, recursos: { frota: temV2, whatsapp: !!wa.provedor() }, motivos: MOTIVOS };
   }
 
   async function notificacoes(s) {
@@ -146,9 +214,12 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
       SELECT 'ciente', p.COLETA_ID, COUNT(*), CONVERT(varchar(10), MAX(c.DATA_COLETA), 23)
         FROM PORTAL_PENDENCIAS p JOIN PORTAL_COLETAS c ON c.ID = p.COLETA_ID WHERE p.STATUS = 'ciente' GROUP BY p.COLETA_ID
       UNION ALL
-      SELECT STATUS, ID, 1, CONVERT(varchar(10), DATA_COLETA, 23) FROM PORTAL_COLETAS WHERE STATUS IN ('solicitada','agendada','coletada','em_tratamento')`, []);
+      SELECT STATUS, ID, 1, CONVERT(varchar(10), DATA_COLETA, 23) FROM PORTAL_COLETAS WHERE STATUS IN ('solicitada','agendada','coletada','em_tratamento')
+      ${(await v2().catch(() => false)) ? `UNION ALL
+      SELECT 'protocolo', a.COLETA_ID, COUNT(*), CONVERT(varchar(10), MAX(c.DATA_COLETA), 23)
+        FROM PORTAL_ANEXOS a JOIN PORTAL_COLETAS c ON c.ID = a.COLETA_ID WHERE a.TIPO = 'protocolo' AND a.ENVIADO_EM >= DATEADD(day, -2, SYSDATETIME()) GROUP BY a.COLETA_ID` : ''}`, []);
     const meus = {
-      cliente: ['pendencia'],
+      cliente: ['pendencia', 'protocolo'],
       transporte: ['solicitada', 'agendada'],
       operacao: ['coletada', 'em_tratamento', 'ciente'],
       admin: ['pendencia', 'ciente', 'solicitada', 'agendada', 'coletada', 'em_tratamento']
@@ -159,7 +230,8 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
       solicitada: `Coleta nº ${id} solicitada, aguardando o transporte`,
       agendada: `Coleta nº ${id} agendada, confirme quando coletar`,
       coletada: `Coleta nº ${id} chegou, lance os embarques`,
-      em_tratamento: `Coleta nº ${id} em tratamento, confira e finalize`
+      em_tratamento: `Coleta nº ${id} em tratamento, confira e finalize`,
+      protocolo: `Coleta nº ${id}: protocolo da coleta disponível`
     })[t];
     const itens = r.filter(x => meus.includes(x.tipo)).sort((a, b) => b.data.localeCompare(a.data)).slice(0, 40)
       .map(x => ({ coletaId: x.coletaId, tipo: x.tipo, data: x.data, texto: texto(x.tipo, x.n, x.coletaId) }));
@@ -171,12 +243,18 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     exigir(s, 'solicitar');
     const data = reData.test(b.data || '') ? b.data : null;
     if (!data) throw new Erro(400, 'Informe a data da coleta.');
+    const temV2 = await v2().catch(() => false);
+    const local = LOCAIS.find(l => l === b.local) || null;
+    if (temV2 && !local) throw new Erro(400, `Informe o local da coleta: ${LOCAIS.join(', ')}.`);
     const previstos = b.previstos === '' || b.previstos == null ? null : int(b.previstos, 0, 1e6);
     if (b.previstos !== '' && b.previstos != null && previstos === null) throw new Erro(400, 'Volume previsto inválido.');
-    const [r] = await consulta(`INSERT INTO PORTAL_COLETAS (DATA_COLETA, VOLUMES_PREVISTOS, OBS_CLIENTE, SOLICITADO_POR) VALUES (CAST(@d AS date), @v, @o, @u);
-      SELECT CAST(SCOPE_IDENTITY() AS int) id`, [['d', data], ['v', previstos == null ? null : String(previstos)], ['o', txt(b.obs, 1000), 'n'], ['u', String(s.id ?? 0)]]);
-    await hist(r.id, s, 'Coleta solicitada', [`Data ${data.split('-').reverse().join('/')}`, previstos != null ? `${previstos} volumes previstos` : '', txt(b.obs, 300)].filter(Boolean).join(' · '));
-    return { id: r.id };
+    const [r] = await consulta(`INSERT INTO PORTAL_COLETAS (DATA_COLETA, VOLUMES_PREVISTOS, OBS_CLIENTE, SOLICITADO_POR${temV2 ? ', LOCAL_COLETA' : ''})
+      VALUES (CAST(@d AS date), @v, @o, @u${temV2 ? ', @l' : ''});
+      SELECT CAST(SCOPE_IDENTITY() AS int) id`, [['d', data], ['v', previstos == null ? null : String(previstos)], ['o', txt(b.obs, 1000), 'n'], ['u', String(s.id ?? 0)], ['l', local, 'n']]);
+    await hist(r.id, s, 'Coleta solicitada', [`Data ${data.split('-').reverse().join('/')}`, local && `Local ${local}`, previstos != null ? `${previstos} volumes previstos` : '', txt(b.obs, 300)].filter(Boolean).join(' · '));
+    const whatsapp = await avisar(['transporte'], 'solicitacao', r.id,
+      { texto: comLink(`Nova coleta solicitada: coleta nº ${r.id} para ${brData(data)}${local ? ` no ${local}` : ''}${previstos != null ? `, cerca de ${previstos} volumes` : ''}.`) });
+    return { id: r.id, whatsapp };
   }
 
   async function agendar(id, b, s) {
@@ -226,17 +304,24 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     const qtd = int(b.qtd, 0, 100000);
     if (qtd === null) throw new Erro(400, 'Quantidade de objetos inválida.');
     const data = reData.test(b.data || '') ? b.data : c.data;
-    const h = hora(b.horario) || c.horario;
+    let h = hora(b.horario) || c.horario, cv = null;
+    const temV2 = await v2().catch(() => false);
+    if (temV2 && b.caminhaoId) {
+      [cv] = await consulta(`SELECT ID id, ORDEM ordem, CONVERT(varchar(5), HORARIO_COLETA, 108) horario FROM PORTAL_COLETA_VEICULOS WHERE ID = @v AND COLETA_ID = @c`,
+        [['v', String(int(b.caminhaoId, 1, 1e9) || 0)], ['c', String(id)]]);
+      if (!cv) throw new Erro(400, 'Caminhão inválido para esta coleta.');
+      if (!hora(b.horario)) h = cv.horario;
+    }
     try {
-      await consulta(`INSERT INTO PORTAL_EMBARQUES (COLETA_ID, DATA, NUM_EMBARQUE, QTD_OBJETOS, HORARIO_COLETA, CRIADO_POR)
-        VALUES (@c, CAST(@d AS date), @n, @q, TRY_CONVERT(time(0), @h), @u);
+      await consulta(`INSERT INTO PORTAL_EMBARQUES (COLETA_ID, DATA, NUM_EMBARQUE, QTD_OBJETOS, HORARIO_COLETA, CRIADO_POR${temV2 ? ', COLETA_VEICULO_ID' : ''})
+        VALUES (@c, CAST(@d AS date), @n, @q, TRY_CONVERT(time(0), @h), @u${temV2 ? ', @cv' : ''});
         UPDATE PORTAL_COLETAS SET STATUS = 'em_tratamento' WHERE ID = @c AND STATUS = 'coletada';`,
-        [['c', String(id)], ['d', data], ['n', numero], ['q', String(qtd)], ['h', h], ['u', String(s.id ?? 0)]]);
+        [['c', String(id)], ['d', data], ['n', numero], ['q', String(qtd)], ['h', h], ['u', String(s.id ?? 0)], ['cv', cv ? String(cv.id) : null]]);
     } catch (e) {
       if (/UQ_PORTAL_EMBARQUES|duplicate|2627|2601/i.test(e.message + (e.number || ''))) throw new Erro(409, `O embarque ${numero} já foi lançado nesta coleta.`);
       throw e;
     }
-    await hist(id, s, 'Embarque lançado', `Nº ${numero} · ${qtd} objetos${h ? ' · coleta às ' + h : ''}`);
+    await hist(id, s, 'Embarque lançado', `Nº ${numero} · ${qtd} objetos${cv ? ' · caminhão ' + cv.ordem : ''}${h ? ' · coleta às ' + h : ''}`);
     return { ok: true };
   }
 
@@ -308,7 +393,9 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
       [['st', novo], ['o', txt(b.obs, 1000), 'n'], ['u', String(s.id ?? 0)], ['id', String(id)]]);
     await hist(id, s, r.pend ? 'Tratamento finalizado com pendências' : 'Tratamento finalizado',
       `${r.emb} embarques · ${r.obj} objetos` + (r.pend ? ` · ${r.pend} objeto${r.pend > 1 ? 's' : ''} com problema, cliente notificado` : ''));
-    return { status: novo };
+    const whatsapp = r.pend ? await avisar(['cliente'], 'pendencias', id,
+      { texto: comLink(`Coleta nº ${id}${comLocal(c.local)} de ${brData(c.data)}: ${r.pend} objeto${r.pend > 1 ? 's' : ''} com problema no tratamento. Veja a lista e dê ciência no portal.`) }) : null;
+    return { status: novo, whatsapp };
   }
 
   async function ciente(pid, b, s) {
@@ -352,7 +439,9 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
   /* ---------- Usuários ---------- */
   async function listarUsuarios(s) {
     exigir(s, 'usuarios');
-    return { usuarios: await consulta(`SELECT ID id, LOGIN login, NOME nome, EMAIL email, PERFIL perfil, ATIVO ativo,
+    const temV2 = await v2().catch(() => false);
+    return { whatsappCampos: temV2, usuarios: await consulta(`SELECT ID id, LOGIN login, NOME nome, EMAIL email, PERFIL perfil, ATIVO ativo,
+      ${temV2 ? 'WHATSAPP whatsapp, WHATSAPP_ATIVO whatsappAtivo,' : ''}
       CONVERT(varchar(19), CRIADO_EM, 120) criadoEm, CONVERT(varchar(19), ULTIMO_ACESSO, 120) ultimoAcesso FROM PORTAL_USUARIOS ORDER BY ATIVO DESC, PERFIL, NOME`, []) };
   }
   async function salvarUsuario(b, s) {
@@ -360,13 +449,18 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     const nome = txt(b.nome, 120), perfil = PERFIS.includes(b.perfil) ? b.perfil : null, email = txt(b.email, 160);
     if (!nome || !perfil) throw new Erro(400, 'Informe nome e perfil.');
     if (b.senha && String(b.senha).length < 8) throw new Erro(400, 'A senha precisa ter ao menos 8 caracteres.');
+    const temV2 = await v2().catch(() => false);
+    const tel = b.whatsapp ? wa.normalizarTelefone(b.whatsapp) : null;
+    if (b.whatsapp && !tel) throw new Erro(400, 'WhatsApp inválido: use DDD + número, ex.: (21) 99999-8888.');
+    const waAtivo = tel && (b.whatsappAtivo === true || b.whatsappAtivo === '1') ? '1' : '0';
     if (!b.id) {
       const login = String(b.login || '').trim().toLowerCase();
       if (!/^[a-z0-9._-]{3,60}$/.test(login)) throw new Erro(400, 'Login: de 3 a 60 caracteres, só letras, números, ponto, hífen ou sublinhado.');
       if (!b.senha) throw new Erro(400, 'Defina uma senha inicial.');
       try {
-        await consulta(`INSERT INTO PORTAL_USUARIOS (LOGIN, NOME, EMAIL, PERFIL, SENHA_HASH) VALUES (@l, @n, @e, @p, @h)`,
-          [['l', login], ['n', nome, 'n'], ['e', email, 'n'], ['p', perfil], ['h', gerarHash(b.senha)]]);
+        await consulta(`INSERT INTO PORTAL_USUARIOS (LOGIN, NOME, EMAIL, PERFIL, SENHA_HASH${temV2 ? ', WHATSAPP, WHATSAPP_ATIVO' : ''})
+          VALUES (@l, @n, @e, @p, @h${temV2 ? ', @w, @wa' : ''})`,
+          [['l', login], ['n', nome, 'n'], ['e', email, 'n'], ['p', perfil], ['h', gerarHash(b.senha)], ['w', tel], ['wa', waAtivo]]);
       } catch (e) {
         if (/UQ_PORTAL_USUARIOS|duplicate|2627|2601/i.test(e.message + (e.number || ''))) throw new Erro(409, `O login ${login} já existe.`);
         throw e;
@@ -377,8 +471,8 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     if (!id) throw new Erro(400, 'Usuário inválido.');
     const ativo = b.ativo === false || b.ativo === '0' || b.ativo === 0 ? '0' : '1';
     if (id === s.id && (ativo === '0' || perfil !== 'admin')) throw new Erro(400, 'Você não pode desativar nem tirar o perfil de administrador do seu próprio usuário.');
-    await consulta(`UPDATE PORTAL_USUARIOS SET NOME = @n, EMAIL = @e, PERFIL = @p, ATIVO = @a${b.senha ? ', SENHA_HASH = @h' : ''} WHERE ID = @id`,
-      [['n', nome, 'n'], ['e', email, 'n'], ['p', perfil], ['a', ativo], ['h', b.senha ? gerarHash(b.senha) : null], ['id', String(id)]]);
+    await consulta(`UPDATE PORTAL_USUARIOS SET NOME = @n, EMAIL = @e, PERFIL = @p, ATIVO = @a${b.senha ? ', SENHA_HASH = @h' : ''}${temV2 ? ', WHATSAPP = @w, WHATSAPP_ATIVO = @wa' : ''} WHERE ID = @id`,
+      [['n', nome, 'n'], ['e', email, 'n'], ['p', perfil], ['a', ativo], ['h', b.senha ? gerarHash(b.senha) : null], ['w', tel], ['wa', waAtivo], ['id', String(id)]]);
     return { ok: true };
   }
   async function minhaSenha(b, s) {
@@ -390,13 +484,206 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     return { ok: true };
   }
 
+  /* ---------- Frota: caminhões e motoristas ---------- */
+  async function listarFrota(soAtivos) {
+    const w = soAtivos ? 'WHERE ATIVO = 1' : '';
+    const [veiculos, motoristas] = await Promise.all([
+      consulta(`SELECT ID id, PLACA placa, DESCRICAO descricao, CAPACIDADE_PALETES capacidade, ATIVO ativo FROM PORTAL_VEICULOS ${w} ORDER BY ATIVO DESC, PLACA`, []),
+      consulta(`SELECT ID id, NOME nome, TELEFONE telefone, DOCUMENTO documento, ATIVO ativo FROM PORTAL_MOTORISTAS ${w} ORDER BY ATIVO DESC, NOME`, [])
+    ]);
+    return { veiculos, motoristas };
+  }
+  const rePlaca = /^[A-Z]{3}\d[A-Z0-9]\d{2}$/;
+  async function salvarVeiculo(b, s) {
+    exigir(s, 'frota');
+    const placa = String(b.placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (!rePlaca.test(placa)) throw new Erro(400, 'Placa inválida. Use o formato ABC1234 ou ABC1D23.');
+    const cap = b.capacidade === '' || b.capacidade == null ? null : int(b.capacidade, 1, 100);
+    if (b.capacidade !== '' && b.capacidade != null && cap === null) throw new Erro(400, 'Capacidade inválida (1 a 100 paletes).');
+    const ativo = b.ativo === false || b.ativo === '0' ? '0' : '1';
+    const p = [['pl', placa], ['d', txt(b.descricao, 120), 'n'], ['cap', cap == null ? null : String(cap)], ['a', ativo], ['id', String(int(b.id, 1, 1e9) || 0)]];
+    try {
+      if (b.id) await consulta(`UPDATE PORTAL_VEICULOS SET PLACA = @pl, DESCRICAO = @d, CAPACIDADE_PALETES = @cap, ATIVO = @a WHERE ID = @id`, p);
+      else await consulta(`INSERT INTO PORTAL_VEICULOS (PLACA, DESCRICAO, CAPACIDADE_PALETES) VALUES (@pl, @d, @cap)`, p);
+    } catch (e) {
+      if (/UQ_PORTAL_VEICULOS|duplicate|2627|2601/i.test(e.message + (e.number || ''))) throw new Erro(409, `A placa ${placa} já está cadastrada.`);
+      throw e;
+    }
+    return { ok: true };
+  }
+  async function salvarMotorista(b, s) {
+    exigir(s, 'frota');
+    const nome = txt(b.nome, 120);
+    if (!nome) throw new Erro(400, 'Informe o nome do motorista.');
+    const tel = b.telefone ? wa.normalizarTelefone(b.telefone) : null;
+    if (b.telefone && !tel) throw new Erro(400, 'Telefone inválido: use DDD + número.');
+    const p = [['n', nome, 'n'], ['t', tel], ['d', txt(String(b.documento || '').replace(/[^\dA-Za-z]/g, ''), 20)], ['a', b.ativo === false || b.ativo === '0' ? '0' : '1'], ['id', String(int(b.id, 1, 1e9) || 0)]];
+    if (b.id) await consulta(`UPDATE PORTAL_MOTORISTAS SET NOME = @n, TELEFONE = @t, DOCUMENTO = @d, ATIVO = @a WHERE ID = @id`, p);
+    else await consulta(`INSERT INTO PORTAL_MOTORISTAS (NOME, TELEFONE, DOCUMENTO) VALUES (@n, @t, @d)`, p);
+    return { ok: true };
+  }
+
+  /* ---------- Caminhões de uma coleta ---------- */
+  async function salvarCaminhao(id, b, s) {
+    exigir(s, 'caminhao');
+    const c = await coleta(id);
+    exigirStatus(c, ['solicitada', 'agendada', 'coletada', 'em_tratamento'], 'Esta coleta já foi finalizada.');
+    const [ve] = await consulta(`SELECT ID id, PLACA placa, CAPACIDADE_PALETES capacidade FROM PORTAL_VEICULOS WHERE ID = @v AND ATIVO = 1`, [['v', String(int(b.veiculoId, 1, 1e9) || 0)]]);
+    if (!ve) throw new Erro(400, 'Escolha o caminhão. Se ele não aparece, cadastre na aba Frota.');
+    const [mo] = await consulta(`SELECT ID id, NOME nome FROM PORTAL_MOTORISTAS WHERE ID = @m AND ATIVO = 1`, [['m', String(int(b.motoristaId, 1, 1e9) || 0)]]);
+    if (!mo) throw new Erro(400, 'Escolha o motorista. Se ele não aparece, cadastre na aba Frota.');
+    const h = hora(b.horario);
+    if (!h) throw new Erro(400, 'Informe o horário da coleta.');
+    const paletes = int(b.paletes, 0, 100);
+    if (paletes === null) throw new Erro(400, 'Quantidade de paletes inválida.');
+    const lotado = b.lotado === true || b.lotado === '1' || b.lotado === 'on';
+    let ocup = lotado ? 100 : int(b.ocupacao, 0, 100);
+    if (ocup === null) ocup = ve.capacidade ? Math.min(100, Math.round(paletes / ve.capacidade * 100)) : null;
+    if (ocup === null) throw new Erro(400, 'Informe a ocupação do caminhão (%) ou marque 100%.');
+    const objetos = b.objetos === '' || b.objetos == null ? null : int(b.objetos, 0, 1e6);
+    const p = [['c', String(id)], ['v', String(ve.id)], ['m', String(mo.id)], ['pl', ve.placa], ['mn', mo.nome, 'n'], ['h', h], ['pa', String(paletes)],
+      ['oc', String(ocup)], ['ob', objetos == null ? null : String(objetos)], ['obs', txt(b.obs, 500), 'n'], ['u', String(s.id ?? 0)], ['cv', String(int(b.cvId, 1, 1e9) || 0)]];
+    let ordem;
+    if (b.cvId) {
+      const r = await consulta(`UPDATE PORTAL_COLETA_VEICULOS SET VEICULO_ID = @v, MOTORISTA_ID = @m, PLACA = @pl, MOTORISTA = @mn, HORARIO_COLETA = TRY_CONVERT(time(0), @h),
+        PALETES = @pa, OCUPACAO_PCT = @oc, QTD_OBJETOS = @ob, OBS = @obs WHERE ID = @cv AND COLETA_ID = @c; SELECT ORDEM ordem FROM PORTAL_COLETA_VEICULOS WHERE ID = @cv AND COLETA_ID = @c;`, p);
+      if (!r[0]) throw new Erro(404, 'Caminhão não encontrado nesta coleta.');
+      ordem = r[0].ordem;
+      await hist(id, s, `Caminhão ${ordem} alterado`, `${ve.placa} · ${mo.nome} · ${h} · ${paletes} paletes · ocupação ${ocup}%`);
+      return { ok: true, ordem };
+    }
+    let r;
+    try {
+      r = await consulta(`SET XACT_ABORT ON; BEGIN TRAN;
+        DECLARE @o int = (SELECT ISNULL(MAX(ORDEM), 0) + 1 FROM PORTAL_COLETA_VEICULOS WITH (UPDLOCK, HOLDLOCK) WHERE COLETA_ID = @c);
+        INSERT INTO PORTAL_COLETA_VEICULOS (COLETA_ID, ORDEM, VEICULO_ID, MOTORISTA_ID, PLACA, MOTORISTA, HORARIO_COLETA, PALETES, OCUPACAO_PCT, QTD_OBJETOS, OBS, CRIADO_POR)
+          VALUES (@c, @o, @v, @m, @pl, @mn, TRY_CONVERT(time(0), @h), @pa, @oc, @ob, @obs, @u);
+        UPDATE PORTAL_COLETAS SET STATUS = CASE WHEN STATUS IN ('solicitada','agendada') THEN 'coletada' ELSE STATUS END,
+          HORARIO_COLETA = ISNULL(HORARIO_COLETA, TRY_CONVERT(time(0), @h)), MOTORISTA = ISNULL(MOTORISTA, @mn), PLACA = ISNULL(PLACA, @pl),
+          COLETADO_POR = ISNULL(COLETADO_POR, @u), COLETADO_EM = ISNULL(COLETADO_EM, SYSDATETIME()) WHERE ID = @c;
+        COMMIT; SELECT @o ordem;`, p);
+    } catch (e) {
+      if (/UQ_PORTAL_CV_ORDEM|duplicate|2627|2601/i.test(e.message + (e.number || ''))) throw new Erro(409, 'Outro caminhão foi registrado ao mesmo tempo. Tente de novo.');
+      throw e;
+    }
+    ordem = r[0].ordem;
+    await hist(id, s, `Caminhão ${ordem} coletado`, `${ve.placa} · ${mo.nome} · ${h} · ${paletes} paletes · ocupação ${ocup}%${objetos != null ? ` · ${objetos} objetos` : ''}`);
+    const whatsapp = await avisar(['operacao'], 'caminhao', id,
+      { texto: comLink(`Coleta nº ${id}${comLocal(c.local)} de ${brData(c.data)}: caminhão ${ordem} (${ve.placa}) coletado às ${h} com ${paletes} paletes, ocupação ${ocup}%.`) });
+    return { ok: true, ordem, whatsapp };
+  }
+  async function excluirCaminhao(cvId, s) {
+    exigir(s, 'caminhao');
+    const [v] = await consulta(`SELECT v.ID id, v.COLETA_ID coletaId, v.ORDEM ordem, v.PLACA placa,
+      (SELECT COUNT(*) FROM PORTAL_EMBARQUES e WHERE e.COLETA_VEICULO_ID = v.ID) emb FROM PORTAL_COLETA_VEICULOS v WHERE v.ID = @id`, [['id', String(cvId)]]);
+    if (!v) throw new Erro(404, 'Caminhão não encontrado.');
+    if (v.emb) throw new Erro(409, 'A operação já lançou embarques deste caminhão. Peça para excluir os embarques antes.');
+    const c = await coleta(v.coletaId);
+    exigirStatus(c, ['coletada', 'em_tratamento'], 'Esta coleta já foi finalizada.');
+    await consulta(`DELETE FROM PORTAL_COLETA_VEICULOS WHERE ID = @id;
+      IF NOT EXISTS (SELECT 1 FROM PORTAL_COLETA_VEICULOS WHERE COLETA_ID = @c) AND NOT EXISTS (SELECT 1 FROM PORTAL_EMBARQUES WHERE COLETA_ID = @c)
+        UPDATE PORTAL_COLETAS SET STATUS = CASE WHEN HORARIO_PREVISTO IS NULL THEN 'solicitada' ELSE 'agendada' END, HORARIO_COLETA = NULL, COLETADO_POR = NULL, COLETADO_EM = NULL
+        WHERE ID = @c AND STATUS = 'coletada';`, [['id', String(cvId)], ['c', String(v.coletaId)]]);
+    await hist(v.coletaId, s, `Caminhão ${v.ordem} excluído`, v.placa);
+    return { ok: true };
+  }
+
+  /* ---------- Anexos e protocolo ---------- */
+  function lerArquivo(dataUrl, permitidos) {
+    const m = /^data:([\w/+.-]+);base64,([A-Za-z0-9+/=]+)$/.exec(String(dataUrl || ''));
+    if (!m || !permitidos.includes(m[1])) throw new Erro(400, 'Arquivo inválido. Envie imagem (PNG, JPG, WEBP) ou PDF.');
+    const buffer = Buffer.from(m[2], 'base64');
+    if (!buffer.length) throw new Erro(400, 'Arquivo vazio.');
+    if (buffer.length > MAX_ANEXO) throw new Erro(413, 'Arquivo maior que 3 MB.');
+    return { mime: m[1], buffer };
+  }
+  async function salvarAnexo(id, tipo, nome, arq, s) {
+    const [r] = await consulta(`INSERT INTO PORTAL_ANEXOS (COLETA_ID, TIPO, NOME, MIME, TAMANHO, CONTEUDO, ENVIADO_POR)
+      VALUES (@c, @t, @n, @m, @tam, @bin, @u);
+      SELECT CAST(SCOPE_IDENTITY() AS int) id;`,
+      [['c', String(id)], ['t', tipo], ['n', nome, 'n'], ['m', arq.mime], ['tam', String(arq.buffer.length)], ['bin', arq.buffer, 'bin'], ['u', String(s.id ?? 0)]]);
+    return r.id;
+  }
+  async function enviarProtocolo(id, b, s) {
+    exigir(s, 'protocolo');
+    await exigirV2();
+    const c = await coleta(id);
+    const arq = lerArquivo(b.imagem, ['image/png', 'image/jpeg']);
+    const [t] = await consulta(`SELECT (SELECT COUNT(*) FROM PORTAL_COLETA_VEICULOS WHERE COLETA_ID = @c) cam,
+      (SELECT ISNULL(SUM(PALETES), 0) FROM PORTAL_COLETA_VEICULOS WHERE COLETA_ID = @c) pal,
+      (SELECT ISNULL(SUM(QTD_OBJETOS), 0) FROM PORTAL_EMBARQUES WHERE COLETA_ID = @c) objE,
+      (SELECT ISNULL(SUM(v.QTD_OBJETOS), 0) FROM PORTAL_COLETA_VEICULOS v WHERE v.COLETA_ID = @c
+        AND NOT EXISTS (SELECT 1 FROM PORTAL_EMBARQUES e WHERE e.COLETA_VEICULO_ID = v.ID)) objM`, [['c', String(id)]]);
+    if (!t.cam) throw new Erro(409, 'Registre ao menos um caminhão antes de enviar o protocolo.');
+    const obj = t.objE + t.objM;
+    const nome = `protocolo-coleta-${id}-${c.data}.${MIMES[arq.mime]}`;
+    const anexoId = await salvarAnexo(id, 'protocolo', nome, arq, s);
+    await hist(id, s, 'Protocolo enviado ao cliente', `${t.cam} caminhões · ${t.pal} paletes${obj ? ` · ${obj} objetos` : ''}`);
+    const resumo = `Protocolo da coleta nº ${id}${comLocal(c.local)} de ${brData(c.data)}: ${t.cam} caminh${t.cam > 1 ? 'ões' : 'ão'}, ${t.pal} paletes${obj ? `, ${obj.toLocaleString('pt-BR')} objetos postados` : ''}.`;
+    const whatsapp = await avisar(['cliente'], 'protocolo', id, {
+      texto: comLink(resumo), imagem: { buffer: arq.buffer, mime: arq.mime, nome },
+      variaveis: [String(id) + comLocal(c.local), brData(c.data), String(t.cam), String(t.pal), obj ? obj.toLocaleString('pt-BR') : '-']
+    });
+    return { ok: true, anexoId, whatsapp };
+  }
+  async function anexar(id, b, s) {
+    exigir(s, 'anexar');
+    await exigirV2();
+    await coleta(id);
+    const arq = lerArquivo(b.arquivo, Object.keys(MIMES));
+    const nome = (txt(b.nome, 180) || 'arquivo').replace(/[\\/:*?"<>|]/g, '_');
+    const anexoId = await salvarAnexo(id, 'arquivo', nome, arq, s);
+    await hist(id, s, 'Arquivo anexado', `${nome} · ${Math.ceil(arq.buffer.length / 1024)} KB`);
+    return { ok: true, anexoId };
+  }
+  async function baixarAnexo(aid) {
+    await exigirV2();
+    const [a] = await consulta(`SELECT NOME nome, MIME mime, CONTEUDO conteudo FROM PORTAL_ANEXOS WHERE ID = @id`, [['id', String(aid)]]);
+    if (!a) throw new Erro(404, 'Anexo não encontrado.');
+    return { __binario: true, nome: a.nome, mime: a.mime, buffer: Buffer.isBuffer(a.conteudo) ? a.conteudo : Buffer.from(a.conteudo || []) };
+  }
+
+  /* ---------- Minha conta ---------- */
+  async function minhaConta(s) {
+    const base = { nome: s.n || s.u, login: s.u, perfil: s.p, provedor: wa.provedor(), whatsapp: null, whatsappAtivo: false, doBanco: !!s.id };
+    if (!s.id || !(await v2().catch(() => false))) return { ...base, whatsappCampos: false };
+    const [u] = await consulta(`SELECT WHATSAPP whatsapp, WHATSAPP_ATIVO whatsappAtivo FROM PORTAL_USUARIOS WHERE ID = @id`, [['id', String(s.id)]]);
+    return { ...base, whatsappCampos: true, whatsapp: u ? u.whatsapp : null, whatsappAtivo: !!(u && u.whatsappAtivo) };
+  }
+  async function salvarMinhaConta(b, s) {
+    if (!s.id) throw new Erro(400, 'Este acesso vem da variável PORTAL_USUARIOS: crie um usuário seu na aba Usuários para cadastrar o WhatsApp.');
+    await exigirV2();
+    const tel = b.whatsapp ? wa.normalizarTelefone(b.whatsapp) : null;
+    if (b.whatsapp && !tel) throw new Erro(400, 'WhatsApp inválido: use DDD + número, ex.: (21) 99999-8888.');
+    await consulta(`UPDATE PORTAL_USUARIOS SET WHATSAPP = @w, WHATSAPP_ATIVO = @a WHERE ID = @id`,
+      [['w', tel], ['a', tel && (b.whatsappAtivo === true || b.whatsappAtivo === '1') ? '1' : '0'], ['id', String(s.id)]]);
+    return { ok: true, whatsapp: tel };
+  }
+  async function testeWhatsapp(s) {
+    const conta = await minhaConta(s);
+    if (!conta.whatsapp) throw new Erro(400, 'Salve seu número de WhatsApp primeiro.');
+    if (!conta.provedor) throw new Erro(400, 'O envio automático de WhatsApp ainda não foi configurado pelo administrador.');
+    const r = await wa.enviar(conta.whatsapp, { texto: comLink(`Olá, ${conta.nome}! Seu WhatsApp está cadastrado no portal de coletas Wepink · AGF Morada dos Lagos.`) });
+    await consulta(`INSERT INTO PORTAL_WHATSAPP_LOG (USUARIO_ID, TELEFONE, TIPO, STATUS, RESPOSTA) VALUES (@u, @t, 'teste', @s, @r)`,
+      [['u', String(s.id)], ['t', conta.whatsapp], ['s', r.status], ['r', r.detalhe, 'n']]).catch(() => {});
+    if (!r.ok) throw new Erro(502, 'Não foi possível enviar: ' + r.detalhe);
+    return { ok: true };
+  }
+
   /* ---------- Roteamento ---------- */
   async function rota(caminho, req, q, s) {
     const post = req.method === 'POST';
     if (caminho === '/api/notificacoes') { if (!(await tabelas().catch(() => false))) return [200, { total: 0, itens: [], inativo: true }]; return [200, await notificacoes(s)]; }
     if (caminho === '/api/minha-senha' && post) { await exigirTabelas(); return [200, await minhaSenha(await lerCorpo(req), s)]; }
     if (caminho === '/api/usuarios') { await exigirTabelas(); return [200, post ? await salvarUsuario(await lerCorpo(req), s) : await listarUsuarios(s)]; }
-    const m = /^\/api\/(coletas|embarques|pendencias)(?:\/(\d+))?(?:\/([a-z-]+))?$/.exec(caminho);
+    if (caminho === '/api/minha-conta') { await exigirTabelas(); return [200, post ? await salvarMinhaConta(await lerCorpo(req), s) : await minhaConta(s)]; }
+    if (caminho === '/api/minha-conta/teste' && post) { await exigirTabelas(); return [200, await testeWhatsapp(s)]; }
+    if (caminho === '/api/frota') { await exigirTabelas(); await exigirV2(); exigir(s, 'frota'); return [200, await listarFrota(false)]; }
+    if (caminho === '/api/frota/veiculos' && post) { await exigirTabelas(); await exigirV2(); return [200, await salvarVeiculo(await lerCorpo(req), s)]; }
+    if (caminho === '/api/frota/motoristas' && post) { await exigirTabelas(); await exigirV2(); return [200, await salvarMotorista(await lerCorpo(req), s)]; }
+    const an = /^\/api\/anexos\/(\d+)$/.exec(caminho);
+    if (an && !post) { await exigirTabelas(); return [200, await baixarAnexo(an[1])]; }
+    const m = /^\/api\/(coletas|embarques|pendencias|caminhoes)(?:\/(\d+))?(?:\/([a-z-]+))?$/.exec(caminho);
     if (!m) return null;
     await exigirTabelas();
     const [, rec, id, acao] = m;
@@ -404,13 +691,15 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
     if (rec === 'coletas') {
       if (!id && !acao) return [200, post ? await criar(b, s) : await listar(q)];
       if (id && !acao && !post) return [200, await detalhe(id)];
-      const f = { agendar, coletar, cancelar, embarques: addEmbarque, finalizar, 'ciente-todas': cienteTodas }[acao];
+      const f = { agendar, coletar, cancelar, embarques: addEmbarque, finalizar, 'ciente-todas': cienteTodas, protocolo: enviarProtocolo, anexos: anexar }[acao];
+      if (id && acao === 'caminhoes' && post) { await exigirV2(); return [200, await salvarCaminhao(id, b, s)]; }
       if (id && f && post) return [200, await f(id, b, s)];
     }
     if (rec === 'embarques' && id && post) {
       if (acao === 'conferir') return [200, await conferir(id, b, s)];
       if (acao === 'excluir') return [200, await excluirEmbarque(id, s)];
     }
+    if (rec === 'caminhoes' && id && post && acao === 'excluir') { await exigirV2(); return [200, await excluirCaminhao(id, s)]; }
     if (rec === 'pendencias' && id && post) {
       if (acao === 'ciente') return [200, await ciente(id, b, s)];
       if (acao === 'resolver') return [200, await resolver(id, b, s)];

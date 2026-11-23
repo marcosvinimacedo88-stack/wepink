@@ -46,6 +46,39 @@ Fluxo de uma coleta:
 - Senhas ficam criptografadas (scrypt) na tabela `PORTAL_USUARIOS`. Cada usuário pode trocar a própria senha no botão **Senha**.
 - Se mudar o perfil de alguém ou desativar um usuário, a mudança vale no próximo login (ou em até 12 horas).
 
+## Frota, caminhões e protocolo
+1. Rode `criar_tabelas_frota_whatsapp.sql` no banco `manager` (depois do de coletas).
+2. Ao criar a coleta, é obrigatório escolher o **local da coleta**: Galpão, SLV ou SAVI CD. Ele aparece na coleta, nos cartões, na imagem do protocolo, na impressão e nas mensagens de WhatsApp. Para mudar a lista, use a variável `LOCAIS_COLETA` (separados por ponto e vírgula).
+3. O transporte cadastra **caminhões** (placa, descrição, capacidade em paletes) e **motoristas** na aba **Frota**.
+4. Em cada coleta, o transporte registra **Caminhão 1, 2, 3…**: caminhão, motorista, horário da coleta, quantidade de paletes e ocupação (marque **Ocupação 100%** ou informe o %; se o caminhão tem capacidade cadastrada, o portal sugere pela conta paletes ÷ capacidade). O nº de objetos é opcional.
+5. A operação, ao lançar cada embarque, escolhe de qual caminhão ele veio. O nº de objetos de cada caminhão passa a ser a soma dos embarques dele.
+6. **Enviar protocolo ao cliente** gera a imagem no modelo da planilha (total de objetos, média por caminhão, caminhões com horário, paletes, ocupação e objetos), salva na coleta, avisa o cliente no sino e manda por WhatsApp.
+7. **Compartilhar / baixar** abre o compartilhamento do celular (dá para mandar direto no WhatsApp) ou baixa o PNG no computador.
+8. Transporte e operação também podem **anexar fotos ou PDF** (até 3 MB) na coleta.
+
+## WhatsApp automático
+Cada usuário cadastra o próprio número em **Minha conta** e marca "Quero receber os avisos". O administrador também pode preencher na aba Usuários.
+
+| Quem recebe | Quando |
+|---|---|
+| Cliente | Protocolo da coleta enviado (com a imagem) e objetos com problema no tratamento |
+| Transporte | Nova coleta solicitada |
+| Operação | Caminhão registrado na coleta |
+
+Todos os envios ficam registrados na tabela `PORTAL_WHATSAPP_LOG` (enviado ou erro, com a resposta do provedor).
+
+Escolha um provedor em `WHATSAPP_PROVEDOR`:
+
+**Opção 1: `zapi` (Z-API, mais rápida de ligar).** Crie uma instância em z-api.io, conecte o WhatsApp da AGF pelo QR Code e preencha `ZAPI_INSTANCIA`, `ZAPI_TOKEN` e `ZAPI_CLIENT_TOKEN` (token de segurança da conta). Atenção: a Z-API usa o WhatsApp comum (não é a API oficial da Meta), então existe risco de bloqueio do número se houver muitas reclamações. Use um número só para isso.
+
+**Opção 2: `meta` (API oficial).** Precisa de conta no Meta Business, um número de WhatsApp Business na Cloud API e dois modelos aprovados no WhatsApp Manager (categoria Utilidade, idioma pt_BR):
+- `agf_aviso`, só texto. Corpo: `Olá! {{1}} Mensagem automática do portal Wepink · AGF Morada dos Lagos.`
+- `agf_protocolo`, com cabeçalho do tipo Imagem. Corpo: `Olá! Protocolo da coleta nº {{1}} de {{2}}: {{3}} caminhões, {{4}} paletes e {{5}} objetos postados. Os detalhes estão no portal Wepink · AGF Morada dos Lagos.`
+Depois preencha `WHATSAPP_META_TOKEN` (token permanente de usuário do sistema) e `WHATSAPP_META_PHONE_ID`. A Meta cobra por mensagem de modelo enviada.
+
+Sem provedor configurado, tudo continua funcionando: os avisos aparecem no sino e o botão Compartilhar manda a imagem pelo WhatsApp do próprio celular.
+Na Vercel, cadastre as mesmas variáveis em Settings → Environment Variables e faça Redeploy.
+
 ## Rastreamento
 1. Rode `criar_tabela_rastreamento.sql` no SQL Server (banco `manager`). Ele cria a tabela `PORTAL_RASTREAMENTO`.
 2. Confira `CORREIOS_USUARIO` e `CORREIOS_CHAVE` no `.env` (as mesmas do script de rastreio do SQL Server).
@@ -90,7 +123,8 @@ O projeto já vem pronto: `vercel.json` serve a página de `public/` e manda `/a
 2. Na Vercel: **Add New → Project**, importe o repositório. Framework: **Other**. Não mude os comandos.
 3. Em **Settings → Environment Variables**, cadastre as variáveis do `.env.example` com os valores reais do seu `.env`:
    `DB_SERVIDOR`, `DB_PORTA`, `DB_USUARIO`, `DB_SENHA`, `DB_BANCO`, `DB_CRIPTOGRAFAR`, `FILTRO_REMETENTE`, `PORTAL_USUARIOS`,
-   `SESSAO_SEGREDO` (obrigatório na Vercel), `CORREIOS_URL`, `CORREIOS_USUARIO`, `CORREIOS_CHAVE`, `CORREIOS_RESULTADO`.
+   `SESSAO_SEGREDO` (obrigatório na Vercel), `CORREIOS_URL`, `CORREIOS_USUARIO`, `CORREIOS_CHAVE`, `CORREIOS_RESULTADO`, `PORTAL_URL`
+   e, se for usar WhatsApp automático, as variáveis `WHATSAPP_*` ou `ZAPI_*`.
    Não precisa de `PORTA` nem `HTTPS` (a Vercel já usa HTTPS e o cookie sai como Secure).
 4. **Deploy**.
 

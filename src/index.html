@@ -139,7 +139,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
 .login .msg{color:var(--bad);min-height:1.4em}
 
 @media(max-width:900px){.top .marca span{display:none}.abas{order:3;width:100%}.grade{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.filtros{position:static}}
-@media(max-width:600px){.top #usuario,.top #senhaBt{display:none}.demoPerfil{font-size:0;gap:0}.top .user{gap:8px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut)}.stack td:empty{display:none}.fig{min-height:240px}.barra{grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 4.8em}}
+@media(max-width:600px){.top #usuario{display:none}.demoPerfil{font-size:0;gap:0}.top .user{gap:8px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut)}.stack td:empty{display:none}.fig{min-height:240px}.barra{grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 4.8em}}
 @media(prefers-reduced-motion:no-preference){.barra .trilho i,.semana span{transition:width .5s ease,height .5s ease}}
 @media print{.rastrear,#rast,#lote,.filtros,.top .user,.acao,.pag .bt,.login,.toast,.aviso{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.band{padding:16px}main{opacity:1!important}}
 </style>
@@ -161,7 +161,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
 <header class="top">
   <div class="marca"><b>wep<i>i</i>nk · portal</b><span>por AGF Morada dos Lagos</span></div>
   <nav class="abas" id="abas" aria-label="Seções">
-    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
+    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#frota" data-v="frota" hidden>Frota</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
   </nav>
   <div class="user">
     <label class="demoPerfil" id="demoPerfilBox" hidden>Ver como <select id="demoPerfil"><option value="cliente">Cliente Wepink</option><option value="transporte">Transporte</option><option value="operacao">Operação</option><option value="admin">Administrador</option></select></label>
@@ -174,7 +174,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
       </div>
     </div>
     <span id="usuario"></span>
-    <button id="senhaBt" type="button">Senha</button>
+    <button id="contaBt" type="button">Minha conta</button>
     <button id="sair" type="button">Sair</button>
   </div>
 </header>
@@ -282,6 +282,24 @@ main.carregando{opacity:.55;transition:opacity .2s}
   <section class="band">
     <div class="wrap">
       <div id="colLista" class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]"></div>
+    </div>
+  </section>
+</div>
+
+<div id="vFrota" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="cab"><div class="t"><h2>Frota</h2><p class="nota" style="margin:0">Caminhões e motoristas que o transporte escolhe ao registrar cada coleta.</p></div></div>
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div>
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-3"><h3 class="m-0 text-lg font-semibold">Caminhões</h3><button type="button" class="acao" id="novoVeiculo">Novo caminhão</button></div>
+          <div class="scroll"><table class="stack"><thead><tr><th>Placa</th><th>Descrição</th><th class="n">Capacidade</th><th>Situação</th><th></th></tr></thead><tbody id="veicBody"></tbody></table></div>
+        </div>
+        <div>
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-3"><h3 class="m-0 text-lg font-semibold">Motoristas</h3><button type="button" class="acao" id="novoMotorista">Novo motorista</button></div>
+          <div class="scroll"><table class="stack"><thead><tr><th>Nome</th><th class="n">Telefone</th><th>Documento</th><th>Situação</th><th></th></tr></thead><tbody id="motBody"></tbody></table></div>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -493,7 +511,7 @@ function demoApi(rota, p) {
 /* ---------- API ---------- */
 const params = extra => ({ ini: st.ini, fim: st.fim, uf: st.uf, depto: st.depto, q: st.q, ...extra });
 async function api(rota, p = {}) {
-  if (st.demo) return /^(coletas|usuarios|notificacoes)/.test(rota) ? demoCol('GET', rota, p) : demoApi(rota, p);
+  if (st.demo) return /^(coletas|usuarios|notificacoes|frota|minha-conta)/.test(rota) ? demoCol('GET', rota, p) : demoApi(rota, p);
   const qs = new URLSearchParams(Object.entries(p).filter(([, v]) => v !== '' && v != null));
   const r = await fetch('api/' + rota + '?' + qs, { credentials: 'same-origin' });
   if (r.status === 401) { abrirLogin(); throw new Error('login'); }
@@ -833,28 +851,32 @@ const PERFIL_DESC = {
 const PODE = {
   solicitar: ['cliente', 'transporte', 'operacao', 'admin'], agendar: ['transporte', 'admin'], coletar: ['transporte', 'admin'],
   cancelar: ['cliente', 'transporte', 'admin'], embarque: ['operacao', 'admin'], conferir: ['operacao', 'admin'],
-  finalizar: ['operacao', 'admin'], ciente: ['cliente', 'admin'], resolver: ['operacao', 'admin'], usuarios: ['admin']
+  finalizar: ['operacao', 'admin'], ciente: ['cliente', 'admin'], resolver: ['operacao', 'admin'], usuarios: ['admin'],
+  frota: ['transporte', 'admin'], caminhao: ['transporte', 'admin'], protocolo: ['transporte', 'operacao', 'admin'], anexar: ['transporte', 'operacao', 'admin']
 };
 const pode = a => !!st.me && PODE[a].includes(st.me.perfil);
-const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', usuarios: '#vUsuarios' };
+const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', frota: '#vFrota', usuarios: '#vUsuarios' };
 let viewAtual = '';
 function rotear() {
   const h = location.hash.replace('#', '');
   let v = VIEWS[h] ? h : /^coleta-\d+$/.test(h) ? 'coletas' : '';
   if (!v) v = st.me && ['transporte', 'operacao'].includes(st.me.perfil) ? 'coletas' : 'envios';
   if (v === 'usuarios' && !pode('usuarios')) v = 'coletas';
+  if (v === 'frota' && !pode('frota')) v = 'coletas';
   const mudou = v !== viewAtual; viewAtual = v;
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   for (const a of document.querySelectorAll('#abas a')) a.toggleAttribute('aria-current', false), a.dataset.v === v && a.setAttribute('aria-current', 'page');
   if (mudou && v === 'envios') { desenharDia(); }
   if (mudou && v === 'coletas') carregarColetas();
   if (mudou && v === 'usuarios') carregarUsuarios();
+  if (mudou && v === 'frota') carregarFrota();
   const m = /^coleta-(\d+)$/.exec(h);
   if (m && (!colAberta || colAberta.id !== +m[1])) abrirColeta(+m[1]);
 }
 window.addEventListener('hashchange', rotear);
 function aplicarPerfil() {
   $('#abas a[data-v=usuarios]').hidden = !pode('usuarios');
+  $('#abas a[data-v=frota]').hidden = !pode('frota');
   $('#usuario').textContent = `${st.me.nome} · ${PERFIL_NOME[st.me.perfil] || st.me.perfil}`;
   $('#novaColeta span').textContent = st.me.perfil === 'cliente' ? 'Solicitar coleta' : 'Nova coleta';
   $('#novaColeta').hidden = !pode('solicitar');
@@ -890,6 +912,7 @@ const semana = s => SEM[parse(s).getDay()];
 
 /* ---------- Lista de coletas ---------- */
 const colSt = { per: 30, status: '' };
+let colLocais = [];
 async function carregarColetas() {
   const ini = addD(hoje, -(colSt.per - 1));
   for (const b of document.querySelectorAll('#colFiltros [data-per]')) b.setAttribute('aria-pressed', +b.dataset.per === colSt.per);
@@ -897,11 +920,12 @@ async function carregarColetas() {
   $('#colLista').classList.add('opacity-50');
   try {
     const r = await api('coletas', { ini, fim: hoje, status: colSt.status });
+    colLocais = r.locais || [];
     const k = r.kpis;
     $('#colSub').textContent = colSt.status === 'abertas' ? 'Todas as coletas ainda em andamento, de qualquer data.' : `Coletas de ${br(r.ini)} a ${br(r.fim)}.`;
     $('#colKpis').innerHTML = [
-      ['Total de objetos postados', nf.format(k.objetos), `${nf.format(k.embarques)} embarques`],
-      ['Média por caminhão', nf.format(k.media), 'objetos por embarque'],
+      ['Total de objetos postados', nf.format(k.objetos), k.caminhoes ? `${nf.format(k.caminhoes)} caminhões · ${nf.format(k.paletes)} paletes` : `${nf.format(k.embarques)} embarques`],
+      ['Média por caminhão', nf.format(k.media), k.mediaPor === 'caminhao' ? 'objetos por caminhão' : 'objetos por embarque'],
       ['Coletas', nf.format(k.coletas), 'no período, sem canceladas'],
       ['Pendências em aberto', nf.format(k.pendAbertas), k.pendAbertas ? 'objetos aguardando solução' : 'nenhum objeto com problema']
     ].map(([a, b, c]) => `<div class="kpi"><small>${a}</small><div class="num">${b}</div><em>${c}</em></div>`).join('');
@@ -918,16 +942,17 @@ function cardColeta(c, i) {
   const barra = c.status === 'cancelada' ? 0 : Math.max(0, (p - 1) / 3 * 100);
   return `<button type="button" data-col="${c.id}" class="group relative flex flex-col gap-4 rounded-3xl border border-[var(--line)] bg-[var(--bg)] p-5 text-left text-[var(--ink)] shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#e5007e] hover:shadow-[0_14px_40px_rgba(229,0,126,.18)] motion-safe:animate-subir" style="animation-delay:${Math.min(i, 12) * 45}ms">
     <div class="flex items-start justify-between gap-3">
-      <div><p class="m-0 text-xs text-[var(--mut)]">Coleta nº ${c.id}</p>
+      <div><p class="m-0 text-xs text-[var(--mut)]">Coleta nº ${c.id}${c.local ? ` · <b class="font-semibold text-[var(--deep)]">${esc(c.local)}</b>` : ''}</p>
         <p class="m-0 text-[22px] leading-tight font-bold" style="font-family:Outfit,sans-serif">${semana(c.data)}, ${br(c.data)}</p></div>
       ${pillCol(c.status, true)}
     </div>
     <div class="h-1.5 overflow-hidden rounded-full bg-[var(--panel)]"><div class="h-full rounded-full ${alerta ? 'bg-[var(--warn)]' : 'bg-gradient-to-r from-[#ff6fb5] to-[#e5007e]'} transition-[width] duration-700" style="width:${barra}%"></div></div>
     <dl class="m-0 grid grid-cols-3 gap-2 text-center">
-      <div class="rounded-xl bg-[var(--panel)] px-2 py-2"><dt class="text-[11px] text-[var(--mut)]">Embarques</dt><dd class="m-0 text-lg font-bold">${nf.format(c.embarques)}</dd></div>
+      <div class="rounded-xl bg-[var(--panel)] px-2 py-2"><dt class="text-[11px] text-[var(--mut)]">${c.caminhoes ? 'Caminhões' : 'Embarques'}</dt><dd class="m-0 text-lg font-bold">${nf.format(c.caminhoes || c.embarques)}${c.caminhoes ? `<span class="text-[11px] font-normal text-[var(--mut)]"> · ${c.paletes} pal.</span>` : ''}</dd></div>
       <div class="rounded-xl bg-[var(--panel)] px-2 py-2"><dt class="text-[11px] text-[var(--mut)]">Objetos</dt><dd class="m-0 text-lg font-bold">${nf.format(c.objetos || c.previstos || 0)}${!c.objetos && c.previstos ? '<span class="text-[11px] font-normal text-[var(--mut)]"> prev.</span>' : ''}</dd></div>
       <div class="rounded-xl ${c.pendAbertas ? 'bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] text-[var(--warn)]' : 'bg-[var(--panel)]'} px-2 py-2"><dt class="text-[11px] ${c.pendAbertas ? '' : 'text-[var(--mut)]'}">Pendências</dt><dd class="m-0 text-lg font-bold">${nf.format(c.pendAbertas)}</dd></div>
     </dl>
+    ${c.protocolos ? '<span class="absolute top-5 right-28 hidden rounded-full bg-[var(--soft)] px-2 py-0.5 text-[11px] font-semibold text-[var(--deep)] sm:inline">protocolo enviado</span>' : ''}
     <p class="m-0 text-sm text-[var(--mut)]">${esc([c.horario ? 'Coletada às ' + c.horario : c.horarioPrevisto ? 'Previsão ' + c.horarioPrevisto : 'Aguardando transporte', c.motorista, c.placa].filter(Boolean).join(' · '))}</p>
     <span class="absolute right-5 bottom-5 text-[var(--deep)] opacity-0 transition duration-300 group-hover:translate-x-1 group-hover:opacity-100">→</span>
   </button>`;
@@ -967,10 +992,14 @@ $('#modalForm').onsubmit = async e => {
 const campo = (rot, html, extra = '') => `<label class="campo ${extra}">${rot}${html}</label>`;
 
 $('#novaColeta').onclick = () => abrirModal(st.me.perfil === 'cliente' ? 'Solicitar coleta' : 'Nova coleta', `
+  ${colLocais.length ? `<fieldset class="m-0 grid gap-2 border-0 p-0"><legend class="mb-1 p-0 text-[13px] text-[var(--mut)]">Local da coleta</legend>
+    <div class="grid gap-2 [grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))]">${colLocais.map(l => `<label class="flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-[var(--line)] px-3 text-center text-[15px] font-semibold transition hover:border-[#e5007e] has-[:checked]:border-[#e5007e] has-[:checked]:bg-[var(--soft)] has-[:checked]:text-[var(--deep)] has-[:checked]:ring-4 has-[:checked]:ring-[#e5007e]/15">
+      <input type="radio" name="local" value="${esc(l)}" required class="sr-only">${esc(l)}</label>`).join('')}</div></fieldset>` : ''}
   ${campo('Data da coleta', `<input type="date" name="data" required value="${hoje}" min="${addD(hoje, -7)}">`)}
   ${campo('Volumes previstos (opcional)', '<input type="number" name="previstos" min="0" inputmode="numeric" placeholder="Ex.: 1.900">')}
   ${campo('Observações para o transporte', '<textarea name="obs" maxlength="1000" placeholder="Ex.: carga pronta a partir das 14h, doca 2"></textarea>')}`,
   st.me.perfil === 'cliente' ? 'Enviar solicitação' : 'Criar coleta', async d => {
+    if (colLocais.length && !d.local) throw new Error('Escolha o local da coleta.');
     const r = await apiPost('coletas', d);
     aviso(`Coleta nº ${r.id} registrada. O transporte foi avisado.`);
     carregarColetas(); atualizarNotificacoes();
@@ -1014,7 +1043,7 @@ async function recarregarColeta(manterScroll) {
     if (!colAberta || colAberta.id !== id) return;
     colAberta.d = d;
     $('#colStatus').innerHTML = pillCol(d.coleta.status);
-    $('#colData').textContent = `${semana(d.coleta.data)}, ${br(d.coleta.data)}` + (d.coleta.horario ? ` · coletada às ${d.coleta.horario}` : '');
+    $('#colData').textContent = `${semana(d.coleta.data)}, ${br(d.coleta.data)}` + (d.coleta.local ? ` · ${d.coleta.local}` : '') + (d.coleta.horario ? ` · coletada às ${d.coleta.horario}` : '');
     $('#colCorpo').innerHTML = htmlColeta(d);
     if (manterScroll) $('#colCorpo').scrollTop = sc;
     requestAnimationFrame(() => requestAnimationFrame(() => { const b = $('#colBarra'); if (b) b.style.width = b.dataset.w + '%'; }));
@@ -1053,29 +1082,32 @@ function htmlColeta(d) {
 
   // próxima ação
   h += acaoColeta(d, { total, conferidos, abertas, naoResolvidas });
+  h += secaoCaminhoes(d);
+  h += secaoAnexos(d);
 
   // embarques (modelo da planilha)
   if (d.embarques.length || ['coletada', 'em_tratamento'].includes(s)) {
-    const podeConf = pode('conferir') && s === 'em_tratamento';
+    const podeConf = pode('conferir') && s === 'em_tratamento', camE = (d.caminhoes || []).length > 0;
     h += secao(`Embarques <span class="text-sm font-normal text-[var(--mut)]">· ${conferidos} de ${d.embarques.length} conferidos</span>`, `
       <div class="scroll rounded-2xl border border-[var(--line)]"><table class="planilha">
-        <thead><tr><th>Data</th><th>Nº do embarque</th><th>Quant. objetos</th><th>Horário da coleta</th><th>Conferência</th></tr></thead>
+        <thead><tr><th>Data</th>${camE ? '<th>Caminhão</th>' : ''}<th>Nº do embarque</th><th>Quant. objetos</th><th>Horário da coleta</th><th>Conferência</th></tr></thead>
         <tbody>${d.embarques.map(e => `<tr class="transition-colors hover:bg-[var(--panel)]">
-          <td>${br(e.data)}</td><td class="font-semibold">${esc(e.numero)}</td><td>${nf.format(e.qtd)}</td><td>${e.horario || '—'}</td>
+          <td>${br(e.data)}</td>${camE ? `<td>${(d.caminhoes.find(v => v.id === e.caminhaoId) || {}).ordem || '—'}</td>` : ''}<td class="font-semibold">${esc(e.numero)}</td><td>${nf.format(e.qtd)}</td><td>${e.horario || '—'}</td>
           <td>${e.conferido ? (e.tudoOk ? `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ESTILO.ok}">Tudo tratado</span>`
             : `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ESTILO.alerta}" title="${esc(e.obs || '')}">${nf.format(e.tratados)} de ${nf.format(e.qtd)} · ${e.pendencias} com problema</span>`)
             : podeConf ? `<span class="inline-flex flex-wrap justify-center gap-1.5"><button type="button" class="${btnMini}" data-conferir="${e.id}">Conferir</button><button type="button" class="${btnMini} !text-[var(--mut)]" data-excluir="${e.id}" aria-label="Excluir embarque ${esc(e.numero)}">Excluir</button></span>`
             : '<span class="text-xs text-[var(--mut)]">Aguardando conferência</span>'}</td></tr>
 `).join('')
-          || '<tr><td colspan="5" class="!py-6 text-[var(--mut)]">Nenhum embarque lançado ainda.</td></tr>'}</tbody>
-        <tfoot><tr><td colspan="2" style="text-align:right">Quant. total</td><td>${nf.format(total)}</td><td colspan="2">${d.embarques.length ? 'média ' + nf.format(Math.round(total / d.embarques.length)) + ' por embarque' : ''}</td></tr></tfoot>
+          || `<tr><td colspan="${camE ? 6 : 5}" class="!py-6 text-[var(--mut)]">Nenhum embarque lançado ainda.</td></tr>`}</tbody>
+        <tfoot><tr><td colspan="${camE ? 3 : 2}" style="text-align:right">Quant. total</td><td>${nf.format(total)}</td><td colspan="2">${d.embarques.length ? 'média ' + nf.format(Math.round(total / d.embarques.length)) + ' por embarque' : ''}</td></tr></tfoot>
       </table></div>
       <div id="confArea" class="mt-3"></div>
       ${pode('embarque') && ['coletada', 'em_tratamento'].includes(s) ? `
       <form id="formEmbarque" class="mt-4 grid items-end gap-3 rounded-2xl border border-dashed border-[#e5007e]/50 bg-[var(--soft)]/40 p-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))]">
+        ${camE ? campo('Caminhão', `<select name="caminhaoId" required class="${inp}">${d.caminhoes.map((v, i) => `<option value="${v.id}" data-h="${v.horario}"${i === d.caminhoes.length - 1 ? ' selected' : ''}>Caminhão ${v.ordem} · ${esc(v.placa || '')}</option>`).join('')}</select>`) : ''}
         ${campo('Nº do embarque', `<input name="numero" required maxlength="30" class="${inp}" placeholder="300217" autocomplete="off">`)}
         ${campo('Quant. objetos', `<input name="qtd" type="number" min="0" required class="${inp}" placeholder="330" inputmode="numeric">`)}
-        ${campo('Horário da coleta', `<input name="horario" type="time" value="${c.horario || ''}" class="${inp}">`)}
+        ${campo('Horário da coleta', `<input name="horario" type="time" value="${camE ? d.caminhoes[d.caminhoes.length - 1].horario : c.horario || ''}" class="${inp}">`)}
         ${campo('Data', `<input name="data" type="date" value="${c.data}" class="${inp}">`)}
         <button type="submit" class="${btn}">Lançar embarque</button>
       </form>` : ''}`, '', 80);
@@ -1103,6 +1135,7 @@ function htmlColeta(d) {
   // detalhes
   h += secao('Detalhes', `<dl class="m-0 grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))]">
     ${cartao('Solicitada por', esc(c.solicitante || '—') + `<span class="block text-xs font-normal text-[var(--mut)]">${brD(c.solicitadoEm)}</span>`)}
+    ${c.local !== undefined ? cartao('Local da coleta', esc(c.local || '—')) : ''}
     ${cartao('Volumes previstos', c.previstos != null ? nf.format(c.previstos) : '—')}
     ${cartao('Horário previsto', c.horarioPrevisto)}
     ${cartao('Horário da coleta', c.horario ? c.horario + (c.coletadoPor ? `<span class="block text-xs font-normal text-[var(--mut)]">confirmado por ${esc(c.coletadoPor)}</span>` : '') : '')}
@@ -1129,6 +1162,13 @@ function acaoColeta(d, x) {
     ${texto ? `<p class="m-0 mt-1 text-sm text-[var(--mut)]">${texto}</p>` : ''}<div class="mt-4">${corpo}</div></section>`;
   const espera = t => `<section class="motion-safe:animate-subir flex items-center gap-3 rounded-2xl bg-[var(--panel)] p-4 text-sm text-[var(--mut)]"><span class="h-2.5 w-2.5 shrink-0 rounded-full bg-[#e5007e] motion-safe:animate-pulse"></span>${t}</section>`;
   if (['solicitada', 'agendada'].includes(s)) {
+    if (pode('caminhao') && d.recursos && d.recursos.frota) return caixa(s === 'agendada' ? `Registre os caminhões${c.horarioPrevisto ? ' (previsto ' + c.horarioPrevisto + ')' : ''}` : 'Registre os caminhões da coleta',
+      (c.obsCliente ? 'Recado do cliente: ' + esc(c.obsCliente) + ' · ' : '') + 'Cada caminhão que sair com a carga entra como Caminhão 1, 2, 3… logo abaixo, com paletes e ocupação.', `
+      <form id="formAgendar" class="flex flex-wrap items-end gap-3">
+        ${campo('Previsão de chegada', `<input name="horario" type="time" required class="${inp}" value="${c.horarioPrevisto || ''}">`)}
+        <button type="submit" class="${btnSec}">${s === 'agendada' ? 'Alterar previsão' : 'Agendar'}</button>
+        ${pode('cancelar') ? `<button type="button" class="${btnSec} !text-[var(--bad)]" id="btCancelar">Cancelar coleta</button>` : ''}
+      </form>`);
     if (pode('coletar')) return caixa(s === 'agendada' ? 'Confirme a coleta' : 'Agende ou confirme a coleta',
       c.obsCliente ? 'Recado do cliente: ' + esc(c.obsCliente) : 'Informe motorista, placa e horário.', `
       <form id="formTransporte" class="grid items-end gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))]">
@@ -1145,7 +1185,9 @@ function acaoColeta(d, x) {
       + (s === 'solicitada' && pode('cancelar') ? `<button type="button" class="${btnSec} mt-3 !text-[var(--bad)]" id="btCancelar">Cancelar solicitação</button>` : '');
     return espera('Aguardando o transporte confirmar a coleta.');
   }
-  if (s === 'coletada') return pode('embarque') ? caixa('Lance os embarques', `Carga coletada às ${c.horario}. Lance cada embarque com a quantidade de objetos, logo abaixo.`, '') : espera('Carga coletada. A operação vai lançar os embarques e tratar a carga.');
+  if (s === 'coletada') return pode('embarque') ? caixa('Lance os embarques', `Carga coletada às ${c.horario}. Lance cada embarque, indicando o caminhão e a quantidade de objetos, logo abaixo.`, '')
+    : pode('caminhao') && d.recursos && d.recursos.frota ? espera('Carga coletada. Se saiu mais algum caminhão, registre abaixo. A operação vai lançar os embarques.')
+    : espera('Carga coletada. A operação vai lançar os embarques e tratar a carga.');
   if (s === 'em_tratamento') {
     if (pode('finalizar')) {
       const falta = d.embarques.length - x.conferidos;
@@ -1171,6 +1213,7 @@ async function acao(fn, msg) {
   catch (e) { if (e.message !== 'login') aviso(e.message); }
 }
 const carregarColetasSeVisivel = () => { if (viewAtual === 'coletas') carregarColetas(); };
+$('#colCorpo').addEventListener('input', e => { const fc = e.target.closest('#formCaminhao'); if (fc && e.target.name === 'paletes') sugerirOcupacao(fc); });
 $('#colCorpo').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target, dados = Object.fromEntries(new FormData(f)), id = colAberta.id;
@@ -1182,6 +1225,9 @@ $('#colCorpo').addEventListener('submit', e => {
     return acao(() => modo === 'coletar' ? apiPost(`coletas/${id}/coletar`, dados) : apiPost(`coletas/${id}/agendar`, { ...dados, horarioPrevisto: dados.horario }),
       modo === 'coletar' ? 'Coleta confirmada. A operação foi avisada.' : 'Coleta agendada.').finally(liberar);
   }
+  if (f.id === 'formAgendar') return acao(() => apiPost(`coletas/${id}/agendar`, { horarioPrevisto: dados.horario }), 'Coleta agendada.').finally(liberar);
+  if (f.id === 'formCaminhao') return acao(() => apiPost(`coletas/${id}/caminhoes`, { ...dados, lotado: f.querySelector('[name=lotado]').checked }),
+    dados.cvId ? 'Caminhão atualizado.' : 'Caminhão registrado.').finally(liberar);
   if (f.id === 'formEmbarque') return acao(() => apiPost(`coletas/${id}/embarques`, dados), `Embarque ${dados.numero} lançado.`).then(() => { const n = $('#formEmbarque [name=numero]'); if (n) n.focus(); }).finally(liberar);
   if (f.id === 'formFinalizar') return acao(() => apiPost(`coletas/${id}/finalizar`, dados), 'Tratamento finalizado.').finally(liberar);
   if (f.id === 'formCienteTodas') return acao(() => apiPost(`coletas/${id}/ciente-todas`, dados), 'Ciência registrada. A AGF foi avisada.').finally(liberar);
@@ -1204,16 +1250,242 @@ $('#colCorpo').addEventListener('click', e => {
   const rc = t.closest('[data-rastrear-cod]');
   if (rc) return abrirRast({ registro: rc.dataset.rastrearCod, cep: '', remetente: '' });
   if (t.closest('.conf-fechar')) { $('#confArea').innerHTML = ''; $('#confArea').dataset.eid = ''; return; }
+  const ce = t.closest('[data-cam-editar]');
+  if (ce) { const v = colAberta.d.caminhoes.find(x => x.id === +ce.dataset.camEditar); const f = $('#formCaminhao'); if (f) { f.outerHTML = formCaminhao(colAberta.d, v); $('#formCaminhao').scrollIntoView({ behavior: 'smooth', block: 'center' }); } return; }
+  if (t.closest('[data-cam-cancelar]')) { $('#formCaminhao').outerHTML = formCaminhao(colAberta.d); return; }
+  const cx = t.closest('[data-cam-excluir]');
+  if (cx) return abrirModal('Excluir caminhão?', '<p class="m-0 text-[var(--mut)]">O caminhão sai desta coleta. Use quando foi registrado errado.</p>', 'Excluir',
+    async () => { await apiPost(`caminhoes/${cx.dataset.camExcluir}/excluir`); aviso('Caminhão excluído.'); await recarregarColeta(true); carregarColetasSeVisivel(); });
+  const pr = t.closest('[data-prot]');
+  if (pr) { pr.disabled = true; return acaoProtocolo(pr.dataset.prot).catch(err => aviso(err.message)).finally(() => { pr.disabled = false; }); }
   const add = t.closest('.conf-add');
   if (add) return adicionarObjetos(add.closest('form'));
   const rm = t.closest('.conf-rm');
   if (rm) { const li = rm.closest('li'), f = rm.closest('form'); li.remove(); atualizarContagem(f); }
 });
 $('#colCorpo').addEventListener('change', e => {
+  const fc = e.target.closest('#formCaminhao');
+  if (fc) { if (e.target.name === 'ocupacao') e.target.dataset.mexido = '1'; else sugerirOcupacao(fc); return; }
+  if (e.target.name === 'caminhaoId') { const o = e.target.selectedOptions[0], h = e.target.form.querySelector('[name=horario]'); if (o && h) h.value = o.dataset.h || h.value; return; }
+  if (e.target.id === 'anexoArquivo') {
+    const arq = e.target.files[0]; e.target.value = ''; if (!arq) return;
+    if (arq.size > 3 * 1024 * 1024) return aviso('Arquivo maior que 3 MB.');
+    const leitor = new FileReader();
+    leitor.onload = () => acao(() => apiPost(`coletas/${colAberta.id}/anexos`, { nome: arq.name, arquivo: leitor.result }), 'Arquivo anexado.');
+    leitor.readAsDataURL(arq); return;
+  }
   const f = e.target.closest('.form-conf'); if (!f) return;
   if (e.target.name === 'tudoOk') f.querySelector('.conf-prob').hidden = e.target.value === '1';
   if (e.target.name === 'motivoPadrao') for (const s of f.querySelectorAll('.conf-lista select')) if (!s.dataset.mexido) s.value = e.target.value;
   if (e.target.matches('.conf-lista select')) e.target.dataset.mexido = '1';
+});
+
+/* ---------- Caminhões da coleta ---------- */
+const STATUS_CAMINHAO = ['solicitada', 'agendada', 'coletada', 'em_tratamento'];
+// total = todos os embarques + objetos informados nos caminhões que ainda não têm embarque
+const objetosColeta = d => d.embarques.reduce((a, e) => a + e.qtd, 0) + (d.caminhoes || []).filter(v => !v.embarques).reduce((a, v) => a + (v.objetos || 0), 0);
+function secaoCaminhoes(d) {
+  const c = d.coleta, cams = d.caminhoes || [], podeCam = pode('caminhao') && STATUS_CAMINHAO.includes(c.status);
+  if (!cams.length && !podeCam) return '';
+  const pal = cams.reduce((a, v) => a + v.paletes, 0), obj = objetosColeta(d);
+  const tabela = cams.length ? `<div class="scroll rounded-2xl border border-[var(--line)]"><table class="planilha">
+    <thead><tr><th style="text-align:left">${br(c.data)}</th><th>Horário da coleta</th><th>Paletes</th><th>Ocupação</th><th>Nº objetos postados</th>${podeCam ? '<th></th>' : ''}</tr></thead>
+    <tbody>${cams.map(v => `<tr class="transition-colors hover:bg-[var(--panel)]">
+      <td style="text-align:left"><b>Caminhão ${v.ordem}</b><span class="block text-xs text-[var(--mut)]">${esc(v.placa || '')}${v.motorista ? ' · ' + esc(v.motorista) : ''}</span></td>
+      <td>${v.horario}</td><td>${nf.format(v.paletes)}${v.capacidade ? `<span class="text-xs text-[var(--mut)]"> / ${v.capacidade}</span>` : ''}</td>
+      <td><span class="inline-flex min-w-[88px] items-center gap-2"><span class="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--panel)]"><span class="block h-full rounded-full ${v.ocupacao >= 100 ? 'bg-[#0b7a43]' : 'bg-[#e5007e]'}" style="width:${v.ocupacao}%"></span></span><b class="text-xs">${v.ocupacao}%</b></span></td>
+      <td>${v.objetos != null ? nf.format(v.objetos) : '<span class="text-[var(--mut)]">—</span>'}</td>
+      ${podeCam ? `<td><span class="inline-flex gap-1.5"><button type="button" class="${btnMini}" data-cam-editar="${v.id}">Editar</button>${v.embarques ? '' : `<button type="button" class="${btnMini} !text-[var(--mut)]" data-cam-excluir="${v.id}">Excluir</button>`}</span></td>` : ''}</tr>`).join('')}</tbody>
+    <tfoot><tr><td style="text-align:right">Total</td><td></td><td>${nf.format(pal)}</td><td></td><td>${obj ? nf.format(obj) : '—'}</td>${podeCam ? '<td></td>' : ''}</tr></tfoot>
+  </table></div>
+  <p class="m-0 mt-2 text-sm text-[var(--mut)]">${cams.length} caminh${cams.length > 1 ? 'ões' : 'ão'}${obj ? ` · média de ${nf.format(Math.round(obj / cams.length))} objetos por caminhão` : ''}</p>` : '';
+  return secao(`Caminhões <span class="text-sm font-normal text-[var(--mut)]">· ${cams.length ? cams.length + ' registrado' + (cams.length > 1 ? 's' : '') : 'nenhum ainda'}</span>`,
+    tabela + (podeCam ? formCaminhao(d) : ''), '', 60);
+}
+function formCaminhao(d, v) {
+  const f = d.frota || { veiculos: [], motoristas: [] }, prox = (d.caminhoes || []).length + 1;
+  if (!f.veiculos.length || !f.motoristas.length) return `<div class="mt-4 rounded-2xl border border-dashed border-[#e5007e]/50 p-4 text-sm">
+    Para registrar caminhões, cadastre antes ${!f.veiculos.length ? 'os caminhões' : ''}${!f.veiculos.length && !f.motoristas.length ? ' e ' : ''}${!f.motoristas.length ? 'os motoristas' : ''} na aba <a href="#frota" class="font-semibold text-[var(--deep)]">Frota</a>.</div>`;
+  const opV = f.veiculos.map(x => `<option value="${x.id}" data-cap="${x.capacidade || ''}"${v && v.veiculoId === x.id ? ' selected' : ''}>${esc(x.placa)}${x.descricao ? ' · ' + esc(x.descricao) : ''}${x.capacidade ? ` (${x.capacidade} paletes)` : ''}</option>`).join('');
+  const opM = f.motoristas.map(x => `<option value="${x.id}"${v && v.motoristaId === x.id ? ' selected' : ''}>${esc(x.nome)}</option>`).join('');
+  const lot = v ? v.ocupacao >= 100 : false;
+  return `<form id="formCaminhao" class="mt-4 grid items-end gap-3 rounded-2xl border border-dashed border-[#e5007e]/50 bg-[var(--soft)]/40 p-4 motion-safe:animate-subir [grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))]">
+    <p class="col-span-full m-0 font-semibold">${v ? `Editar caminhão ${v.ordem}` : `Registrar caminhão ${prox}`}</p>
+    <input type="hidden" name="cvId" value="${v ? v.id : ''}">
+    ${campo('Caminhão', `<select name="veiculoId" required class="${inp}"><option value="">Escolha…</option>${opV}</select>`)}
+    ${campo('Motorista', `<select name="motoristaId" required class="${inp}"><option value="">Escolha…</option>${opM}</select>`)}
+    ${campo('Horário da coleta', `<input name="horario" type="time" required class="${inp}" value="${v ? v.horario : ''}">`)}
+    ${campo('Quantidade de paletes', `<input name="paletes" type="number" min="0" max="100" required class="${inp}" inputmode="numeric" value="${v ? v.paletes : ''}">`)}
+    <label class="flex min-h-11 cursor-pointer items-center gap-3 self-end rounded-xl border border-[var(--line)] bg-[var(--bg)] px-4 text-[15px] transition has-[:checked]:border-[#0b7a43] has-[:checked]:ring-4 has-[:checked]:ring-[#0b7a43]/15">
+      <input type="checkbox" name="lotado" value="1" class="h-5 w-5 accent-[#0b7a43]"${lot ? ' checked' : ''}> Ocupação 100%</label>
+    ${campo('Ocupação (%)', `<input name="ocupacao" type="number" min="0" max="100" class="${inp}" inputmode="numeric" value="${v && !lot ? v.ocupacao : ''}" placeholder="calculada pelos paletes">`, 'campo-ocup' + (lot ? ' hidden' : ''))}
+    ${campo('Nº objetos (opcional)', `<input name="objetos" type="number" min="0" class="${inp}" inputmode="numeric" value="${v && v.objetosManifesto != null ? v.objetosManifesto : ''}" placeholder="se já souber">`)}
+    ${campo('Observação', `<input name="obs" maxlength="500" class="${inp}" value="${v ? esc(v.obs || '') : ''}">`, 'col-span-full')}
+    <div class="col-span-full flex flex-wrap gap-3"><button type="submit" class="${btn}">${v ? 'Salvar caminhão' : `Registrar caminhão ${prox}`}</button>${v ? `<button type="button" class="${btnSec}" data-cam-cancelar>Cancelar edição</button>` : ''}
+      <a href="#frota" class="self-center text-sm font-semibold text-[var(--deep)]">Cadastrar caminhão ou motorista</a></div>
+  </form>`;
+}
+function sugerirOcupacao(f) {
+  const opt = f.querySelector('[name=veiculoId]').selectedOptions[0], cap = opt && +opt.dataset.cap, p = +f.querySelector('[name=paletes]').value;
+  const o = f.querySelector('[name=ocupacao]');
+  if (cap && f.querySelector('[name=paletes]').value !== '' && !o.dataset.mexido) o.value = Math.min(100, Math.round(p / cap * 100));
+  if (cap && p >= cap) f.querySelector('[name=lotado]').checked = true;
+  f.querySelector('.campo-ocup').classList.toggle('hidden', f.querySelector('[name=lotado]').checked);
+}
+
+/* ---------- Protocolo (imagem) e anexos ---------- */
+const urlAnexo = a => a.url || ('api/anexos/' + a.id);
+function secaoAnexos(d) {
+  const c = d.coleta, cams = d.caminhoes || [], anexos = d.anexos || [];
+  if (!d.recursos || !d.recursos.frota) return '';
+  const podeProt = pode('protocolo') && cams.length && c.status !== 'cancelada';
+  if (!cams.length && !anexos.length && !pode('anexar')) return '';
+  const lista = anexos.length ? `<ul class="m-0 mt-4 grid list-none gap-3 p-0 [grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr))]">${anexos.map(a => `<li class="overflow-hidden rounded-2xl border border-[var(--line)] transition hover:-translate-y-0.5 hover:shadow-md">
+      <a href="${urlAnexo(a)}" target="_blank" rel="noopener" class="block text-inherit no-underline" data-anexo="${a.id}">
+        ${a.mime.startsWith('image/') ? `<img src="${urlAnexo(a)}" alt="${esc(a.nome)}" loading="lazy" class="block h-32 w-full bg-[var(--panel)] object-cover object-top">` : '<span class="grid h-32 place-items-center bg-[var(--panel)] text-2xl font-bold text-[var(--deep)]">PDF</span>'}
+        <span class="block p-3 text-sm"><b class="block">${a.tipo === 'protocolo' ? 'Protocolo da coleta' : esc(a.nome)}</b><span class="text-xs text-[var(--mut)]">${esc(a.enviadoPor || '')} · ${brD(a.enviadoEm)}</span></span></a></li>`).join('')}</ul>` : '';
+  const acoes = cams.length ? `<div class="flex flex-wrap gap-3">
+      <button type="button" class="${btnSec}" data-prot="ver">Ver imagem do protocolo</button>
+      ${podeProt ? `<button type="button" class="${btn}" data-prot="enviar">Enviar protocolo ao cliente</button>` : ''}
+      <button type="button" class="${btnSec}" data-prot="compartilhar">Compartilhar / baixar</button></div>` : '';
+  const upl = pode('anexar') && c.status !== 'cancelada' ? `<label class="mt-3 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-dashed border-[var(--line)] px-5 text-[15px] font-semibold text-[var(--deep)] transition hover:border-[#e5007e] hover:bg-[var(--soft)]">
+      <input type="file" id="anexoArquivo" accept="image/png,image/jpeg,image/webp,application/pdf" class="sr-only"> Anexar foto ou PDF (até 3 MB)</label>` : '';
+  return secao('Protocolo e anexos', `${acoes}<div id="protPrevia"></div>${upl}${lista}
+    ${!d.recursos.whatsapp && podeProt ? '<p class="m-0 mt-3 text-xs text-[var(--mut)]">O envio automático por WhatsApp ainda não está configurado: o cliente vê o protocolo aqui e no sino. Use “Compartilhar” para mandar pelo seu WhatsApp.</p>' : ''}`, '', 100);
+}
+
+async function gerarImagemProtocolo(d) {
+  try { await Promise.all(['700 40px Outfit', '600 20px Inter', '400 16px Inter'].map(f => document.fonts.load(f))); } catch {}
+  const c = d.coleta, cams = d.caminhoes || [], obj = objetosColeta(d), media = cams.length ? Math.round(obj / cams.length) : 0;
+  const W = 1240, linhas = Math.max(cams.length, 5), H = 96 + 30 + 120 + 30 + 52 + linhas * 44 + 44 + 60;
+  const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
+  const g = cv.getContext('2d'); g.scale(2, 2);
+  const navy = '#173a5e', fonte = (p, t) => { g.font = `${p} ${t}`; };
+  const texto = (t, x, y, al = 'left', cor = '#111') => { g.fillStyle = cor; g.textAlign = al; g.textBaseline = 'middle'; g.fillText(t, x, y); };
+  const ret = (x, y, w, h, r, cor) => { g.fillStyle = cor; g.beginPath(); g.roundRect(x, y, w, h, r); g.fill(); };
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+  // cabeçalho
+  g.fillStyle = '#e5007e'; g.fillRect(20, 20, 230, 76); fonte('700', '46px Outfit, Arial'); texto('wepink', 135, 57, 'center', '#fff');
+  g.fillStyle = navy; g.fillRect(250, 20, W - 270, 76); fonte('700', '30px Outfit, Arial'); texto('Controle de Coletas - AGF Morada dos Lagos', 250 + (W - 270) / 2, 58, 'center', '#fff');
+  // cartões
+  const yK = 126;
+  ret(60, yK, 520, 110, 22, '#1d6fb0'); ret(W - 580, yK, 520, 110, 22, '#fdca2e');
+  ret(92, yK + 30, 64, 52, 6, '#c8935a'); g.fillStyle = '#a8743f'; g.fillRect(92, yK + 30, 64, 14); g.fillStyle = '#e8c08f'; g.fillRect(118, yK + 30, 12, 52);
+  [[0, 18], [1, 30], [2, 44], [3, 58]].forEach(([i, h]) => { g.fillStyle = '#fff'; g.fillRect(W - 548 + i * 18, yK + 88 - h, 12, h); });
+  fonte('600', '20px Inter, Arial'); texto('Total de Objetos Postados', 190, yK + 36, 'left', '#fff'); texto('Média por Caminhão', W - 450, yK + 36, 'left', '#fff');
+  fonte('700', '40px Outfit, Arial'); texto(obj ? nf.format(obj) : '—', 190, yK + 78, 'left', '#fff'); texto(media ? nf.format(media) : '—', W - 450, yK + 78, 'left', '#fff');
+  // tabela
+  const yT = yK + 150, cols = [[20, 330, br(c.data) + (c.local ? ' · ' + c.local : ''), 'left'], [350, 230, 'Horário da Coleta'], [580, 230, 'Quantidade de Paletes'], [810, 170, 'Ocupação'], [980, W - 1000, 'Nº Objetos Postados']];
+  g.fillStyle = navy; g.fillRect(20, yT, W - 40, 52);
+  fonte('700', '20px Inter, Arial'); cols.forEach(([x, w, t, al]) => texto(t, al === 'left' ? x + 16 : x + w / 2, yT + 27, al === 'left' ? 'left' : 'center', '#fff'));
+  for (let i = 0; i < linhas; i++) {
+    const v = cams[i], y = yT + 52 + i * 44;
+    g.fillStyle = i % 2 ? '#ffffff' : '#f2f2f2'; g.fillRect(20, y, W - 40, 44);
+    g.strokeStyle = '#d0d0d0'; g.lineWidth = 1; cols.forEach(([x, w]) => g.strokeRect(x + .5, y + .5, w, 44));
+    if (!v) continue;
+    fonte('600', '18px Inter, Arial'); texto(`Caminhão ${v.ordem}`, 36, y + 22, 'left', '#111');
+    fonte('400', '14px Inter, Arial'); texto(`${v.placa || ''}${v.motorista ? ' · ' + v.motorista : ''}`, 160, y + 23, 'left', '#666');
+    fonte('400', '18px Inter, Arial');
+    texto(v.horario, 465, y + 22, 'center'); texto(nf.format(v.paletes), 695, y + 22, 'center'); texto(v.ocupacao + '%', 895, y + 22, 'center', v.ocupacao >= 100 ? '#0b7a43' : '#111');
+    texto(v.objetos != null ? nf.format(v.objetos) : '—', 980 + (W - 1000) / 2, y + 22, 'center');
+  }
+  const yF = yT + 52 + linhas * 44;
+  g.fillStyle = navy; g.fillRect(20, yF, W - 40, 44); fonte('700', '18px Inter, Arial');
+  texto(`Total · ${cams.length} caminh${cams.length > 1 ? 'ões' : 'ão'}`, 36, yF + 22, 'left', '#fff');
+  texto(nf.format(cams.reduce((a, v) => a + v.paletes, 0)) + ' paletes', 695, yF + 22, 'center', '#fff'); texto(obj ? nf.format(obj) : '—', 980 + (W - 1000) / 2, yF + 22, 'center', '#fff');
+  fonte('400', '14px Inter, Arial');
+  texto(`Coleta nº ${c.id}${c.local ? ' · Local: ' + c.local : ''} · gerado em ${new Date().toLocaleString('pt-BR')} pelo portal Wepink · AGF Morada dos Lagos`, 20, yF + 76, 'left', '#666');
+  const dataUrl = cv.toDataURL('image/png');
+  const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
+  return { dataUrl, blob, nome: `protocolo-coleta-${c.id}-${c.data}.png` };
+}
+async function acaoProtocolo(tipo) {
+  const d = colAberta && colAberta.d; if (!d) return;
+  const img = await gerarImagemProtocolo(d);
+  if (tipo === 'ver') {
+    $('#protPrevia').innerHTML = `<figure class="m-0 mt-4 overflow-hidden rounded-2xl border border-[var(--line)] motion-safe:animate-subir"><img src="${img.dataUrl}" alt="Imagem do protocolo da coleta nº ${d.coleta.id}" class="block w-full"></figure>`;
+    return;
+  }
+  if (tipo === 'compartilhar') {
+    const arq = new File([img.blob], img.nome, { type: 'image/png' });
+    try { if (navigator.canShare && navigator.canShare({ files: [arq] })) { await navigator.share({ files: [arq], title: `Protocolo da coleta nº ${d.coleta.id}` }); return; } } catch (e) { if (e.name === 'AbortError') return; }
+    const a = document.createElement('a'); a.href = img.dataUrl; a.download = img.nome; document.body.appendChild(a); a.click(); a.remove();
+    $('#protPrevia').innerHTML = `<figure class="m-0 mt-4 overflow-hidden rounded-2xl border border-[var(--line)] motion-safe:animate-subir"><img src="${img.dataUrl}" alt="Imagem do protocolo" class="block w-full"><figcaption class="p-3 text-xs text-[var(--mut)]">Se o download não começou, clique com o botão direito na imagem e escolha “Salvar imagem como”.</figcaption></figure>`;
+    return;
+  }
+  if (tipo === 'enviar') return abrirModal('Enviar protocolo ao cliente', `<img src="${img.dataUrl}" alt="" class="block w-full rounded-xl border border-[var(--line)]">
+    <p class="m-0 text-sm text-[var(--mut)]">A imagem fica salva na coleta, aparece no sino do cliente${d.recursos.whatsapp ? ' e vai por WhatsApp para quem cadastrou o número' : ''}.</p>`, 'Enviar ao cliente', async () => {
+      const r = await apiPost(`coletas/${d.coleta.id}/protocolo`, { imagem: img.dataUrl });
+      const w = r.whatsapp || {};
+      aviso(w.desativado ? 'Protocolo enviado ao cliente pelo portal.' : `Protocolo enviado. WhatsApp: ${w.enviados} enviado${w.enviados === 1 ? '' : 's'}${w.erros ? `, ${w.erros} com erro` : ''}.`);
+      await recarregarColeta(true); carregarColetasSeVisivel();
+    });
+}
+
+/* ---------- Frota (transporte) ---------- */
+let frota = { veiculos: [], motoristas: [] };
+async function carregarFrota() {
+  try {
+    frota = await api('frota');
+    const tag = a => `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${a ? ESTILO.ok : ESTILO.nada}">${a ? 'Ativo' : 'Inativo'}</span>`;
+    $('#veicBody').innerHTML = frota.veiculos.length ? frota.veiculos.map(v => `<tr class="${v.ativo ? '' : 'opacity-55'}"><td class="reg">${esc(v.placa)}</td><td>${esc(v.descricao || '—')}</td>
+      <td class="n">${v.capacidade ? v.capacidade + ' paletes' : '—'}</td><td>${tag(v.ativo)}</td><td><button type="button" class="${btnMini}" data-veic="${v.id}">Editar</button></td></tr>`).join('')
+      : '<tr><td colspan="5" class="vazio">Nenhum caminhão cadastrado.</td></tr>';
+    $('#motBody').innerHTML = frota.motoristas.length ? frota.motoristas.map(m => `<tr class="${m.ativo ? '' : 'opacity-55'}"><td><b>${esc(m.nome)}</b></td><td class="n">${m.telefone ? fmtTel(m.telefone) : '—'}</td>
+      <td>${esc(m.documento || '—')}</td><td>${tag(m.ativo)}</td><td><button type="button" class="${btnMini}" data-mot="${m.id}">Editar</button></td></tr>`).join('')
+      : '<tr><td colspan="5" class="vazio">Nenhum motorista cadastrado.</td></tr>';
+  } catch (e) { $('#veicBody').innerHTML = $('#motBody').innerHTML = `<tr><td colspan="5" class="vazio">${esc(e.message)}</td></tr>`; }
+}
+const fmtTel = t => { const d = String(t || '').replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, ''); return d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : d.length === 10 ? `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` : t; };
+function formVeiculo(v) {
+  abrirModal(v ? 'Editar caminhão' : 'Novo caminhão', `
+    ${campo('Placa', `<input name="placa" required maxlength="8" class="uppercase" value="${esc(v ? v.placa : '')}" placeholder="ABC1D23">`)}
+    ${campo('Descrição', `<input name="descricao" maxlength="120" value="${esc(v && v.descricao || '')}" placeholder="Ex.: Truck baú">`)}
+    ${campo('Capacidade (paletes)', `<input name="capacidade" type="number" min="1" max="100" inputmode="numeric" value="${v && v.capacidade || ''}">`)}
+    ${v ? `<label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="ativo" value="1" ${v.ativo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Caminhão ativo</label>` : ''}`,
+    v ? 'Salvar' : 'Cadastrar', async dd => { await apiPost('frota/veiculos', v ? { ...dd, id: v.id, ativo: dd.ativo === '1' } : dd); aviso(v ? 'Caminhão atualizado.' : 'Caminhão cadastrado.'); carregarFrota(); });
+}
+function formMotorista(m) {
+  abrirModal(m ? 'Editar motorista' : 'Novo motorista', `
+    ${campo('Nome', `<input name="nome" required maxlength="120" value="${esc(m ? m.nome : '')}">`)}
+    ${campo('Telefone / WhatsApp', `<input name="telefone" type="tel" maxlength="20" value="${m && m.telefone ? fmtTel(m.telefone) : ''}" placeholder="(21) 99999-8888">`)}
+    ${campo('CPF ou CNH (opcional)', `<input name="documento" maxlength="20" value="${esc(m && m.documento || '')}">`)}
+    ${m ? `<label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="ativo" value="1" ${m.ativo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Motorista ativo</label>` : ''}`,
+    m ? 'Salvar' : 'Cadastrar', async dd => { await apiPost('frota/motoristas', m ? { ...dd, id: m.id, ativo: dd.ativo === '1' } : dd); aviso(m ? 'Motorista atualizado.' : 'Motorista cadastrado.'); carregarFrota(); });
+}
+$('#novoVeiculo').onclick = () => formVeiculo(null);
+$('#novoMotorista').onclick = () => formMotorista(null);
+$('#veicBody').onclick = e => { const b = e.target.closest('[data-veic]'); if (b) formVeiculo(frota.veiculos.find(v => v.id === +b.dataset.veic)); };
+$('#motBody').onclick = e => { const b = e.target.closest('[data-mot]'); if (b) formMotorista(frota.motoristas.find(m => m.id === +b.dataset.mot)); };
+
+/* ---------- Minha conta (WhatsApp e senha) ---------- */
+$('#contaBt').onclick = async () => {
+  let c;
+  try { c = await api('minha-conta'); } catch (e) { return aviso(e.message); }
+  const blocoWa = c.whatsappCampos ? `
+    <div class="grid gap-3 rounded-2xl bg-[var(--panel)] p-4">
+      <p class="m-0 font-semibold">Avisos por WhatsApp</p>
+      <p class="m-0 text-sm text-[var(--mut)]">${{ cliente: 'Você recebe o protocolo de cada coleta e os objetos com problema.', transporte: 'Você recebe cada nova solicitação de coleta.', operacao: 'Você recebe cada caminhão coletado.', admin: 'Administradores não recebem avisos automáticos.' }[c.perfil]}</p>
+      ${campo('Seu número com DDD', `<input name="whatsapp" type="tel" maxlength="20" value="${c.whatsapp ? fmtTel(c.whatsapp) : ''}" placeholder="(21) 99999-8888">`)}
+      <label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="whatsappAtivo" value="1" ${c.whatsappAtivo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Quero receber os avisos por WhatsApp</label>
+      ${c.provedor ? `<button type="button" class="${btnSec}" id="waTeste">Enviar mensagem de teste</button>` : '<p class="m-0 text-xs text-[var(--mut)]">O envio automático ainda não foi ligado pelo administrador. Seu número fica salvo para quando for.</p>'}
+    </div>` : `<p class="m-0 text-sm text-[var(--mut)]">${c.doBanco ? 'Os avisos por WhatsApp ficam disponíveis depois que o administrador rodar o script de frota e WhatsApp.' : 'Este é o acesso de emergência do administrador: crie um usuário seu na aba Usuários para cadastrar WhatsApp e trocar senha.'}</p>`;
+  const blocoSenha = c.doBanco ? `<details class="rounded-2xl border border-[var(--line)] p-4"><summary class="cursor-pointer font-semibold">Trocar senha</summary><div class="mt-3 grid gap-3">
+      ${campo('Senha atual', '<input name="atual" type="password" autocomplete="current-password">')}${campo('Nova senha (mínimo 8 caracteres)', '<input name="nova" type="password" minlength="8" autocomplete="new-password">')}</div></details>` : '';
+  abrirModal('Minha conta', `<p class="m-0 text-[var(--mut)]">${esc(c.nome)} · ${esc(c.login)} · ${PERFIL_NOME[c.perfil]}</p>${blocoWa}${blocoSenha}`, 'Salvar', async dd => {
+    if (c.whatsappCampos) await apiPost('minha-conta', { whatsapp: dd.whatsapp, whatsappAtivo: dd.whatsappAtivo === '1' });
+    if (dd.atual || dd.nova) await apiPost('minha-senha', { atual: dd.atual, nova: dd.nova });
+    aviso('Dados salvos.');
+  });
+};
+$('#modalCorpo').addEventListener('click', async e => {
+  if (!e.target.closest('#waTeste')) return;
+  const b = e.target.closest('#waTeste'); b.disabled = true;
+  try {
+    const tel = $('#modalForm [name=whatsapp]').value;
+    await apiPost('minha-conta', { whatsapp: tel, whatsappAtivo: $('#modalForm [name=whatsappAtivo]').checked });
+    await apiPost('minha-conta/teste'); aviso('Mensagem de teste enviada. Confira seu WhatsApp.');
+  } catch (err) { $('#modalErro').textContent = err.message; } finally { b.disabled = false; }
 });
 
 /* ---------- Conferência de embarque ---------- */
@@ -1277,28 +1549,26 @@ async function salvarConferencia(f) {
 }
 
 /* ---------- Impressão do protocolo (modelo da planilha) ---------- */
-$('#colImprimir').onclick = () => {
+$('#colImprimir').onclick = async () => {
   const d = colAberta && colAberta.d; if (!d) return;
-  const c = d.coleta, total = d.embarques.reduce((a, e) => a + e.qtd, 0), n = d.embarques.length;
-  const navy = '#173a5e', linhas = Math.max(n, 12);
-  $('#protocolo').innerHTML = `<div style="font:14px/1.4 Inter,Arial,sans-serif;color:#111;padding:8px">
-    <div style="display:flex;align-items:stretch;-webkit-print-color-adjust:exact;print-color-adjust:exact">
-      <div style="background:#e5007e;color:#fff;font:700 34px Outfit,Arial;padding:14px 28px;display:flex;align-items:center">wepink</div>
-      <div style="background:${navy};color:#fff;font:700 24px Outfit,Arial;flex:1;display:flex;align-items:center;justify-content:center;padding:14px">Controle de Coletas - AGF Morada dos Lagos</div></div>
-    <div style="display:flex;gap:24px;margin:18px 0;-webkit-print-color-adjust:exact;print-color-adjust:exact">
-      <div style="flex:1;background:#1d6fb0;color:#fff;border-radius:14px;padding:14px 20px"><div>Total de objetos postados</div><div style="font:700 30px Outfit,Arial">${nf.format(total)}</div></div>
-      <div style="flex:1;background:#fdca2e;color:#222;border-radius:14px;padding:14px 20px"><div>Média por caminhão</div><div style="font:700 30px Outfit,Arial">${n ? nf.format(Math.round(total / n)) : '—'}</div></div></div>
-    <table style="width:100%;border-collapse:collapse;-webkit-print-color-adjust:exact;print-color-adjust:exact">
-      <thead><tr>${['Data', 'Nº do embarque', 'Quant. objetos', 'Horário da coleta', 'Conferência'].map(t => `<th style="background:${navy};color:#fff;padding:8px;border:1px solid #333">${t}</th>`).join('')}</tr></thead>
-      <tbody>${Array.from({ length: linhas }, (_, i) => { const e = d.embarques[i]; const td = v => `<td style="border:1px solid #333;padding:6px;text-align:center;background:${i % 2 ? '#fff' : '#f2f2f2'}">${v}</td>`;
-        return `<tr>${td(e && (i === 0 || e.data !== d.embarques[i - 1].data) ? br(e.data) : '')}${td(e ? esc(e.numero) : '')}${td(e ? nf.format(e.qtd) : '')}${td(e && e.horario || '')}${td(e ? (e.conferido ? (e.tudoOk ? 'OK' : e.pendencias + ' c/ problema') : '') : '')}</tr>`; }).join('')}</tbody>
-      <tfoot><tr><td colspan="2"></td><td style="background:${navy};color:#fff;font-weight:700;text-align:center;padding:6px;border:1px solid #333">Quant. TOTAL<br>${nf.format(total)}</td><td colspan="2"></td></tr></tfoot></table>
-    <p style="margin-top:14px;color:#555">Coleta nº ${c.id} · ${br(c.data)} · situação: ${ST_COL[c.status][0]}${c.motorista ? ' · motorista ' + esc(c.motorista) : ''}${c.placa ? ' · placa ' + esc(c.placa) : ''}</p>
-    ${d.pendencias.length ? `<p style="margin:10px 0 4px;font-weight:700">Objetos com problema</p><table style="width:100%;border-collapse:collapse">${d.pendencias.map(x => `<tr><td style="border:1px solid #999;padding:4px 6px;font-family:monospace">${esc(x.cod)}</td><td style="border:1px solid #999;padding:4px 6px">${esc(x.motivo)}</td><td style="border:1px solid #999;padding:4px 6px">Embarque ${esc(x.embarque)}</td><td style="border:1px solid #999;padding:4px 6px">${x.status}</td></tr>`).join('')}</table>` : ''}
+  const c = d.coleta, cams = d.caminhoes || [];
+  const navy = '#173a5e', th = t => `<th style="background:${navy};color:#fff;padding:6px;border:1px solid #333">${t}</th>`, td = v => `<td style="border:1px solid #999;padding:5px 6px;text-align:center">${v}</td>`;
+  let topo = '';
+  if (cams.length) topo = `<img src="${(await gerarImagemProtocolo(d)).dataUrl}" alt="" style="width:100%;display:block">`;
+  else {
+    const total = d.embarques.reduce((a, e) => a + e.qtd, 0);
+    topo = `<div style="display:flex;-webkit-print-color-adjust:exact;print-color-adjust:exact"><div style="background:#e5007e;color:#fff;font:700 34px Outfit,Arial;padding:14px 28px">wepink</div>
+      <div style="background:${navy};color:#fff;font:700 24px Outfit,Arial;flex:1;display:flex;align-items:center;justify-content:center">Controle de Coletas - AGF Morada dos Lagos</div></div>
+      <p style="font:700 20px Outfit,Arial;margin:16px 0">Coleta nº ${c.id} · ${br(c.data)}${c.local ? ' · ' + esc(c.local) : ''} · ${nf.format(total)} objetos</p>`;
+  }
+  const emb = d.embarques.length ? `<p style="margin:18px 0 6px;font-weight:700">Embarques</p><table style="width:100%;border-collapse:collapse;-webkit-print-color-adjust:exact;print-color-adjust:exact">
+    <tr>${['Data', cams.length ? 'Caminhão' : null, 'Nº do embarque', 'Quant. objetos', 'Horário da coleta', 'Conferência'].filter(Boolean).map(th).join('')}</tr>
+    ${d.embarques.map(e => `<tr>${td(br(e.data))}${cams.length ? td((cams.find(v => v.id === e.caminhaoId) || {}).ordem || '—') : ''}${td(esc(e.numero))}${td(nf.format(e.qtd))}${td(e.horario || '')}${td(e.conferido ? (e.tudoOk ? 'OK' : e.pendencias + ' c/ problema') : '')}</tr>`).join('')}</table>` : '';
+  const pend = d.pendencias.length ? `<p style="margin:18px 0 6px;font-weight:700">Objetos com problema</p><table style="width:100%;border-collapse:collapse">${d.pendencias.map(x => `<tr><td style="border:1px solid #999;padding:4px 6px;font-family:monospace">${esc(x.cod)}</td><td style="border:1px solid #999;padding:4px 6px">${esc(x.motivo)}</td><td style="border:1px solid #999;padding:4px 6px">Embarque ${esc(x.embarque)}</td><td style="border:1px solid #999;padding:4px 6px">${x.status}</td></tr>`).join('')}</table>` : '';
+  $('#protocolo').innerHTML = `<div style="font:13px/1.4 Inter,Arial,sans-serif;color:#111;padding:8px">${topo}${emb}${pend}
     <div style="display:flex;gap:40px;margin-top:48px">${['Transporte', 'Operação AGF', 'Cliente Wepink'].map(t => `<div style="flex:1;border-top:1px solid #333;padding-top:4px;text-align:center">${t}</div>`).join('')}</div></div>`;
   document.body.classList.add('imprimindo');
-  try { window.print(); } catch { aviso('Use Ctrl+P para imprimir.'); }
-  setTimeout(() => document.body.classList.remove('imprimindo'), 500);
+  setTimeout(() => { try { window.print(); } catch { aviso('Use Ctrl+P para imprimir.'); } setTimeout(() => document.body.classList.remove('imprimindo'), 500); }, 80);
 };
 
 /* ---------- Notificações ---------- */
@@ -1323,7 +1593,7 @@ async function atualizarNotificacoes() {
     const n = $('#sinoN'); n.textContent = r.total > 9 ? '9+' : r.total; n.classList.toggle('hidden', !r.total);
     if (r.total > ultimoTotal && ultimoTotal >= 0) { sino.classList.add('motion-safe:animate-brilho'); setTimeout(() => sino.classList.remove('motion-safe:animate-brilho'), 2000); }
     ultimoTotal = r.total;
-    const cor = { pendencia: 'bg-[var(--warn)]', ciente: 'bg-[#e5007e]', solicitada: 'bg-[#e5007e]', agendada: 'bg-[#e5007e]', coletada: 'bg-[var(--ink)]', em_tratamento: 'bg-[var(--ink)]' };
+    const cor = { protocolo: 'bg-[#0b7a43]', pendencia: 'bg-[var(--warn)]', ciente: 'bg-[#e5007e]', solicitada: 'bg-[#e5007e]', agendada: 'bg-[#e5007e]', coletada: 'bg-[var(--ink)]', em_tratamento: 'bg-[var(--ink)]' };
     $('#notifLista').innerHTML = r.itens.length ? r.itens.map(x => `<button type="button" data-col="${x.coletaId}" class="flex w-full items-start gap-3 border-0 border-b border-[var(--line)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition hover:bg-[var(--panel)]">
       <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${cor[x.tipo] || 'bg-[#e5007e]'}"></span><span class="text-sm"><span class="block font-semibold">${esc(x.texto)}</span><span class="text-xs text-[var(--mut)]">Coleta de ${br(x.data)}</span></span></button>`).join('')
       : `<p class="m-0 px-4 py-6 text-center text-sm text-[var(--mut)]">${r.inativo ? 'Área de coletas ainda não ativada no banco.' : 'Tudo em dia por aqui.'}</p>`;
@@ -1331,12 +1601,12 @@ async function atualizarNotificacoes() {
 }
 
 /* ---------- Usuários (admin) ---------- */
-let usuarios = [];
+let usuarios = [], usuWa = false;
 async function carregarUsuarios() {
   $('#perfisInfo').innerHTML = Object.keys(PERFIL_NOME).map(p => `<div class="rounded-2xl bg-[var(--panel)] p-4"><p class="m-0 font-semibold">${PERFIL_NOME[p]}</p><p class="m-0 mt-1 text-sm text-[var(--mut)]">${PERFIL_DESC[p]}</p></div>`).join('');
   try {
-    usuarios = (await api('usuarios')).usuarios;
-    $('#usuBody').innerHTML = usuarios.length ? usuarios.map(u => `<tr class="${u.ativo ? '' : 'opacity-55'}"><td><b>${esc(u.nome)}</b>${u.email ? `<br><span class="text-sm text-[var(--mut)]">${esc(u.email)}</span>` : ''}</td>
+    const ru = await api('usuarios'); usuarios = ru.usuarios; usuWa = !!ru.whatsappCampos;
+    $('#usuBody').innerHTML = usuarios.length ? usuarios.map(u => `<tr class="${u.ativo ? '' : 'opacity-55'}"><td><b>${esc(u.nome)}</b>${u.email ? `<br><span class="text-sm text-[var(--mut)]">${esc(u.email)}</span>` : ''}${u.whatsapp ? `<br><span class="text-sm ${u.whatsappAtivo ? 'text-[var(--ok)]' : 'text-[var(--mut)]'}">WhatsApp ${fmtTel(u.whatsapp)}${u.whatsappAtivo ? '' : ' (avisos desligados)'}</span>` : ''}</td>
       <td class="reg">${esc(u.login)}</td><td>${PERFIL_NOME[u.perfil]}</td><td>${u.ativo ? 'Ativo' : 'Desativado'}</td><td class="n">${u.ultimoAcesso ? brD(u.ultimoAcesso) : 'Nunca entrou'}</td>
       <td><button type="button" class="${btnMini}" data-editar="${u.id}">Editar</button></td></tr>`).join('')
       : '<tr><td colspan="6" class="vazio">Nenhum usuário cadastrado. Crie os logins do cliente, do transporte e da operação.</td></tr>';
@@ -1350,19 +1620,19 @@ function formUsuario(u) {
     ${campo('E-mail (opcional)', `<input name="email" type="email" maxlength="160" value="${esc(u && u.email || '')}">`)}
     ${campo('Perfil', `<select name="perfil">${ops}</select>`)}
     ${campo(u ? 'Nova senha (deixe em branco para manter)' : 'Senha inicial (mínimo 8 caracteres)', `<input name="senha" type="text" minlength="8" autocomplete="new-password" ${u ? '' : 'required'}>`)}
+    ${usuWa ? campo('WhatsApp (opcional)', `<input name="whatsapp" type="tel" maxlength="20" value="${u && u.whatsapp ? fmtTel(u.whatsapp) : ''}" placeholder="(21) 99999-8888">`)
+      + `<label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="whatsappAtivo" value="1" ${u && u.whatsappAtivo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Enviar avisos por WhatsApp</label>` : ''}
     ${u ? `<label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="ativo" value="1" ${u.ativo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Usuário ativo</label>` : ''}`,
     u ? 'Salvar' : 'Criar usuário', async d => {
-      await apiPost('usuarios', u ? { ...d, id: u.id, ativo: d.ativo === '1' } : d);
+      await apiPost('usuarios', { ...d, ...(u ? { id: u.id, ativo: d.ativo === '1' } : {}), whatsappAtivo: d.whatsappAtivo === '1' });
       aviso(u ? 'Usuário atualizado.' : `Usuário ${d.login} criado. Passe o login e a senha para a pessoa.`); carregarUsuarios();
     });
 }
 $('#novoUsuario').onclick = () => formUsuario(null);
 $('#usuBody').onclick = e => { const b = e.target.closest('[data-editar]'); if (b) formUsuario(usuarios.find(u => u.id === +b.dataset.editar)); };
-$('#senhaBt').onclick = () => abrirModal('Trocar minha senha', `${campo('Senha atual', '<input name="atual" type="password" required autocomplete="current-password">')}${campo('Nova senha (mínimo 8 caracteres)', '<input name="nova" type="password" required minlength="8" autocomplete="new-password">')}`,
-  'Trocar senha', async d => { await apiPost('minha-senha', d); aviso('Senha alterada.'); });
 
 /* ---------- Demonstração da área de coletas ---------- */
-const DEMO_COL = { coletas: [], embarques: [], pendencias: [], historico: [], usuarios: [], seq: { c: 0, e: 0, p: 0, u: 0 } };
+const DEMO_COL = { coletas: [], embarques: [], pendencias: [], historico: [], usuarios: [], veiculos: [], motoristas: [], caminhoes: [], anexos: [], conta: {}, seq: { c: 0, e: 0, p: 0, u: 0, v: 0, m: 0, cv: 0, a: 0 } };
 const MOTIVOS_DEMO = ['Objeto não localizado na carga', 'Embalagem avariada', 'Sem etiqueta', 'Etiqueta ilegível ou danificada', 'Etiqueta duplicada', 'Endereço incompleto ou CEP inválido', 'Peso ou dimensões fora do padrão', 'Conteúdo proibido ou restrito', 'Objeto sem registro no sistema', 'Outro'];
 const agoraTxt = (dia, h) => (dia || hoje) + ' ' + (h ? h + ':00' : new Date().toTimeString().slice(0, 8));
 let histN = 0;
@@ -1371,8 +1641,14 @@ function semearDemo() {
   const U = (login, nome, perfil) => DEMO_COL.usuarios.push({ id: ++DEMO_COL.seq.u, login, nome, email: '', perfil, ativo: true, criadoEm: agoraTxt(addD(hoje, -40)), ultimoAcesso: agoraTxt(addD(hoje, -Math.floor(Math.random() * 3)), '09:12') });
   U('wepink.logistica', 'Camila (Wepink)', 'cliente'); U('transporte.agf', 'Rogério (Transporte)', 'transporte'); U('operacao.agf', 'Patrícia (Operação)', 'operacao'); U('admin', 'Administrador AGF', 'admin');
   const quem = p => DEMO_COL.usuarios.find(u => u.perfil === p);
+  [['RJX4C21', 'Truck baú', 12], ['KPT8B33', 'Carreta baú', 28], ['LQM2F90', 'Toco baú', 9], ['RIO5A17', 'VUC', 4]].forEach(([placa, descricao, capacidade]) => DEMO_COL.veiculos.push({ id: ++DEMO_COL.seq.v, placa, descricao, capacidade, ativo: true }));
+  [['Rogério Lima', '5521998765432'], ['Marcos Souza', '5521997654321'], ['Anderson Reis', null]].forEach(([nome, telefone]) => DEMO_COL.motoristas.push({ id: ++DEMO_COL.seq.m, nome, telefone, documento: null, ativo: true }));
+  const cam = (c, lista) => lista.forEach(([vi, mi, horario, paletes, ocup]) => { const v = DEMO_COL.veiculos[vi], mo = DEMO_COL.motoristas[mi];
+    DEMO_COL.caminhoes.push({ id: ++DEMO_COL.seq.cv, coletaId: c.id, ordem: DEMO_COL.caminhoes.filter(x => x.coletaId === c.id).length + 1, veiculoId: v.id, motoristaId: mo.id, placa: v.placa, motorista: mo.nome, horario, paletes, ocupacao: ocup ?? Math.min(100, Math.round(paletes / v.capacidade * 100)), objetosManifesto: null, obs: null }); });
+  const ligar = c => { const cs = DEMO_COL.caminhoes.filter(x => x.coletaId === c.id); DEMO_COL.embarques.filter(e => e.coletaId === c.id).forEach((e, i) => { const v = cs[Math.min(cs.length - 1, Math.floor(i * cs.length / DEMO_COL.embarques.filter(x => x.coletaId === c.id).length))]; if (v) { e.caminhaoId = v.id; e.horario = v.horario; } }); };
   const lotes = [[300217, 330], [332292, 163], [300221, 235], [323644, 272], [323640, 179], [300218, 280], [351539, 254], [323641, 218]];
-  const nova = (dia, status, extra = {}) => { const c = { id: ++DEMO_COL.seq.c, data: dia, status, previstos: null, obsCliente: null, solicitadoPor: quem('cliente').id, solicitadoEm: agoraTxt(addD(dia, -1), '16:40'), horarioPrevisto: null, motorista: null, placa: null, horario: null, obsTransporte: null, obsOperacao: null, ...extra }; DEMO_COL.coletas.push(c); hd(c.id, quem('cliente'), 'Coleta solicitada', `Data ${br(dia)}`, c.solicitadoEm); return c; };
+  const LOC = ['Galpão', 'SLV', 'SAVI CD'];
+  const nova = (dia, status, extra = {}) => { const c = { id: ++DEMO_COL.seq.c, data: dia, status, local: LOC[DEMO_COL.seq.c % 3], previstos: null, obsCliente: null, solicitadoPor: quem('cliente').id, solicitadoEm: agoraTxt(addD(dia, -1), '16:40'), horarioPrevisto: null, motorista: null, placa: null, horario: null, obsTransporte: null, obsOperacao: null, ...extra }; DEMO_COL.coletas.push(c); hd(c.id, quem('cliente'), 'Coleta solicitada', `Data ${br(dia)}`, c.solicitadoEm); return c; };
   const hd = (cid, u, acao, detalhe, em) => DEMO_COL.historico.push({ n: ++histN, coletaId: cid, usuario: u.nome, perfil: u.perfil, acao, detalhe, em: em || agoraTxt() });
   const emb = (c, n, conf) => lotes.slice(0, n).forEach(([num, q], i) => {
     const e = { id: ++DEMO_COL.seq.e, coletaId: c.id, data: c.data, numero: String(num + c.id * 7), qtd: q - (c.id * 13) % 40, horario: c.horario, conferido: !!conf, tudoOk: true, tratados: null, obs: null, conferidoEm: null };
@@ -1381,18 +1657,18 @@ function semearDemo() {
   for (let k = 20; k >= 3; k -= (k > 10 ? 4 : 3)) {
     const dia = addD(hoje, -k); if (parse(dia).getDay() === 0) continue;
     const c = nova(dia, 'concluida', { horario: '15:' + String(10 + k).slice(-2), motorista: 'Rogério Lima', placa: 'RJX4C21', finalizadoEm: agoraTxt(addD(dia, 1), '10:20') });
-    emb(c, 6 + (k % 3), true);
+    emb(c, 6 + (k % 3), true); cam(c, [[0, 0, c.horario, 12], [2, 1, '18:' + String(20 + k).slice(-2), 8 + (k % 2)]]); ligar(c);
     hd(c.id, quem('transporte'), 'Carga coletada', `Horário ${c.horario} · Motorista Rogério Lima`, agoraTxt(dia, c.horario));
     hd(c.id, quem('operacao'), 'Tratamento finalizado', `${DEMO_COL.embarques.filter(e => e.coletaId === c.id).length} embarques`, c.finalizadoEm);
   }
   const p1 = nova(addD(hoje, -2), 'pendente', { horario: '15:40', motorista: 'Rogério Lima', placa: 'RJX4C21', finalizadoEm: agoraTxt(addD(hoje, -1), '11:05') });
-  emb(p1, 8, true);
+  emb(p1, 8, true); cam(p1, [[0, 0, '10:49', 10], [1, 1, '18:00', 12, 43], [2, 2, '19:50', 9], [3, 0, '23:45', 3, 75], [3, 1, '02:13', 3, 75]]); ligar(p1);
   const e1 = DEMO_COL.embarques.filter(e => e.coletaId === p1.id)[2]; e1.tudoOk = false; e1.tratados = e1.qtd - 3;
   [['AE164175886BR', 'Embalagem avariada'], ['AE188562111BR', 'Etiqueta ilegível ou danificada'], ['AE190044257BR', 'Objeto não localizado na carga']].forEach(([cod, motivo]) =>
     DEMO_COL.pendencias.push({ id: ++DEMO_COL.seq.p, coletaId: p1.id, embarqueId: e1.id, cod, motivo, obs: null, status: 'aberta', criadoEm: agoraTxt(addD(hoje, -1), '10:58') }));
   hd(p1.id, quem('operacao'), 'Tratamento finalizado com pendências', '3 objetos com problema, cliente notificado', p1.finalizadoEm);
   const t = nova(addD(hoje, -1), 'em_tratamento', { horario: '16:05', motorista: 'Rogério Lima', placa: 'RJX4C21' });
-  emb(t, 5, false); DEMO_COL.embarques.filter(e => e.coletaId === t.id).slice(0, 2).forEach(e => { e.conferido = true; });
+  emb(t, 5, false); cam(t, [[0, 0, '16:05', 12], [2, 1, '19:30', 7]]); ligar(t); DEMO_COL.embarques.filter(e => e.coletaId === t.id).slice(0, 2).forEach(e => { e.conferido = true; });
   hd(t.id, quem('transporte'), 'Carga coletada', 'Horário 16:05', agoraTxt(addD(hoje, -1), '16:05'));
   nova(hoje, 'agendada', { previstos: 1900, horarioPrevisto: '15:30', motorista: 'Rogério Lima', placa: 'RJX4C21', obsCliente: 'Carga pronta a partir das 14h, doca 2' });
   nova(addD(hoje, 1), 'solicitada', { previstos: 2100 });
@@ -1405,28 +1681,34 @@ function demoCol(met, rota, q, b) {
   const h = (cid, acao, detalhe) => D.historico.push({ n: ++histN, coletaId: cid, usuario: eu.nome, perfil: eu.perfil, acao, detalhe, em: agoraTxt() });
   const col = id => { const c = D.coletas.find(x => x.id === +id); if (!c) throw new Error('Coleta não encontrada.'); return c; };
   const resumo = c => { const es = D.embarques.filter(e => e.coletaId === c.id), ps = D.pendencias.filter(p => p.coletaId === c.id);
-    return { ...c, solicitante: D.usuarios.find(u => u.id === c.solicitadoPor)?.nome, embarques: es.length, objetos: es.reduce((a, e) => a + e.qtd, 0), conferidos: es.filter(e => e.conferido).length, pendencias: ps.length, pendAbertas: ps.filter(p => p.status !== 'resolvida').length }; };
+    const cs = D.caminhoes.filter(v => v.coletaId === c.id);
+    return { ...c, solicitante: D.usuarios.find(u => u.id === c.solicitadoPor)?.nome, embarques: es.length, objetos: es.reduce((a, e) => a + e.qtd, 0) + cs.filter(v => !es.some(e => e.caminhaoId === v.id)).reduce((a, v) => a + (v.objetosManifesto || 0), 0), conferidos: es.filter(e => e.conferido).length, pendencias: ps.length, pendAbertas: ps.filter(p => p.status !== 'resolvida').length,
+      caminhoes: cs.length, paletes: cs.reduce((a, v) => a + v.paletes, 0), protocolos: D.anexos.filter(a => a.coletaId === c.id && a.tipo === 'protocolo').length }; };
   try {
     if (met === 'GET') {
       if (rota === 'notificacoes') {
-        const meus = { cliente: ['pendencia'], transporte: ['solicitada', 'agendada'], operacao: ['coletada', 'em_tratamento', 'ciente'], admin: ['pendencia', 'ciente', 'solicitada', 'agendada', 'coletada', 'em_tratamento'] }[st.me.perfil];
+        const meus = { cliente: ['pendencia', 'protocolo'], transporte: ['solicitada', 'agendada'], operacao: ['coletada', 'em_tratamento', 'ciente'], admin: ['pendencia', 'ciente', 'solicitada', 'agendada', 'coletada', 'em_tratamento'] }[st.me.perfil];
         const itens = [];
         for (const c of D.coletas) {
           const ab = D.pendencias.filter(p => p.coletaId === c.id && p.status === 'aberta').length, ci = D.pendencias.filter(p => p.coletaId === c.id && p.status === 'ciente').length;
           if (ab && meus.includes('pendencia')) itens.push({ coletaId: c.id, tipo: 'pendencia', data: c.data, texto: `Coleta nº ${c.id}: ${ab} objeto${ab > 1 ? 's' : ''} com problema no tratamento` });
           if (ci && meus.includes('ciente')) itens.push({ coletaId: c.id, tipo: 'ciente', data: c.data, texto: `Coleta nº ${c.id}: cliente deu ciência de ${ci} pendência${ci > 1 ? 's' : ''}` });
+          if (meus.includes('protocolo') && D.anexos.some(a => a.coletaId === c.id && a.tipo === 'protocolo')) itens.push({ coletaId: c.id, tipo: 'protocolo', data: c.data, texto: `Coleta nº ${c.id}: protocolo da coleta disponível` });
           if (meus.includes(c.status)) itens.push({ coletaId: c.id, tipo: c.status, data: c.data, texto: { solicitada: `Coleta nº ${c.id} solicitada, aguardando o transporte`, agendada: `Coleta nº ${c.id} agendada, confirme quando coletar`, coletada: `Coleta nº ${c.id} chegou, lance os embarques`, em_tratamento: `Coleta nº ${c.id} em tratamento, confira e finalize` }[c.status] });
         }
         itens.sort((a, b) => b.data.localeCompare(a.data));
         return Promise.resolve({ total: itens.length, itens });
       }
-      if (rota === 'usuarios') { exige('usuarios'); return Promise.resolve({ usuarios: D.usuarios }); }
+      if (rota === 'usuarios') { exige('usuarios'); return Promise.resolve({ usuarios: D.usuarios, whatsappCampos: true }); }
+      if (rota === 'frota') { exige('frota'); return Promise.resolve({ veiculos: D.veiculos, motoristas: D.motoristas }); }
+      if (rota === 'minha-conta') return Promise.resolve({ nome: st.me.nome, login: 'demo', perfil: st.me.perfil, provedor: null, doBanco: true, whatsappCampos: true, whatsapp: D.conta.whatsapp || null, whatsappAtivo: !!D.conta.ativo });
       if (rota === 'coletas') {
         let l = D.coletas.map(resumo);
         l = q.status === 'abertas' ? l.filter(c => !['concluida', 'cancelada'].includes(c.status)) : l.filter(c => c.data >= q.ini && c.data <= q.fim && (!q.status || c.status === q.status));
         l.sort((a, b) => b.data.localeCompare(a.data) || b.id - a.id);
-        const v = l.filter(c => c.status !== 'cancelada'), obj = v.reduce((a, c) => a + c.objetos, 0), emb = v.reduce((a, c) => a + c.embarques, 0);
-        return Promise.resolve({ ini: q.ini, fim: q.fim, coletas: l, kpis: { coletas: v.length, objetos: obj, embarques: emb, media: emb ? Math.round(obj / emb) : 0, pendAbertas: v.reduce((a, c) => a + c.pendAbertas, 0) } });
+        const v = l.filter(c => c.status !== 'cancelada'), obj = v.reduce((a, c) => a + c.objetos, 0), emb = v.reduce((a, c) => a + c.embarques, 0), cams = v.reduce((a, c) => a + c.caminhoes, 0);
+        return Promise.resolve({ ini: q.ini, fim: q.fim, coletas: l, frota: true, locais: ['Galpão', 'SLV', 'SAVI CD'], kpis: { coletas: v.length, objetos: obj, embarques: emb, caminhoes: cams, paletes: v.reduce((a, c) => a + c.paletes, 0),
+          media: (cams || emb) ? Math.round(obj / (cams || emb)) : 0, mediaPor: cams ? 'caminhao' : 'embarque', pendAbertas: v.reduce((a, c) => a + c.pendAbertas, 0) } });
       }
       const m = /^coletas\/(\d+)$/.exec(rota);
       if (m) {
@@ -1434,14 +1716,19 @@ function demoCol(met, rota, q, b) {
         const embarques = D.embarques.filter(e => e.coletaId === c.id).map(e => ({ ...e, pendencias: D.pendencias.filter(p => p.embarqueId === e.id).length }));
         const pendencias = D.pendencias.filter(p => p.coletaId === c.id).map(p => ({ ...p, embarque: D.embarques.find(e => e.id === p.embarqueId).numero }));
         const historico = D.historico.filter(x => x.coletaId === c.id).sort((a, b) => b.em.localeCompare(a.em) || b.n - a.n);
-        return new Promise(ok => setTimeout(() => ok({ coleta: { ...c, solicitante: D.usuarios.find(u => u.id === c.solicitadoPor)?.nome, coletadoPor: c.horario ? 'Rogério (Transporte)' : null }, embarques, pendencias, historico, motivos: MOTIVOS_DEMO }), 250));
+        const caminhoes = D.caminhoes.filter(v => v.coletaId === c.id).map(v => { const es = D.embarques.filter(e => e.caminhaoId === v.id), ve = D.veiculos.find(x => x.id === v.veiculoId) || {};
+          return { ...v, capacidade: ve.capacidade, descricao: ve.descricao, embarques: es.length, objetos: es.length ? es.reduce((a, e) => a + e.qtd, 0) : v.objetosManifesto }; });
+        const anexos = D.anexos.filter(a => a.coletaId === c.id).sort((a, b) => b.enviadoEm.localeCompare(a.enviadoEm));
+        return new Promise(ok => setTimeout(() => ok({ coleta: { ...c, solicitante: D.usuarios.find(u => u.id === c.solicitadoPor)?.nome, coletadoPor: c.horario ? 'Rogério (Transporte)' : null }, embarques, pendencias, historico,
+          caminhoes, anexos, frota: { veiculos: D.veiculos.filter(v => v.ativo), motoristas: D.motoristas.filter(m => m.ativo) }, recursos: { frota: true, whatsapp: false }, motivos: MOTIVOS_DEMO }), 250));
       }
     }
     if (met === 'POST') {
       let m;
       if (rota === 'coletas') { exige('solicitar'); if (!b.data) throw new Error('Informe a data da coleta.');
-        const c = { id: ++D.seq.c, data: b.data, status: 'solicitada', previstos: b.previstos ? +b.previstos : null, obsCliente: b.obs || null, solicitadoPor: st.me.perfil === 'cliente' ? 1 : 4, solicitadoEm: agoraTxt() };
-        D.coletas.push(c); h(c.id, 'Coleta solicitada', `Data ${br(c.data)}`); return Promise.resolve({ id: c.id }); }
+        if (!b.local) throw new Error('Informe o local da coleta: Galpão, SLV, SAVI CD.');
+        const c = { id: ++D.seq.c, data: b.data, local: b.local, status: 'solicitada', previstos: b.previstos ? +b.previstos : null, obsCliente: b.obs || null, solicitadoPor: st.me.perfil === 'cliente' ? 1 : 4, solicitadoEm: agoraTxt() };
+        D.coletas.push(c); h(c.id, 'Coleta solicitada', `Data ${br(c.data)} · Local ${c.local}`); return Promise.resolve({ id: c.id }); }
       if ((m = /^coletas\/(\d+)\/([a-z-]+)$/.exec(rota))) {
         const c = col(m[1]), a = m[2];
         if (a === 'agendar') { exige('agendar'); if (!['solicitada', 'agendada'].includes(c.status)) throw new Error('Esta coleta não pode mais ser agendada.'); Object.assign(c, { status: 'agendada', horarioPrevisto: b.horarioPrevisto, motorista: b.motorista || c.motorista, placa: (b.placa || c.placa || '').toUpperCase() }); h(c.id, 'Coleta agendada', `Previsão ${b.horarioPrevisto}`); }
@@ -1450,11 +1737,24 @@ function demoCol(met, rota, q, b) {
         else if (a === 'embarques') { exige('embarque'); if (!['coletada', 'em_tratamento'].includes(c.status)) throw new Error('Aguardando o transporte confirmar a coleta.');
           if (!b.numero || b.qtd === '') throw new Error('Informe número e quantidade.');
           if (D.embarques.some(e => e.coletaId === c.id && e.numero === b.numero)) throw new Error(`O embarque ${b.numero} já foi lançado nesta coleta.`);
-          D.embarques.push({ id: ++D.seq.e, coletaId: c.id, data: b.data || c.data, numero: b.numero, qtd: +b.qtd, horario: b.horario || c.horario, conferido: false }); c.status = 'em_tratamento'; h(c.id, 'Embarque lançado', `Nº ${b.numero} · ${b.qtd} objetos`); }
+          D.embarques.push({ id: ++D.seq.e, coletaId: c.id, data: b.data || c.data, numero: b.numero, qtd: +b.qtd, horario: b.horario || c.horario, conferido: false, caminhaoId: b.caminhaoId ? +b.caminhaoId : null }); c.status = 'em_tratamento'; h(c.id, 'Embarque lançado', `Nº ${b.numero} · ${b.qtd} objetos`); }
         else if (a === 'finalizar') { exige('finalizar'); const es = D.embarques.filter(e => e.coletaId === c.id); if (!es.length) throw new Error('Lance ao menos um embarque.');
           const falta = es.filter(e => !e.conferido).length; if (falta) throw new Error(`Ainda falta conferir ${falta} embarque(s).`);
           const pend = D.pendencias.filter(p => p.coletaId === c.id && p.status !== 'resolvida').length; c.status = pend ? 'pendente' : 'concluida'; c.finalizadoEm = agoraTxt(); c.obsOperacao = b.obs || null;
           h(c.id, pend ? 'Tratamento finalizado com pendências' : 'Tratamento finalizado', `${es.length} embarques` + (pend ? ` · ${pend} com problema, cliente notificado` : '')); }
+        else if (a === 'caminhoes') { exige('caminhao'); if (!['solicitada', 'agendada', 'coletada', 'em_tratamento'].includes(c.status)) throw new Error('Esta coleta já foi finalizada.');
+          const ve = D.veiculos.find(x => x.id === +b.veiculoId), mo = D.motoristas.find(x => x.id === +b.motoristaId);
+          if (!ve) throw new Error('Escolha o caminhão.'); if (!mo) throw new Error('Escolha o motorista.'); if (!b.horario) throw new Error('Informe o horário da coleta.'); if (b.paletes === '') throw new Error('Informe a quantidade de paletes.');
+          const pal = +b.paletes, oc = b.lotado ? 100 : b.ocupacao !== '' ? +b.ocupacao : Math.min(100, Math.round(pal / ve.capacidade * 100));
+          const dados = { veiculoId: ve.id, motoristaId: mo.id, placa: ve.placa, motorista: mo.nome, horario: b.horario, paletes: pal, ocupacao: oc, objetosManifesto: b.objetos === '' ? null : +b.objetos, obs: b.obs || null };
+          if (b.cvId) { const v = D.caminhoes.find(x => x.id === +b.cvId); Object.assign(v, dados); h(c.id, `Caminhão ${v.ordem} alterado`, `${ve.placa} · ${mo.nome} · ${b.horario} · ${pal} paletes · ocupação ${oc}%`); }
+          else { const ordem = D.caminhoes.filter(x => x.coletaId === c.id).length + 1; D.caminhoes.push({ id: ++D.seq.cv, coletaId: c.id, ordem, ...dados });
+            if (['solicitada', 'agendada'].includes(c.status)) Object.assign(c, { status: 'coletada', horario: b.horario, motorista: mo.nome, placa: ve.placa });
+            h(c.id, `Caminhão ${ordem} coletado`, `${ve.placa} · ${mo.nome} · ${b.horario} · ${pal} paletes · ocupação ${oc}%`); } }
+        else if (a === 'protocolo') { exige('protocolo'); D.anexos.push({ id: ++D.seq.a, coletaId: c.id, tipo: 'protocolo', nome: `protocolo-coleta-${c.id}.png`, mime: 'image/png', url: b.imagem, enviadoPor: eu.nome, enviadoEm: agoraTxt() });
+          h(c.id, 'Protocolo enviado ao cliente', `${D.caminhoes.filter(v => v.coletaId === c.id).length} caminhões`); return new Promise(ok => setTimeout(() => ok({ ok: true, whatsapp: { desativado: true } }), 400)); }
+        else if (a === 'anexos') { exige('anexar'); const mime = (/^data:([^;]+)/.exec(b.arquivo) || [])[1] || '';
+          D.anexos.push({ id: ++D.seq.a, coletaId: c.id, tipo: 'arquivo', nome: b.nome, mime, url: b.arquivo, enviadoPor: eu.nome, enviadoEm: agoraTxt() }); h(c.id, 'Arquivo anexado', b.nome); }
         else if (a === 'ciente-todas') { exige('ciente'); const l = D.pendencias.filter(p => p.coletaId === c.id && p.status === 'aberta'); l.forEach(p => Object.assign(p, { status: 'ciente', resposta: b.resposta || null, cientePor: eu.nome, cienteEm: agoraTxt() })); h(c.id, 'Cliente ciente das pendências', `${l.length} objetos`); }
         return new Promise(ok => setTimeout(() => ok({ ok: true }), 300));
       }
@@ -1467,6 +1767,21 @@ function demoCol(met, rota, q, b) {
           h(c.id, b.tudoOk ? 'Embarque conferido sem problemas' : 'Embarque conferido com problemas', `Nº ${e.numero}` + (b.tudoOk ? '' : ` · ${b.objetos.length} com problema`)); }
         return new Promise(ok => setTimeout(() => ok({ ok: true }), 300));
       }
+      if ((m = /^caminhoes\/(\d+)\/excluir$/.exec(rota))) { exige('caminhao'); const v = D.caminhoes.find(x => x.id === +m[1]);
+        if (D.embarques.some(e => e.caminhaoId === v.id)) throw new Error('A operação já lançou embarques deste caminhão.');
+        D.caminhoes.splice(D.caminhoes.indexOf(v), 1); h(v.coletaId, `Caminhão ${v.ordem} excluído`, v.placa); return Promise.resolve({ ok: true }); }
+      if (rota === 'frota/veiculos') { exige('frota'); const placa = String(b.placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (!/^[A-Z]{3}\d[A-Z0-9]\d{2}$/.test(placa)) throw new Error('Placa inválida. Use o formato ABC1234 ou ABC1D23.');
+        if (D.veiculos.some(v => v.placa === placa && v.id !== b.id)) throw new Error(`A placa ${placa} já está cadastrada.`);
+        const dados = { placa, descricao: b.descricao || null, capacidade: b.capacidade ? +b.capacidade : null };
+        if (b.id) Object.assign(D.veiculos.find(v => v.id === b.id), dados, { ativo: b.ativo }); else D.veiculos.push({ id: ++D.seq.v, ...dados, ativo: true });
+        return Promise.resolve({ ok: true }); }
+      if (rota === 'frota/motoristas') { exige('frota'); if (!b.nome) throw new Error('Informe o nome do motorista.');
+        const dados = { nome: b.nome, telefone: b.telefone ? b.telefone.replace(/\D/g, '') : null, documento: b.documento || null };
+        if (b.id) Object.assign(D.motoristas.find(m => m.id === b.id), dados, { ativo: b.ativo }); else D.motoristas.push({ id: ++D.seq.m, ...dados, ativo: true });
+        return Promise.resolve({ ok: true }); }
+      if (rota === 'minha-conta') { D.conta = { whatsapp: b.whatsapp ? b.whatsapp.replace(/\D/g, '') : null, ativo: !!b.whatsappAtivo }; return Promise.resolve({ ok: true }); }
+      if (rota === 'minha-conta/teste') throw new Error('Na demonstração o WhatsApp não envia mensagens.');
       if ((m = /^pendencias\/(\d+)\/(ciente|resolver)$/.exec(rota))) {
         const p = D.pendencias.find(x => x.id === +m[1]), c = col(p.coletaId);
         if (m[2] === 'ciente') { exige('ciente'); Object.assign(p, { status: 'ciente', resposta: b.resposta || null, cientePor: eu.nome, cienteEm: agoraTxt() }); h(c.id, 'Cliente ciente da pendência', p.cod); }
@@ -1475,8 +1790,9 @@ function demoCol(met, rota, q, b) {
         return new Promise(ok => setTimeout(() => ok({ ok: true }), 300));
       }
       if (rota === 'usuarios') { exige('usuarios');
-        if (b.id) Object.assign(D.usuarios.find(u => u.id === b.id), { nome: b.nome, email: b.email, perfil: b.perfil, ativo: b.ativo });
-        else { if (D.usuarios.some(u => u.login === b.login)) throw new Error(`O login ${b.login} já existe.`); D.usuarios.push({ id: ++D.seq.u, login: b.login, nome: b.nome, email: b.email, perfil: b.perfil, ativo: true, criadoEm: agoraTxt(), ultimoAcesso: null }); }
+        const wa = { whatsapp: b.whatsapp ? b.whatsapp.replace(/\D/g, '') : null, whatsappAtivo: !!(b.whatsapp && b.whatsappAtivo) };
+        if (b.id) Object.assign(D.usuarios.find(u => u.id === b.id), { nome: b.nome, email: b.email, perfil: b.perfil, ativo: b.ativo, ...wa });
+        else { if (D.usuarios.some(u => u.login === b.login)) throw new Error(`O login ${b.login} já existe.`); D.usuarios.push({ id: ++D.seq.u, login: b.login, nome: b.nome, email: b.email, perfil: b.perfil, ativo: true, criadoEm: agoraTxt(), ultimoAcesso: null, ...wa }); }
         return Promise.resolve({ ok: true }); }
       if (rota === 'minha-senha') throw new Error('Na demonstração não há senha para trocar.');
     }
@@ -1512,7 +1828,7 @@ async function iniciar() {
   }
   if (!real) { st.demo = true; $('#aviso').hidden = false; demoApi('opcoes'); st.ini = addD(hoje, -29);
     st.me = { id: 0, usuario: 'demo', nome: 'Demonstração', perfil: 'cliente' };
-    $('#demoPerfilBox').hidden = false; $('#senhaBt').hidden = true;
+    $('#demoPerfilBox').hidden = false;
     $('#demoPerfil').onchange = e => { st.me.perfil = e.target.value; aplicarPerfil(); ultimoTotal = -1; atualizarNotificacoes();
       if (!pode('usuarios') && viewAtual === 'usuarios') location.hash = 'coletas';
       if (viewAtual === 'coletas') carregarColetas(); if (colAberta) recarregarColeta(true); aviso('Agora vendo como ' + PERFIL_NOME[st.me.perfil]); };
