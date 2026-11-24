@@ -57,6 +57,15 @@ Fluxo de uma coleta:
 8. **PDF de várias coletas:** na aba Coletas, marque **No PDF** nos cartões (ou "Selecionar todas da lista") e clique em **Gerar PDF dos protocolos**. Sai um único arquivo com uma página de resumo (coleta, data, local, caminhões, paletes, objetos e totais) e, em seguida, o protocolo de cada coleta. No celular, abre o compartilhamento (dá para mandar direto no WhatsApp).
 9. Transporte e operação também podem **anexar fotos ou PDF** (até 3 MB) na coleta.
 
+## Imagem do protocolo (modelo da planilha)
+A imagem segue o modelo "Controle de Coletas - AGF Morada dos Lagos": faixa com a logo da Wepink e o título, cartões de Total de Objetos Postados e Média por Caminhão (total ÷ nº de caminhões) e a tabela com data e local, Caminhão 1, 2, 3…, Horário da Coleta, Quantidade de Paletes e No. Objetos Postados (mínimo de 5 linhas).
+
+**Logos:** coloque os arquivos de vocês na pasta `public/` com estes nomes exatos e suba no GitHub:
+- `logo-wepink.png`: logo da Wepink (de preferência branca, fundo transparente), vai na faixa rosa
+- `logo-agf.png`: símbolo usado na planilha, vai ao lado do título
+
+Sem os arquivos, a faixa rosa mostra "wepink" escrito e o título fica centralizado.
+
 ## WhatsApp automático
 Cada usuário cadastra o próprio número em **Minha conta** e marca "Quero receber os avisos". O administrador também pode preencher na aba Usuários.
 

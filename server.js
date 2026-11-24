@@ -416,6 +416,13 @@ async function tratar(req, res) {
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'same-origin');
   try {
+    const logo = /^\/(logo-(?:wepink|agf)\.png)$/.exec(rota);
+    if (logo) {
+      const arq = path.join(__dirname, 'public', logo[1]);
+      if (!fs.existsSync(arq)) { res.writeHead(404); return res.end(); }
+      res.writeHead(200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' });
+      return fs.createReadStream(arq).pipe(res);
+    }
     if (rota === '/' || rota === '/index.html') {
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
       return fs.createReadStream(INDEX).pipe(res);

@@ -6,7 +6,7 @@
 <title>Portal de Envios Wepink</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&family=Carlito:wght@400;700&display=swap" rel="stylesheet">
 <style>@layer theme, base, components, utilities;</style>
 <style id="tw">/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
 @layer properties;
@@ -2980,50 +2980,97 @@ function secaoAnexos(d) {
     ${!d.recursos.whatsapp && podeProt ? '<p class="m-0 mt-3 text-xs text-[var(--mut)]">O envio automático por WhatsApp ainda não está configurado: o cliente vê o protocolo aqui e no sino. Use “Compartilhar” para mandar pelo seu WhatsApp.</p>' : ''}`, '', 100);
 }
 
+/* Desenho no modelo da planilha "Controle de Coletas - AGF Morada dos Lagos".
+   Logos opcionais: public/logo-wepink.png e public/logo-agf.png (os arquivos da empresa). */
+const FONTE_PLANILHA = 'Calibri, Carlito, "Segoe UI", Arial, sans-serif';
+const logosCache = {};
+function carregarLogo(nome) {
+  if (!(nome in logosCache)) logosCache[nome] = st.demo ? Promise.resolve(null) : new Promise(ok => {
+    const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = nome + '?v=1';
+  });
+  return logosCache[nome];
+}
+const desenhoAzul = '#173a5e';
+function cabecalhoPlanilha(g, W, logoW, logoA) {
+  const x0 = 18, y0 = 22, h = 101, larg = 255;
+  g.fillStyle = desenhoAzul; g.fillRect(x0, y0, W - x0 * 2, h);
+  g.fillStyle = '#e5007e'; g.fillRect(x0, y0, larg, h);
+  if (logoW) { const r = Math.min((larg - 40) / logoW.width, (h - 30) / logoW.height); g.drawImage(logoW, x0 + (larg - logoW.width * r) / 2, y0 + (h - logoW.height * r) / 2, logoW.width * r, logoW.height * r); }
+  else { g.font = `600 58px ${FONTE_PLANILHA}`; g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('wepink', x0 + larg / 2, y0 + h / 2 + 2); }
+  let xt = x0 + larg;
+  if (logoA) { const r = Math.min(120 / logoA.width, (h - 30) / logoA.height); g.drawImage(logoA, x0 + larg + 30, y0 + (h - logoA.height * r) / 2, logoA.width * r, logoA.height * r); xt += 150; }
+  g.font = `700 34px ${FONTE_PLANILHA}`; g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText('Controle de Coletas - AGF Morada dos Lagos', xt + (W - x0 - xt) / 2 + (logoA ? 0 : 0), y0 + h / 2 + 2);
+}
+function cartoesPlanilha(g, W, total, media) {
+  const ret = (x, y, w, h, r, cor) => { g.fillStyle = cor; g.beginPath(); g.roundRect(x, y, w, h, r); g.fill(); };
+  const yC = 145, hC = 125;
+  // cartão azul + caixa
+  ret(80, yC, 497, hC, 18, '#1b64a7');
+  const bx = 100, by = yC + 28;
+  g.fillStyle = '#c98f55'; g.beginPath(); g.moveTo(bx, by + 16); g.lineTo(bx + 46, by); g.lineTo(bx + 86, by + 12); g.lineTo(bx + 40, by + 28); g.closePath(); g.fill();
+  g.fillStyle = '#b07440'; g.beginPath(); g.moveTo(bx, by + 16); g.lineTo(bx + 40, by + 28); g.lineTo(bx + 40, by + 78); g.lineTo(bx, by + 62); g.closePath(); g.fill();
+  g.fillStyle = '#d9a36b'; g.beginPath(); g.moveTo(bx + 40, by + 28); g.lineTo(bx + 86, by + 12); g.lineTo(bx + 86, by + 60); g.lineTo(bx + 40, by + 78); g.closePath(); g.fill();
+  g.fillStyle = 'rgba(255,255,255,.35)'; g.beginPath(); g.moveTo(bx + 20, by + 22); g.lineTo(bx + 66, by + 6); g.lineTo(bx + 70, by + 8); g.lineTo(bx + 24, by + 24); g.closePath(); g.fill();
+  // cartão amarelo + barras
+  ret(810, yC + 2, 566, hC - 4, 18, '#fbc92b');
+  [[0, 20], [1, 38], [2, 58], [3, 76]].forEach(([i, h]) => { g.fillStyle = '#fff'; g.fillRect(855 + i * 20, yC + 108 - h, 15, h); });
+  g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillStyle = '#fff';
+  g.font = `700 21px ${FONTE_PLANILHA}`; g.fillText('Total de Objetos Postados', 238, yC + 30); g.fillText('Média por Caminhão', 1040, yC + 30);
+  g.font = `700 40px ${FONTE_PLANILHA}`; g.fillText(total, 252, yC + 80); g.fillText(media, 1035, yC + 80);
+}
+function tabelaPlanilha(g, W, yT, cols, linhas, minimo) {
+  const x0 = 18, xf = W - 18, hCab = 52, hL = 42, n = Math.max(linhas.length, minimo);
+  g.fillStyle = desenhoAzul; g.fillRect(x0, yT, xf - x0, hCab);
+  g.font = `700 25px ${FONTE_PLANILHA}`; g.fillStyle = '#fff'; g.textBaseline = 'middle';
+  cols.forEach(([x, w, t]) => { g.textAlign = 'center'; g.fillText(t, x + w / 2, yT + hCab / 2 + 1); });
+  for (let i = 0; i < n; i++) {
+    const y = yT + hCab + i * hL, l = linhas[i];
+    g.fillStyle = i % 2 ? '#ffffff' : '#f2f2f2'; g.fillRect(x0, y, xf - x0, hL);
+    g.strokeStyle = '#d9d9d9'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(x0, y + hL - .5); g.lineTo(xf, y + hL - .5); g.stroke();
+    cols.slice(1).forEach(([x]) => { g.beginPath(); g.moveTo(x + .5, y); g.lineTo(x + .5, y + hL); g.stroke(); });
+    if (!l) continue;
+    g.font = `400 23px ${FONTE_PLANILHA}`; g.fillStyle = '#1a1a1a';
+    cols.forEach(([x, w, , al], j) => { g.textAlign = al === 'left' ? 'left' : 'center'; g.fillText(l[j], al === 'left' ? x + 6 : x + w / 2, y + hL / 2 + 1); });
+  }
+  return yT + hCab + n * hL;
+}
+const fontesPlanilha = () => Promise.all(['400 23px Carlito', '700 34px Carlito'].map(f => document.fonts.load(f))).catch(() => {});
 async function gerarImagemProtocolo(d) {
-  try { await Promise.all(['700 40px Outfit', '600 20px Inter', '400 16px Inter'].map(f => document.fonts.load(f))); } catch {}
-  const c = d.coleta, cams = d.caminhoes || [], obj = objetosColeta(d), media = cams.length ? Math.round(obj / cams.length) : 0;
-  const W = 1240, linhas = Math.max(cams.length, 5), H = 96 + 30 + 120 + 30 + 52 + linhas * 44 + 44 + 60;
+  await fontesPlanilha();
+  const [logoW, logoA] = await Promise.all([carregarLogo('logo-wepink.png'), carregarLogo('logo-agf.png')]);
+  const c = d.coleta, cams = d.caminhoes || [], obj = objetosColeta(d), media = cams.length && obj ? Math.round(obj / cams.length) : 0;
+  const W = 1420, yT = 296, H = yT + 52 + Math.max(cams.length, 5) * 42 + 40;
   const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
   const g = cv.getContext('2d'); g.scale(2, 2);
-  const navy = '#173a5e', fonte = (p, t) => { g.font = `${p} ${t}`; };
-  const texto = (t, x, y, al = 'left', cor = '#111') => { g.fillStyle = cor; g.textAlign = al; g.textBaseline = 'middle'; g.fillText(t, x, y); };
-  const ret = (x, y, w, h, r, cor) => { g.fillStyle = cor; g.beginPath(); g.roundRect(x, y, w, h, r); g.fill(); };
   g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
-  // cabeçalho
-  g.fillStyle = '#e5007e'; g.fillRect(20, 20, 230, 76); fonte('700', '46px Outfit, Arial'); texto('wepink', 135, 57, 'center', '#fff');
-  g.fillStyle = navy; g.fillRect(250, 20, W - 270, 76); fonte('700', '30px Outfit, Arial'); texto('Controle de Coletas - AGF Morada dos Lagos', 250 + (W - 270) / 2, 58, 'center', '#fff');
-  // cartões
-  const yK = 126;
-  ret(60, yK, 520, 110, 22, '#1d6fb0'); ret(W - 580, yK, 520, 110, 22, '#fdca2e');
-  ret(92, yK + 30, 64, 52, 6, '#c8935a'); g.fillStyle = '#a8743f'; g.fillRect(92, yK + 30, 64, 14); g.fillStyle = '#e8c08f'; g.fillRect(118, yK + 30, 12, 52);
-  [[0, 18], [1, 30], [2, 44], [3, 58]].forEach(([i, h]) => { g.fillStyle = '#fff'; g.fillRect(W - 548 + i * 18, yK + 88 - h, 12, h); });
-  fonte('600', '20px Inter, Arial'); texto('Total de Objetos Postados', 190, yK + 36, 'left', '#fff'); texto('Média por Caminhão', W - 450, yK + 36, 'left', '#fff');
-  fonte('700', '40px Outfit, Arial'); texto(obj ? nf.format(obj) : '—', 190, yK + 78, 'left', '#fff'); texto(media ? nf.format(media) : '—', W - 450, yK + 78, 'left', '#fff');
-  // tabela
-  const yT = yK + 150, cols = [[20, 330, br(c.data) + (c.local ? ' · ' + c.local : ''), 'left'], [350, 230, 'Horário da Coleta'], [580, 230, 'Quantidade de Paletes'], [810, 170, 'Ocupação'], [980, W - 1000, 'Nº Objetos Postados']];
-  g.fillStyle = navy; g.fillRect(20, yT, W - 40, 52);
-  fonte('700', '20px Inter, Arial'); cols.forEach(([x, w, t, al]) => texto(t, al === 'left' ? x + 16 : x + w / 2, yT + 27, al === 'left' ? 'left' : 'center', '#fff'));
-  for (let i = 0; i < linhas; i++) {
-    const v = cams[i], y = yT + 52 + i * 44;
-    g.fillStyle = i % 2 ? '#ffffff' : '#f2f2f2'; g.fillRect(20, y, W - 40, 44);
-    g.strokeStyle = '#d0d0d0'; g.lineWidth = 1; cols.forEach(([x, w]) => g.strokeRect(x + .5, y + .5, w, 44));
-    if (!v) continue;
-    fonte('600', '18px Inter, Arial'); texto(`Caminhão ${v.ordem}`, 36, y + 22, 'left', '#111');
-    fonte('400', '14px Inter, Arial'); texto(`${v.placa || ''}${v.motorista ? ' · ' + v.motorista : ''}`, 160, y + 23, 'left', '#666');
-    fonte('400', '18px Inter, Arial');
-    texto(v.horario, 465, y + 22, 'center'); texto(nf.format(v.paletes), 695, y + 22, 'center'); texto(v.ocupacao + '%', 895, y + 22, 'center', v.ocupacao >= 100 ? '#0b7a43' : '#111');
-    texto(v.objetos != null ? nf.format(v.objetos) : '—', 980 + (W - 1000) / 2, y + 22, 'center');
-  }
-  const yF = yT + 52 + linhas * 44;
-  g.fillStyle = navy; g.fillRect(20, yF, W - 40, 44); fonte('700', '18px Inter, Arial');
-  texto(`Total · ${cams.length} caminh${cams.length === 1 ? 'ão' : 'ões'}`, 36, yF + 22, 'left', '#fff');
-  texto(nf.format(cams.reduce((a, v) => a + v.paletes, 0)) + ' paletes', 695, yF + 22, 'center', '#fff'); texto(obj ? nf.format(obj) : '—', 980 + (W - 1000) / 2, yF + 22, 'center', '#fff');
-  fonte('400', '14px Inter, Arial');
-  texto(`Coleta nº ${c.id}${c.local ? ' · Local: ' + c.local : ''} · gerado em ${new Date().toLocaleString('pt-BR')} pelo portal Wepink · AGF Morada dos Lagos`, 20, yF + 76, 'left', '#666');
+  cabecalhoPlanilha(g, W, logoW, logoA);
+  cartoesPlanilha(g, W, obj ? nf.format(obj) : '—', media ? nf.format(media) : '—');
+  const cols = [[18, 452, br(c.data) + (c.local ? ' · ' + c.local : ''), 'left'], [470, 263, 'Horário da Coleta'], [733, 347, 'Quantidade de Paletes'], [1080, W - 18 - 1080, 'No. Objetos Postados']];
+  tabelaPlanilha(g, W, yT, cols, cams.map(v => [`Caminhão ${v.ordem}`, v.horario, nf.format(v.paletes), v.objetos != null ? nf.format(v.objetos) : '']), 5);
   const dataUrl = cv.toDataURL('image/png');
   const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
-  return { dataUrl, blob, canvas: cv, nome: `protocolo-coleta-${c.id}-${c.data}.png` };
+  return { dataUrl, blob, canvas: cv, nome: `protocolo-coleta-${c.id}-${c.data}${c.local ? '-' + c.local.normalize('NFD').replace(/[^\w]+/g, '-').toLowerCase() : ''}.png` };
+}
+async function canvasResumo(dets) {
+  await fontesPlanilha();
+  const [logoW, logoA] = await Promise.all([carregarLogo('logo-wepink.png'), carregarLogo('logo-agf.png')]);
+  const linhas = dets.map(d => { const cams = d.caminhoes || []; return { d, cam: cams.length, pal: cams.reduce((a, v) => a + v.paletes, 0), obj: objetosColeta(d) }; });
+  const tObj = linhas.reduce((a, l) => a + l.obj, 0), tCam = linhas.reduce((a, l) => a + l.cam, 0), tPal = linhas.reduce((a, l) => a + l.pal, 0);
+  const W = 1420, yT = 296, H = yT + 52 + (Math.max(linhas.length, 5) + 1) * 42 + 40;
+  const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
+  const g = cv.getContext('2d'); g.scale(2, 2);
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+  cabecalhoPlanilha(g, W, logoW, logoA);
+  cartoesPlanilha(g, W, tObj ? nf.format(tObj) : '—', tCam && tObj ? nf.format(Math.round(tObj / tCam)) : '—');
+  const cols = [[18, 452, 'Coleta', 'left'], [470, 263, 'Caminhões'], [733, 347, 'Quantidade de Paletes'], [1080, W - 18 - 1080, 'No. Objetos Postados']];
+  const fim = tabelaPlanilha(g, W, yT, cols, linhas.map(l => [`${br(l.d.coleta.data)}${l.d.coleta.local ? ' · ' + l.d.coleta.local : ''} · nº ${l.d.coleta.id}`, l.cam ? nf.format(l.cam) : '', l.cam ? nf.format(l.pal) : '', l.obj ? nf.format(l.obj) : '']), 5);
+  g.fillStyle = desenhoAzul; g.fillRect(18, fim, W - 36, 42);
+  g.font = `700 23px ${FONTE_PLANILHA}`; g.fillStyle = '#fff'; g.textBaseline = 'middle';
+  g.textAlign = 'left'; g.fillText(`Total · ${linhas.length} coleta${linhas.length === 1 ? '' : 's'}`, 24, fim + 22);
+  g.textAlign = 'center'; [[470, 263, nf.format(tCam)], [733, 347, nf.format(tPal)], [1080, W - 18 - 1080, tObj ? nf.format(tObj) : '']].forEach(([x, w, t]) => g.fillText(t, x + w / 2, fim + 22));
+  return cv;
 }
 /* ---------- PDF com o protocolo de várias coletas ---------- */
 function atualizarSelBar() {
@@ -3056,48 +3103,6 @@ $('#selPdf').onclick = async () => {
   } catch (e) { if (e.message !== 'login') aviso('Não foi possível gerar o PDF: ' + e.message); }
   finally { bt.disabled = false; bt.textContent = 'Gerar PDF dos protocolos'; }
 };
-
-async function canvasResumo(dets) {
-  try { await Promise.all(['700 40px Outfit', '600 20px Inter', '400 16px Inter'].map(f => document.fonts.load(f))); } catch {}
-  const linhas = dets.map(d => {
-    const cams = d.caminhoes || [];
-    return { id: d.coleta.id, data: d.coleta.data, local: d.coleta.local || '—', cam: cams.length, pal: cams.reduce((a, v) => a + v.paletes, 0), obj: objetosColeta(d), status: d.coleta.status };
-  });
-  const tObj = linhas.reduce((a, l) => a + l.obj, 0), tCam = linhas.reduce((a, l) => a + l.cam, 0), tPal = linhas.reduce((a, l) => a + l.pal, 0);
-  const W = 1240, H = 96 + 30 + 120 + 30 + 52 + linhas.length * 44 + 44 + 70;
-  const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
-  const g = cv.getContext('2d'); g.scale(2, 2);
-  const navy = '#173a5e', fonte = f => { g.font = f; };
-  const texto = (t, x, y, al = 'left', cor = '#111') => { g.fillStyle = cor; g.textAlign = al; g.textBaseline = 'middle'; g.fillText(t, x, y); };
-  const ret = (x, y, w, h, r, cor) => { g.fillStyle = cor; g.beginPath(); g.roundRect(x, y, w, h, r); g.fill(); };
-  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
-  g.fillStyle = '#e5007e'; g.fillRect(20, 20, 230, 76); fonte('700 46px Outfit, Arial'); texto('wepink', 135, 57, 'center', '#fff');
-  g.fillStyle = navy; g.fillRect(250, 20, W - 270, 76); fonte('700 30px Outfit, Arial'); texto('Controle de Coletas - AGF Morada dos Lagos', 250 + (W - 270) / 2, 58, 'center', '#fff');
-  const yK = 126;
-  ret(60, yK, 520, 110, 22, '#1d6fb0'); ret(W - 580, yK, 520, 110, 22, '#fdca2e');
-  ret(92, yK + 30, 64, 52, 6, '#c8935a'); g.fillStyle = '#a8743f'; g.fillRect(92, yK + 30, 64, 14); g.fillStyle = '#e8c08f'; g.fillRect(118, yK + 30, 12, 52);
-  [[0, 18], [1, 30], [2, 44], [3, 58]].forEach(([i, h]) => { g.fillStyle = '#fff'; g.fillRect(W - 548 + i * 18, yK + 88 - h, 12, h); });
-  fonte('600 20px Inter, Arial'); texto('Total de Objetos Postados', 190, yK + 36, 'left', '#fff'); texto('Média por Caminhão', W - 450, yK + 36, 'left', '#fff');
-  fonte('700 40px Outfit, Arial'); texto(tObj ? nf.format(tObj) : '—', 190, yK + 78, 'left', '#fff'); texto(tCam && tObj ? nf.format(Math.round(tObj / tCam)) : '—', W - 450, yK + 78, 'left', '#fff');
-  const yT = yK + 150, cols = [[20, 170, 'Coleta'], [190, 200, 'Data'], [390, 220, 'Local'], [610, 190, 'Caminhões'], [800, 190, 'Paletes'], [990, W - 1010, 'Nº Objetos Postados']];
-  g.fillStyle = navy; g.fillRect(20, yT, W - 40, 52);
-  fonte('700 20px Inter, Arial'); cols.forEach(([x, w, t]) => texto(t, x + w / 2, yT + 27, 'center', '#fff'));
-  linhas.forEach((l, i) => {
-    const y = yT + 52 + i * 44;
-    g.fillStyle = i % 2 ? '#ffffff' : '#f2f2f2'; g.fillRect(20, y, W - 40, 44);
-    g.strokeStyle = '#d0d0d0'; g.lineWidth = 1; cols.forEach(([x, w]) => g.strokeRect(x + .5, y + .5, w, 44));
-    const vals = [`nº ${l.id}`, `${semana(l.data)}, ${br(l.data)}`, l.local, l.cam ? nf.format(l.cam) : '—', l.cam ? nf.format(l.pal) : '—', l.obj ? nf.format(l.obj) : '—'];
-    fonte('400 18px Inter, Arial'); cols.forEach(([x, w], j) => texto(vals[j], x + w / 2, y + 22, 'center', '#111'));
-  });
-  const yF = yT + 52 + linhas.length * 44;
-  g.fillStyle = navy; g.fillRect(20, yF, W - 40, 44); fonte('700 18px Inter, Arial');
-  texto(`Total · ${linhas.length} coleta${linhas.length > 1 ? 's' : ''}`, 36, yF + 22, 'left', '#fff');
-  texto(nf.format(tCam), 610 + 95, yF + 22, 'center', '#fff'); texto(nf.format(tPal), 800 + 95, yF + 22, 'center', '#fff'); texto(tObj ? nf.format(tObj) : '—', 990 + (W - 1010) / 2, yF + 22, 'center', '#fff');
-  fonte('400 14px Inter, Arial');
-  const d1 = linhas[0].data, d2 = linhas[linhas.length - 1].data;
-  texto(`Resumo de ${br(d1)}${d2 !== d1 ? ' a ' + br(d2) : ''} · nas páginas seguintes, o protocolo de cada coleta · gerado em ${new Date().toLocaleString('pt-BR')}`, 20, yF + 76, 'left', '#666');
-  return cv;
-}
 
 /* PDF mínimo: uma página por imagem (JPEG), sem bibliotecas externas */
 async function pdfDeCanvas(canvases) {
