@@ -60,6 +60,9 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}}
 .planilha td{text-align:center;border:1px solid var(--line);padding:8px}
 .planilha tfoot td{font-weight:700;background:var(--panel)}
 #protocolo{display:none}
+#lote:not(.opacity-0)>div,#selBar:not(.opacity-0)>div{pointer-events:auto}
+body:has(#selBar:not(.opacity-0)) .toast{bottom:108px}
+@media(max-width:600px){body:has(#selBar:not(.opacity-0)) .toast{bottom:168px}}
 @media print{body.imprimindo>*:not(#protocolo){display:none!important}body.imprimindo #protocolo{display:block}}
 /* filtros */
 .filtros{padding:16px max(5vw,16px);border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5}
@@ -141,7 +144,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
 @media(max-width:900px){.top .marca span{display:none}.abas{order:3;width:100%}.grade{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.filtros{position:static}}
 @media(max-width:600px){.top #usuario{display:none}.demoPerfil{font-size:0;gap:0}.top .user{gap:8px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut)}.stack td:empty{display:none}.fig{min-height:240px}.barra{grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 4.8em}}
 @media(prefers-reduced-motion:no-preference){.barra .trilho i,.semana span{transition:width .5s ease,height .5s ease}}
-@media print{.rastrear,#rast,#lote,.filtros,.top .user,.acao,.pag .bt,.login,.toast,.aviso{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.band{padding:16px}main{opacity:1!important}}
+@media print{.rastrear,#rast,#lote,#selBar,.filtros,.top .user,.acao,.pag .bt,.login,.toast,.aviso{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.band{padding:16px}main{opacity:1!important}}
 </style>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head>
@@ -381,8 +384,16 @@ main.carregando{opacity:.55;transition:opacity .2s}
   </aside>
 </div>
 
+<div id="selBar" class="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-4 opacity-0 translate-y-4 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]" aria-live="polite">
+  <div class="flex w-full max-w-[720px] flex-wrap items-center gap-3 rounded-2xl bg-[var(--ink)] p-3 pl-5 text-[var(--bg)] shadow-2xl">
+    <span id="selTxt" class="mr-auto text-sm font-semibold"></span>
+    <button type="button" id="selTodas" class="min-h-10 rounded-full border border-current bg-transparent px-4 text-[13px] text-inherit">Selecionar todas da lista</button>
+    <button type="button" id="selLimpar" class="min-h-10 rounded-full border border-current bg-transparent px-4 text-[13px] text-inherit">Limpar</button>
+    <button type="button" id="selPdf" class="min-h-11 rounded-full border-0 bg-[#e5007e] px-5 text-[15px] font-semibold text-white transition hover:bg-[#c8006e] disabled:opacity-60">Gerar PDF dos protocolos</button>
+  </div>
+</div>
 <div id="lote" class="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-4 opacity-0 translate-y-4 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]">
-  <div class="pointer-events-auto w-full max-w-[420px] rounded-2xl bg-[var(--ink)] p-4 text-[var(--bg)] shadow-2xl">
+  <div class="w-full max-w-[420px] rounded-2xl bg-[var(--ink)] p-4 text-[var(--bg)] shadow-2xl">
     <div class="flex items-center justify-between gap-3 text-sm"><span id="loteTxt">Rastreando…</span><button type="button" id="loteParar" class="min-h-9 rounded-full border border-current bg-transparent px-3 text-[13px] text-inherit">Parar</button></div>
     <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-white/15"><div id="loteBarra" class="h-full w-0 rounded-full bg-[#e5007e] transition-[width] duration-500"></div></div>
   </div>
@@ -868,6 +879,7 @@ function rotear() {
   for (const a of document.querySelectorAll('#abas a')) a.toggleAttribute('aria-current', false), a.dataset.v === v && a.setAttribute('aria-current', 'page');
   if (mudou && v === 'envios') { desenharDia(); }
   if (mudou && v === 'coletas') carregarColetas();
+  if (mudou) atualizarSelBar();
   if (mudou && v === 'usuarios') carregarUsuarios();
   if (mudou && v === 'frota') carregarFrota();
   const m = /^coleta-(\d+)$/.exec(h);
@@ -912,7 +924,8 @@ const semana = s => SEM[parse(s).getDay()];
 
 /* ---------- Lista de coletas ---------- */
 const colSt = { per: 30, status: '' };
-let colLocais = [];
+let colLocais = [], colVisiveis = [];
+const colSel = new Set();
 async function carregarColetas() {
   const ini = addD(hoje, -(colSt.per - 1));
   for (const b of document.querySelectorAll('#colFiltros [data-per]')) b.setAttribute('aria-pressed', +b.dataset.per === colSt.per);
@@ -933,6 +946,8 @@ async function carregarColetas() {
       : `<div class="col-span-full grid place-items-center gap-2 rounded-3xl border-2 border-dashed border-[var(--line)] py-14 text-center text-[var(--mut)]">
           <p class="m-0 text-lg font-semibold text-[var(--ink)]">Nenhuma coleta neste filtro</p>
           <p class="m-0 text-sm">${pode('solicitar') ? 'Use o botão “' + $('#novaColeta span').textContent + '” para registrar a próxima.' : 'Ajuste o período ou a situação.'}</p></div>`;
+    colVisiveis = r.coletas.filter(c => c.status !== 'cancelada').map(c => c.id);
+    atualizarSelBar();
   } catch (e) {
     $('#colLista').innerHTML = `<div class="col-span-full rounded-2xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] p-5 text-[var(--warn)]">${esc(e.message)}</div>`;
   } finally { $('#colLista').classList.remove('opacity-50'); }
@@ -940,7 +955,9 @@ async function carregarColetas() {
 function cardColeta(c, i) {
   const p = passoCol(c.status), alerta = c.status === 'pendente';
   const barra = c.status === 'cancelada' ? 0 : Math.max(0, (p - 1) / 3 * 100);
-  return `<button type="button" data-col="${c.id}" class="group relative flex flex-col gap-4 rounded-3xl border border-[var(--line)] bg-[var(--bg)] p-5 text-left text-[var(--ink)] shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#e5007e] hover:shadow-[0_14px_40px_rgba(229,0,126,.18)] motion-safe:animate-subir" style="animation-delay:${Math.min(i, 12) * 45}ms">
+  const sel = colSel.has(c.id);
+  return `<div class="relative motion-safe:animate-subir [&:has(.sel_input:checked)>button]:border-[#e5007e] [&:has(.sel_input:checked)>button]:ring-4 [&:has(.sel_input:checked)>button]:ring-[#e5007e]/20" style="animation-delay:${Math.min(i, 12) * 45}ms">
+  <button type="button" data-col="${c.id}" class="group relative flex h-full w-full flex-col gap-4 rounded-3xl border border-[var(--line)] bg-[var(--bg)] p-5 text-left text-[var(--ink)] shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#e5007e] hover:shadow-[0_14px_40px_rgba(229,0,126,.18)]">
     <div class="flex items-start justify-between gap-3">
       <div><p class="m-0 text-xs text-[var(--mut)]">Coleta nº ${c.id}${c.local ? ` · <b class="font-semibold text-[var(--deep)]">${esc(c.local)}</b>` : ''}</p>
         <p class="m-0 text-[22px] leading-tight font-bold" style="font-family:Outfit,sans-serif">${semana(c.data)}, ${br(c.data)}</p></div>
@@ -953,11 +970,14 @@ function cardColeta(c, i) {
       <div class="rounded-xl ${c.pendAbertas ? 'bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] text-[var(--warn)]' : 'bg-[var(--panel)]'} px-2 py-2"><dt class="text-[11px] ${c.pendAbertas ? '' : 'text-[var(--mut)]'}">Pendências</dt><dd class="m-0 text-lg font-bold">${nf.format(c.pendAbertas)}</dd></div>
     </dl>
     ${c.protocolos ? '<span class="absolute top-5 right-28 hidden rounded-full bg-[var(--soft)] px-2 py-0.5 text-[11px] font-semibold text-[var(--deep)] sm:inline">protocolo enviado</span>' : ''}
-    <p class="m-0 text-sm text-[var(--mut)]">${esc([c.horario ? 'Coletada às ' + c.horario : c.horarioPrevisto ? 'Previsão ' + c.horarioPrevisto : 'Aguardando transporte', c.motorista, c.placa].filter(Boolean).join(' · '))}</p>
-    <span class="absolute right-5 bottom-5 text-[var(--deep)] opacity-0 transition duration-300 group-hover:translate-x-1 group-hover:opacity-100">→</span>
-  </button>`;
+    <p class="m-0 pr-32 text-sm text-[var(--mut)]">${esc([c.horario ? 'Coletada às ' + c.horario : c.horarioPrevisto ? 'Previsão ' + c.horarioPrevisto : 'Aguardando transporte', c.motorista, c.placa].filter(Boolean).join(' · '))}</p>
+  </button>
+  ${c.status !== 'cancelada' ? `<label class="sel absolute right-4 bottom-4 z-10 inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full bg-[var(--bg)] px-3 text-xs font-semibold text-[var(--mut)] ring-1 ring-[var(--line)] transition hover:text-[var(--deep)] hover:ring-[#e5007e] has-[:checked]:bg-[#e5007e] has-[:checked]:text-white has-[:checked]:ring-[#e5007e]">
+    <input type="checkbox" class="sel_input h-4 w-4 accent-[#16101a]" data-sel="${c.id}"${sel ? ' checked' : ''} aria-label="Incluir a coleta nº ${c.id} no PDF de protocolos"> No PDF</label>` : ''}
+  </div>`;
 }
-$('#colLista').onclick = e => { const b = e.target.closest('[data-col]'); if (b) location.hash = 'coleta-' + b.dataset.col; };
+$('#colLista').onclick = e => { if (e.target.closest('.sel')) return; const b = e.target.closest('[data-col]'); if (b) location.hash = 'coleta-' + b.dataset.col; };
+$('#colLista').onchange = e => { const i = e.target.closest('[data-sel]'); if (!i) return; const id = +i.dataset.sel; i.checked ? colSel.add(id) : colSel.delete(id); atualizarSelBar(); };
 $('#colFiltros').onclick = e => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.per) colSt.per = +b.dataset.per; else colSt.status = b.dataset.st;
@@ -1391,14 +1411,113 @@ async function gerarImagemProtocolo(d) {
   }
   const yF = yT + 52 + linhas * 44;
   g.fillStyle = navy; g.fillRect(20, yF, W - 40, 44); fonte('700', '18px Inter, Arial');
-  texto(`Total · ${cams.length} caminh${cams.length > 1 ? 'ões' : 'ão'}`, 36, yF + 22, 'left', '#fff');
+  texto(`Total · ${cams.length} caminh${cams.length === 1 ? 'ão' : 'ões'}`, 36, yF + 22, 'left', '#fff');
   texto(nf.format(cams.reduce((a, v) => a + v.paletes, 0)) + ' paletes', 695, yF + 22, 'center', '#fff'); texto(obj ? nf.format(obj) : '—', 980 + (W - 1000) / 2, yF + 22, 'center', '#fff');
   fonte('400', '14px Inter, Arial');
   texto(`Coleta nº ${c.id}${c.local ? ' · Local: ' + c.local : ''} · gerado em ${new Date().toLocaleString('pt-BR')} pelo portal Wepink · AGF Morada dos Lagos`, 20, yF + 76, 'left', '#666');
   const dataUrl = cv.toDataURL('image/png');
   const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
-  return { dataUrl, blob, nome: `protocolo-coleta-${c.id}-${c.data}.png` };
+  return { dataUrl, blob, canvas: cv, nome: `protocolo-coleta-${c.id}-${c.data}.png` };
 }
+/* ---------- PDF com o protocolo de várias coletas ---------- */
+function atualizarSelBar() {
+  const n = colSel.size, bar = $('#selBar'), on = n > 0 && viewAtual === 'coletas';
+  bar.classList.toggle('opacity-0', !on); bar.classList.toggle('translate-y-4', !on);
+  bar.classList.toggle('opacity-100', on); bar.classList.toggle('translate-y-0', on);
+  $('#selTxt').textContent = `${n} coleta${n > 1 ? 's' : ''} selecionada${n > 1 ? 's' : ''}`;
+  $('#selTodas').hidden = colVisiveis.every(id => colSel.has(id));
+}
+$('#selTodas').onclick = () => { colVisiveis.forEach(id => colSel.add(id)); for (const i of document.querySelectorAll('#colLista [data-sel]')) i.checked = true; atualizarSelBar(); };
+$('#selLimpar').onclick = () => { colSel.clear(); for (const i of document.querySelectorAll('#colLista [data-sel]')) i.checked = false; atualizarSelBar(); };
+$('#selPdf').onclick = async () => {
+  const bt = $('#selPdf'), ids = [...colSel]; if (!ids.length) return;
+  bt.disabled = true;
+  try {
+    const dets = [];
+    for (const [i, id] of ids.entries()) { bt.textContent = `Lendo coleta ${i + 1} de ${ids.length}…`; dets.push(await api('coletas/' + id)); }
+    dets.sort((a, b) => a.coleta.data.localeCompare(b.coleta.data) || a.coleta.id - b.coleta.id);
+    bt.textContent = 'Montando o PDF…';
+    const paginas = [await canvasResumo(dets)];
+    for (const d of dets) paginas.push((await gerarImagemProtocolo(d)).canvas);
+    const blob = await pdfDeCanvas(paginas);
+    const d1 = dets[0].coleta.data, d2 = dets[dets.length - 1].coleta.data;
+    const nome = `protocolos-coletas-${d1}${d2 !== d1 ? '_a_' + d2 : ''}.pdf`;
+    const arq = new File([blob], nome, { type: 'application/pdf' });
+    let compartilhou = false;
+    try { if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [arq] })) { await navigator.share({ files: [arq], title: 'Protocolos das coletas' }); compartilhou = true; } } catch (e) { if (e.name === 'AbortError') compartilhou = true; }
+    if (!compartilhou) { const u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000); }
+    aviso(`PDF com ${dets.length} coleta${dets.length > 1 ? 's' : ''} gerado (${Math.ceil(blob.size / 1024)} KB).`);
+  } catch (e) { if (e.message !== 'login') aviso('Não foi possível gerar o PDF: ' + e.message); }
+  finally { bt.disabled = false; bt.textContent = 'Gerar PDF dos protocolos'; }
+};
+
+async function canvasResumo(dets) {
+  try { await Promise.all(['700 40px Outfit', '600 20px Inter', '400 16px Inter'].map(f => document.fonts.load(f))); } catch {}
+  const linhas = dets.map(d => {
+    const cams = d.caminhoes || [];
+    return { id: d.coleta.id, data: d.coleta.data, local: d.coleta.local || '—', cam: cams.length, pal: cams.reduce((a, v) => a + v.paletes, 0), obj: objetosColeta(d), status: d.coleta.status };
+  });
+  const tObj = linhas.reduce((a, l) => a + l.obj, 0), tCam = linhas.reduce((a, l) => a + l.cam, 0), tPal = linhas.reduce((a, l) => a + l.pal, 0);
+  const W = 1240, H = 96 + 30 + 120 + 30 + 52 + linhas.length * 44 + 44 + 70;
+  const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
+  const g = cv.getContext('2d'); g.scale(2, 2);
+  const navy = '#173a5e', fonte = f => { g.font = f; };
+  const texto = (t, x, y, al = 'left', cor = '#111') => { g.fillStyle = cor; g.textAlign = al; g.textBaseline = 'middle'; g.fillText(t, x, y); };
+  const ret = (x, y, w, h, r, cor) => { g.fillStyle = cor; g.beginPath(); g.roundRect(x, y, w, h, r); g.fill(); };
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#e5007e'; g.fillRect(20, 20, 230, 76); fonte('700 46px Outfit, Arial'); texto('wepink', 135, 57, 'center', '#fff');
+  g.fillStyle = navy; g.fillRect(250, 20, W - 270, 76); fonte('700 30px Outfit, Arial'); texto('Controle de Coletas - AGF Morada dos Lagos', 250 + (W - 270) / 2, 58, 'center', '#fff');
+  const yK = 126;
+  ret(60, yK, 520, 110, 22, '#1d6fb0'); ret(W - 580, yK, 520, 110, 22, '#fdca2e');
+  ret(92, yK + 30, 64, 52, 6, '#c8935a'); g.fillStyle = '#a8743f'; g.fillRect(92, yK + 30, 64, 14); g.fillStyle = '#e8c08f'; g.fillRect(118, yK + 30, 12, 52);
+  [[0, 18], [1, 30], [2, 44], [3, 58]].forEach(([i, h]) => { g.fillStyle = '#fff'; g.fillRect(W - 548 + i * 18, yK + 88 - h, 12, h); });
+  fonte('600 20px Inter, Arial'); texto('Total de Objetos Postados', 190, yK + 36, 'left', '#fff'); texto('Média por Caminhão', W - 450, yK + 36, 'left', '#fff');
+  fonte('700 40px Outfit, Arial'); texto(tObj ? nf.format(tObj) : '—', 190, yK + 78, 'left', '#fff'); texto(tCam && tObj ? nf.format(Math.round(tObj / tCam)) : '—', W - 450, yK + 78, 'left', '#fff');
+  const yT = yK + 150, cols = [[20, 170, 'Coleta'], [190, 200, 'Data'], [390, 220, 'Local'], [610, 190, 'Caminhões'], [800, 190, 'Paletes'], [990, W - 1010, 'Nº Objetos Postados']];
+  g.fillStyle = navy; g.fillRect(20, yT, W - 40, 52);
+  fonte('700 20px Inter, Arial'); cols.forEach(([x, w, t]) => texto(t, x + w / 2, yT + 27, 'center', '#fff'));
+  linhas.forEach((l, i) => {
+    const y = yT + 52 + i * 44;
+    g.fillStyle = i % 2 ? '#ffffff' : '#f2f2f2'; g.fillRect(20, y, W - 40, 44);
+    g.strokeStyle = '#d0d0d0'; g.lineWidth = 1; cols.forEach(([x, w]) => g.strokeRect(x + .5, y + .5, w, 44));
+    const vals = [`nº ${l.id}`, `${semana(l.data)}, ${br(l.data)}`, l.local, l.cam ? nf.format(l.cam) : '—', l.cam ? nf.format(l.pal) : '—', l.obj ? nf.format(l.obj) : '—'];
+    fonte('400 18px Inter, Arial'); cols.forEach(([x, w], j) => texto(vals[j], x + w / 2, y + 22, 'center', '#111'));
+  });
+  const yF = yT + 52 + linhas.length * 44;
+  g.fillStyle = navy; g.fillRect(20, yF, W - 40, 44); fonte('700 18px Inter, Arial');
+  texto(`Total · ${linhas.length} coleta${linhas.length > 1 ? 's' : ''}`, 36, yF + 22, 'left', '#fff');
+  texto(nf.format(tCam), 610 + 95, yF + 22, 'center', '#fff'); texto(nf.format(tPal), 800 + 95, yF + 22, 'center', '#fff'); texto(tObj ? nf.format(tObj) : '—', 990 + (W - 1010) / 2, yF + 22, 'center', '#fff');
+  fonte('400 14px Inter, Arial');
+  const d1 = linhas[0].data, d2 = linhas[linhas.length - 1].data;
+  texto(`Resumo de ${br(d1)}${d2 !== d1 ? ' a ' + br(d2) : ''} · nas páginas seguintes, o protocolo de cada coleta · gerado em ${new Date().toLocaleString('pt-BR')}`, 20, yF + 76, 'left', '#666');
+  return cv;
+}
+
+/* PDF mínimo: uma página por imagem (JPEG), sem bibliotecas externas */
+async function pdfDeCanvas(canvases) {
+  const enc = new TextEncoder(), partes = [], offs = [];
+  let pos = 0;
+  const add = x => { const b = typeof x === 'string' ? enc.encode(x) : x; partes.push(b); pos += b.length; };
+  const obj = (n, ...corpo) => { offs[n] = pos; add(`${n} 0 obj\n`); corpo.forEach(add); add('\nendobj\n'); };
+  add('%PDF-1.4\n'); add(new Uint8Array([37, 226, 227, 207, 211, 10]));
+  const n = canvases.length;
+  obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2, `<< /Type /Pages /Kids [${canvases.map((_, i) => `${3 + 3 * i} 0 R`).join(' ')}] /Count ${n} >>`);
+  for (let i = 0; i < n; i++) {
+    const c = canvases[i];
+    const jpg = new Uint8Array(await (await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.9))).arrayBuffer());
+    const PW = 842, PH = Math.round(842 * c.height / c.width * 100) / 100;
+    const cs = `q ${PW} 0 0 ${PH} 0 0 cm /Im0 Do Q`;
+    obj(3 + 3 * i, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /Im0 ${4 + 3 * i} 0 R >> >> /Contents ${5 + 3 * i} 0 R >>`);
+    obj(4 + 3 * i, `<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`, jpg, '\nendstream');
+    obj(5 + 3 * i, `<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`);
+  }
+  const total = 3 * n + 3, xref = pos;
+  add(`xref\n0 ${total}\n0000000000 65535 f \n` + offs.slice(1).map(o => String(o).padStart(10, '0') + ' 00000 n \n').join(''));
+  add(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+  return new Blob(partes, { type: 'application/pdf' });
+}
+
 async function acaoProtocolo(tipo) {
   const d = colAberta && colAberta.d; if (!d) return;
   const img = await gerarImagemProtocolo(d);

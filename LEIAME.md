@@ -54,7 +54,8 @@ Fluxo de uma coleta:
 5. A operação, ao lançar cada embarque, escolhe de qual caminhão ele veio. O nº de objetos de cada caminhão passa a ser a soma dos embarques dele.
 6. **Enviar protocolo ao cliente** gera a imagem no modelo da planilha (total de objetos, média por caminhão, caminhões com horário, paletes, ocupação e objetos), salva na coleta, avisa o cliente no sino e manda por WhatsApp.
 7. **Compartilhar / baixar** abre o compartilhamento do celular (dá para mandar direto no WhatsApp) ou baixa o PNG no computador.
-8. Transporte e operação também podem **anexar fotos ou PDF** (até 3 MB) na coleta.
+8. **PDF de várias coletas:** na aba Coletas, marque **No PDF** nos cartões (ou "Selecionar todas da lista") e clique em **Gerar PDF dos protocolos**. Sai um único arquivo com uma página de resumo (coleta, data, local, caminhões, paletes, objetos e totais) e, em seguida, o protocolo de cada coleta. No celular, abre o compartilhamento (dá para mandar direto no WhatsApp).
+9. Transporte e operação também podem **anexar fotos ou PDF** (até 3 MB) na coleta.
 
 ## WhatsApp automático
 Cada usuário cadastra o próprio número em **Minha conta** e marca "Quero receber os avisos". O administrador também pode preencher na aba Usuários.
