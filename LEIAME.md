@@ -54,11 +54,11 @@ Fluxo de uma coleta:
 5. A operação, ao lançar cada embarque, escolhe de qual caminhão ele veio. O nº de objetos de cada caminhão passa a ser a soma dos embarques dele.
 6. **Enviar protocolo ao cliente** gera a imagem no modelo da planilha (total de objetos, média por caminhão, caminhões com horário, paletes, ocupação e objetos), salva na coleta, avisa o cliente no sino e manda por WhatsApp.
 7. **Compartilhar / baixar** abre o compartilhamento do celular (dá para mandar direto no WhatsApp) ou baixa o PNG no computador.
-8. **PDF de várias coletas:** na aba Coletas, marque **No PDF** nos cartões (ou "Selecionar todas da lista") e clique em **Gerar PDF dos protocolos**. Sai um único arquivo com uma página de resumo (coleta, data, local, caminhões, paletes, objetos e totais) e, em seguida, o protocolo de cada coleta. No celular, abre o compartilhamento (dá para mandar direto no WhatsApp).
+8. **Protocolo por data:** na aba Coletas, clique em **Protocolo por data**, escolha a data das coletas (ou um período, ou os atalhos Hoje / Ontem / Últimos 7 dias) e clique em **Buscar coletas**. O portal mostra os caminhões de cada dia e gera um PDF com **uma página por data**, no modelo da planilha: todos os caminhões do dia numerados em sequência (Caminhão 1, 2, 3…), com Horário da Coleta, Quantidade de Paletes e No. Objetos Postados. Também dá para marcar **No PDF** nos cartões e clicar em **Gerar PDF dos protocolos**.
 9. Transporte e operação também podem **anexar fotos ou PDF** (até 3 MB) na coleta.
 
 ## Imagem do protocolo (modelo da planilha)
-A imagem segue o modelo "Controle de Coletas - AGF Morada dos Lagos": faixa com a logo da Wepink e o título, cartões de Total de Objetos Postados e Média por Caminhão (total ÷ nº de caminhões) e a tabela com data e local, Caminhão 1, 2, 3…, Horário da Coleta, Quantidade de Paletes e No. Objetos Postados (mínimo de 5 linhas).
+A imagem segue o modelo "Controle de Coletas - AGF Morada dos Lagos": faixa com a logo da Wepink e o título, cartões de Total de Objetos Postados e Média por Caminhão (total ÷ nº de caminhões) e a tabela com a data das coletas, Caminhão 1, 2, 3…, Horário da Coleta, Quantidade de Paletes e No. Objetos Postados (mínimo de 5 linhas).
 
 **Logos:** coloque os arquivos de vocês na pasta `public/` com estes nomes exatos e suba no GitHub:
 - `logo-wepink.png`: logo da Wepink (de preferência branca, fundo transparente), vai na faixa rosa

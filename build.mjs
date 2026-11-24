@@ -19,6 +19,8 @@ const entrada = `
   --animate-caminhao: caminhao 1.9s ease-in-out infinite;
   --animate-pulso: pulso 1.8s ease-out infinite;
   --animate-brilho: brilho .9s ease-out 2;
+  --animate-desenhar: desenhar .6s .15s ease-out forwards;
+  @keyframes desenhar { to { stroke-dashoffset: 0; } }
   @keyframes subir { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes caminhao {
     0% { left: 4%; opacity: 0; } 12% { opacity: 1; } 50% { transform: translateY(-2px); }

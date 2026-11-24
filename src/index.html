@@ -144,7 +144,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
 @media(max-width:900px){.top .marca span{display:none}.abas{order:3;width:100%}.grade{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.filtros{position:static}}
 @media(max-width:600px){.top #usuario{display:none}.demoPerfil{font-size:0;gap:0}.top .user{gap:8px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut)}.stack td:empty{display:none}.fig{min-height:240px}.barra{grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 4.8em}}
 @media(prefers-reduced-motion:no-preference){.barra .trilho i,.semana span{transition:width .5s ease,height .5s ease}}
-@media print{.rastrear,#rast,#lote,#selBar,.filtros,.top .user,.acao,.pag .bt,.login,.toast,.aviso{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.band{padding:16px}main{opacity:1!important}}
+@media print{.rastrear,#rast,#lote,#selBar,#pd,.filtros,.top .user,.acao,.pag .bt,.login,.toast,.aviso{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.band{padding:16px}main{opacity:1!important}}
 </style>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head>
@@ -270,8 +270,12 @@ main.carregando{opacity:.55;transition:opacity .2s}
     <div class="wrap">
       <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div><h1 id="colTitulo">Controle de coletas</h1><p class="sub" id="colSub" style="margin:0">&nbsp;</p></div>
+        <div class="flex flex-wrap gap-3">
+        <button type="button" id="porData" class="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-white/70 bg-transparent px-6 text-[15px] font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white/10 active:translate-y-0">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Protocolo por data</button>
         <button type="button" id="novaColeta" class="inline-flex min-h-12 items-center gap-2 rounded-full border-0 bg-white px-6 text-[15px] font-semibold text-[#8c004c] shadow-lg transition duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Solicitar coleta</span></button>
+        </div>
       </div>
       <div class="kpis" id="colKpis"></div>
       <div class="flex flex-wrap items-center gap-2" id="colFiltros">
@@ -354,6 +358,41 @@ main.carregando{opacity:.55;transition:opacity .2s}
     <p id="modalErro" class="m-0 min-h-[1.2em] text-sm text-[var(--bad)]" role="alert"></p>
     <div class="flex flex-wrap justify-end gap-3"><button type="button" class="acao sec" data-fechar>Cancelar</button><button type="submit" class="acao" id="modalOk">Salvar</button></div>
   </form>
+</div>
+
+<div id="pd" class="rast fixed inset-0 z-[55] grid place-items-center p-4">
+  <div id="pdFundo" data-pd-fechar class="absolute inset-0 bg-[#16101a]/60 opacity-0 backdrop-blur-[4px] transition-opacity duration-300"></div>
+  <section id="pdPainel" role="dialog" aria-modal="true" aria-labelledby="pdTit"
+    class="relative flex max-h-[92vh] w-full max-w-[780px] translate-y-8 scale-95 flex-col overflow-hidden rounded-[28px] bg-[var(--bg)] text-[var(--ink)] opacity-0 shadow-[0_30px_80px_rgba(0,0,0,.35)] transition duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none">
+    <header class="relative shrink-0 overflow-hidden bg-[linear-gradient(120deg,#e5007e,#a8005d)] px-7 pt-6 pb-7 text-white">
+      <div class="pointer-events-none absolute -top-10 -right-10 h-44 w-44 rounded-full bg-white/10"></div>
+      <div class="pointer-events-none absolute -bottom-16 right-24 h-32 w-32 rounded-full bg-white/10"></div>
+      <div class="relative flex items-start justify-between gap-4">
+        <div><p class="m-0 text-sm text-white/80">Controle de Coletas · AGF Morada dos Lagos</p>
+          <p id="pdTit" class="m-0 mt-1 text-[30px] leading-tight font-bold" style="font-family:Outfit,sans-serif">Protocolo por data</p>
+          <p class="m-0 mt-1 hidden text-[15px] sm:block text-white/85">Escolha a data das coletas: o portal junta todos os caminhões do dia num PDF, no modelo da planilha.</p></div>
+        <button type="button" data-pd-fechar aria-label="Fechar" class="grid h-11 w-11 shrink-0 place-items-center rounded-full border-0 bg-white/15 text-white transition duration-300 hover:rotate-90 hover:bg-white/25">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+    </header>
+    <div class="flex-1 overflow-y-auto px-7 py-6">
+      <form id="pdForm" class="grid gap-4">
+        <div id="pdAtalhos" class="flex flex-wrap gap-2">
+          <button type="button" data-pd="0" class="rounded-full border border-[var(--line)] bg-[var(--bg)] px-4 py-2 text-sm font-semibold transition hover:border-[#e5007e] aria-pressed:border-[#e5007e] aria-pressed:bg-[var(--soft)] aria-pressed:text-[var(--deep)]">Hoje</button>
+          <button type="button" data-pd="1" class="rounded-full border border-[var(--line)] bg-[var(--bg)] px-4 py-2 text-sm font-semibold transition hover:border-[#e5007e] aria-pressed:border-[#e5007e] aria-pressed:bg-[var(--soft)] aria-pressed:text-[var(--deep)]">Ontem</button>
+          <button type="button" data-pd="7" class="rounded-full border border-[var(--line)] bg-[var(--bg)] px-4 py-2 text-sm font-semibold transition hover:border-[#e5007e] aria-pressed:border-[#e5007e] aria-pressed:bg-[var(--soft)] aria-pressed:text-[var(--deep)]">Últimos 7 dias</button>
+        </div>
+        <div class="grid items-end gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))]">
+          <label class="campo">Data das coletas<input type="date" id="pdIni" required class="w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-base"></label>
+          <label class="campo">Até (opcional)<input type="date" id="pdFim" class="w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-base"></label>
+          <button type="submit" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-0 bg-[var(--ink)] px-6 text-[15px] font-semibold text-[var(--bg)] transition duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>Buscar coletas</button>
+        </div>
+      </form>
+      <div id="pdCorpo" class="mt-6" aria-live="polite"></div>
+    </div>
+    <footer id="pdRodape" class="flex shrink-0 flex-wrap items-center justify-end gap-3 border-t border-[var(--line)] px-7 py-4 empty:hidden"></footer>
+  </section>
 </div>
 
 <div id="protocolo" aria-hidden="true"></div>
@@ -1431,42 +1470,54 @@ function tabelaPlanilha(g, W, yT, cols, linhas, minimo) {
   return yT + hCab + n * hL;
 }
 const fontesPlanilha = () => Promise.all(['400 23px Carlito', '700 34px Carlito'].map(f => document.fonts.load(f))).catch(() => {});
-async function gerarImagemProtocolo(d) {
+/* Desenha uma página no modelo exato: cabeçalho, cartões e tabela (data | Horário da Coleta | Quantidade de Paletes | No. Objetos Postados) */
+async function desenharProtocolo({ data, caminhoes, total }) {
   await fontesPlanilha();
   const [logoW, logoA] = await Promise.all([carregarLogo('logo-wepink.png'), carregarLogo('logo-agf.png')]);
-  const c = d.coleta, cams = d.caminhoes || [], obj = objetosColeta(d), media = cams.length && obj ? Math.round(obj / cams.length) : 0;
-  const W = 1420, yT = 296, H = yT + 52 + Math.max(cams.length, 5) * 42 + 40;
+  const media = caminhoes.length && total ? Math.round(total / caminhoes.length) : 0;
+  const W = 1420, yT = 296, H = yT + 52 + Math.max(caminhoes.length, 5) * 42 + 40;
   const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
   const g = cv.getContext('2d'); g.scale(2, 2);
   g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
   cabecalhoPlanilha(g, W, logoW, logoA);
-  cartoesPlanilha(g, W, obj ? nf.format(obj) : '—', media ? nf.format(media) : '—');
-  const cols = [[18, 452, br(c.data) + (c.local ? ' · ' + c.local : ''), 'left'], [470, 263, 'Horário da Coleta'], [733, 347, 'Quantidade de Paletes'], [1080, W - 18 - 1080, 'No. Objetos Postados']];
-  tabelaPlanilha(g, W, yT, cols, cams.map(v => [`Caminhão ${v.ordem}`, v.horario, nf.format(v.paletes), v.objetos != null ? nf.format(v.objetos) : '']), 5);
-  const dataUrl = cv.toDataURL('image/png');
-  const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
-  return { dataUrl, blob, canvas: cv, nome: `protocolo-coleta-${c.id}-${c.data}${c.local ? '-' + c.local.normalize('NFD').replace(/[^\w]+/g, '-').toLowerCase() : ''}.png` };
-}
-async function canvasResumo(dets) {
-  await fontesPlanilha();
-  const [logoW, logoA] = await Promise.all([carregarLogo('logo-wepink.png'), carregarLogo('logo-agf.png')]);
-  const linhas = dets.map(d => { const cams = d.caminhoes || []; return { d, cam: cams.length, pal: cams.reduce((a, v) => a + v.paletes, 0), obj: objetosColeta(d) }; });
-  const tObj = linhas.reduce((a, l) => a + l.obj, 0), tCam = linhas.reduce((a, l) => a + l.cam, 0), tPal = linhas.reduce((a, l) => a + l.pal, 0);
-  const W = 1420, yT = 296, H = yT + 52 + (Math.max(linhas.length, 5) + 1) * 42 + 40;
-  const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
-  const g = cv.getContext('2d'); g.scale(2, 2);
-  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
-  cabecalhoPlanilha(g, W, logoW, logoA);
-  cartoesPlanilha(g, W, tObj ? nf.format(tObj) : '—', tCam && tObj ? nf.format(Math.round(tObj / tCam)) : '—');
-  const cols = [[18, 452, 'Coleta', 'left'], [470, 263, 'Caminhões'], [733, 347, 'Quantidade de Paletes'], [1080, W - 18 - 1080, 'No. Objetos Postados']];
-  const fim = tabelaPlanilha(g, W, yT, cols, linhas.map(l => [`${br(l.d.coleta.data)}${l.d.coleta.local ? ' · ' + l.d.coleta.local : ''} · nº ${l.d.coleta.id}`, l.cam ? nf.format(l.cam) : '', l.cam ? nf.format(l.pal) : '', l.obj ? nf.format(l.obj) : '']), 5);
-  g.fillStyle = desenhoAzul; g.fillRect(18, fim, W - 36, 42);
-  g.font = `700 23px ${FONTE_PLANILHA}`; g.fillStyle = '#fff'; g.textBaseline = 'middle';
-  g.textAlign = 'left'; g.fillText(`Total · ${linhas.length} coleta${linhas.length === 1 ? '' : 's'}`, 24, fim + 22);
-  g.textAlign = 'center'; [[470, 263, nf.format(tCam)], [733, 347, nf.format(tPal)], [1080, W - 18 - 1080, tObj ? nf.format(tObj) : '']].forEach(([x, w, t]) => g.fillText(t, x + w / 2, fim + 22));
+  cartoesPlanilha(g, W, total ? nf.format(total) : '—', media ? nf.format(media) : '—');
+  const cols = [[18, 452, br(data), 'left'], [470, 263, 'Horário da Coleta'], [733, 347, 'Quantidade de Paletes'], [1080, W - 18 - 1080, 'No. Objetos Postados']];
+  tabelaPlanilha(g, W, yT, cols, caminhoes.map((v, i) => [`Caminhão ${i + 1}`, v.horario, nf.format(v.paletes), v.objetos != null ? nf.format(v.objetos) : '']), 5);
   return cv;
 }
-/* ---------- PDF com o protocolo de várias coletas ---------- */
+async function gerarImagemProtocolo(d) {
+  const c = d.coleta;
+  const cv = await desenharProtocolo({ data: c.data, caminhoes: d.caminhoes || [], total: objetosColeta(d) });
+  const dataUrl = cv.toDataURL('image/png');
+  const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
+  return { dataUrl, blob, canvas: cv, nome: `protocolo-coleta-${c.id}-${c.data}.png` };
+}
+/* Junta as coletas por data: todos os caminhões do dia, numerados em sequência (Caminhão 1, 2, 3...) */
+function agruparPorData(dets) {
+  const dias = new Map();
+  for (const d of [...dets].sort((a, b) => a.coleta.data.localeCompare(b.coleta.data) || a.coleta.id - b.coleta.id)) {
+    if (!(d.caminhoes || []).length) continue;
+    const dia = dias.get(d.coleta.data) || { data: d.coleta.data, coletas: [], caminhoes: [], total: 0, paletes: 0 };
+    dia.coletas.push(d); dia.caminhoes.push(...[...d.caminhoes].sort((a, b) => a.ordem - b.ordem));
+    dia.total += objetosColeta(d); dia.paletes += d.caminhoes.reduce((a, v) => a + v.paletes, 0);
+    dias.set(d.coleta.data, dia);
+  }
+  return [...dias.values()];
+}
+async function montarPdf(dias, aoAvancar) {
+  const paginas = [];
+  for (const [i, dia] of dias.entries()) { if (aoAvancar) aoAvancar(i, dias.length); paginas.push(await desenharProtocolo(dia)); }
+  const blob = await pdfDeCanvas(paginas);
+  const d1 = dias[0].data, d2 = dias[dias.length - 1].data;
+  return { blob, nome: `protocolo-coletas-${br(d1).replace(/\//g, '-')}${d2 !== d1 ? '_a_' + br(d2).replace(/\//g, '-') : ''}.pdf` };
+}
+async function entregarArquivo(blob, nome) {
+  const arq = new File([blob], nome, { type: blob.type });
+  try { if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [arq] })) { await navigator.share({ files: [arq], title: nome }); return; } } catch (e) { if (e.name === 'AbortError') return; }
+  const u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000);
+}
+
+/* ---------- PDF das coletas selecionadas nos cartões ---------- */
 function atualizarSelBar() {
   const n = colSel.size, bar = $('#selBar'), on = n > 0 && viewAtual === 'coletas';
   bar.classList.toggle('opacity-0', !on); bar.classList.toggle('translate-y-4', !on);
@@ -1482,21 +1533,137 @@ $('#selPdf').onclick = async () => {
   try {
     const dets = [];
     for (const [i, id] of ids.entries()) { bt.textContent = `Lendo coleta ${i + 1} de ${ids.length}…`; dets.push(await api('coletas/' + id)); }
-    dets.sort((a, b) => a.coleta.data.localeCompare(b.coleta.data) || a.coleta.id - b.coleta.id);
+    const dias = agruparPorData(dets);
+    if (!dias.length) throw new Error('nenhuma das coletas selecionadas tem caminhão registrado.');
     bt.textContent = 'Montando o PDF…';
-    const paginas = [await canvasResumo(dets)];
-    for (const d of dets) paginas.push((await gerarImagemProtocolo(d)).canvas);
-    const blob = await pdfDeCanvas(paginas);
-    const d1 = dets[0].coleta.data, d2 = dets[dets.length - 1].coleta.data;
-    const nome = `protocolos-coletas-${d1}${d2 !== d1 ? '_a_' + d2 : ''}.pdf`;
-    const arq = new File([blob], nome, { type: 'application/pdf' });
-    let compartilhou = false;
-    try { if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [arq] })) { await navigator.share({ files: [arq], title: 'Protocolos das coletas' }); compartilhou = true; } } catch (e) { if (e.name === 'AbortError') compartilhou = true; }
-    if (!compartilhou) { const u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000); }
-    aviso(`PDF com ${dets.length} coleta${dets.length > 1 ? 's' : ''} gerado (${Math.ceil(blob.size / 1024)} KB).`);
+    const { blob, nome } = await montarPdf(dias);
+    await entregarArquivo(blob, nome);
+    aviso(`PDF gerado: ${dias.length} data${dias.length > 1 ? 's' : ''}, ${dias.reduce((a, d) => a + d.caminhoes.length, 0)} caminhões.`);
   } catch (e) { if (e.message !== 'login') aviso('Não foi possível gerar o PDF: ' + e.message); }
   finally { bt.disabled = false; bt.textContent = 'Gerar PDF dos protocolos'; }
 };
+
+/* ---------- Protocolo por data (formulário) ---------- */
+const pd = { dias: [], pdf: null, seq: 0 };
+const pdPainel = $('#pdPainel'), pdFundo = $('#pdFundo');
+function abrirPorData() {
+  $('#pd').classList.add('aberto'); pd.pdf = null;
+  $('#pdIni').value = $('#pdIni').value || addD(hoje, -1); $('#pdFim').value = $('#pdFim').value || $('#pdIni').value;
+  pdEtapa('form');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    pdFundo.classList.replace('opacity-0', 'opacity-100');
+    pdPainel.classList.remove('opacity-0', 'translate-y-8', 'scale-95'); pdPainel.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+  }));
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => $('#pdIni').focus(), 120);
+}
+function fecharPorData() {
+  if (!$('#pd').classList.contains('aberto')) return;
+  pd.seq++;
+  pdFundo.classList.replace('opacity-100', 'opacity-0');
+  pdPainel.classList.add('opacity-0', 'translate-y-8', 'scale-95'); pdPainel.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+  $('#pd').classList.remove('aberto');
+  if (!colAberta && !rast) document.body.style.overflow = '';
+}
+function pdEtapa(qual, html) {
+  const corpo = $('#pdCorpo');
+  if (qual === 'form') { corpo.innerHTML = ''; $('#pdRodape').innerHTML = ''; return; }
+  if (qual === 'carregando') $('#pdRodape').innerHTML = '';
+  corpo.innerHTML = html;
+}
+$('#pd').addEventListener('click', e => { if (e.target.closest('[data-pd-fechar]')) fecharPorData(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#pd').classList.contains('aberto')) { e.stopImmediatePropagation(); fecharPorData(); } }, true);
+$('#pdAtalhos').onclick = e => {
+  const b = e.target.closest('[data-pd]'); if (!b) return;
+  const n = +b.dataset.pd;
+  $('#pdIni').value = n === 0 ? hoje : n === 1 ? addD(hoje, -1) : addD(hoje, -(n - 1)); $('#pdFim').value = n === 1 ? addD(hoje, -1) : hoje;
+  for (const x of $('#pdAtalhos').children) x.setAttribute('aria-pressed', x === b);
+  buscarPorData();
+};
+$('#pdIni').onchange = () => { if (!$('#pdFim').value || $('#pdFim').value < $('#pdIni').value) $('#pdFim').value = $('#pdIni').value; };
+$('#pdForm').onsubmit = e => { e.preventDefault(); buscarPorData(); };
+const contarAte = (el, alvo, ms = 900) => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = nf.format(alvo); return; }
+  const t0 = performance.now();
+  const passo = t => { const p = Math.min(1, (t - t0) / ms), v = Math.round(alvo * (1 - Math.pow(1 - p, 3))); el.textContent = nf.format(v); if (p < 1) requestAnimationFrame(passo); };
+  requestAnimationFrame(passo);
+};
+async function buscarPorData() {
+  let ini = $('#pdIni').value, fim = $('#pdFim').value || ini;
+  if (!ini) return aviso('Escolha a data das coletas.');
+  if (fim < ini) [ini, fim] = [fim, ini];
+  const meu = ++pd.seq, periodo = ini === fim ? br(ini) : `${br(ini)} a ${br(fim)}`;
+  pdEtapa('carregando', `<div class="grid place-items-center gap-4 py-10 text-center">
+    <div class="relative h-16 w-full max-w-[420px] overflow-hidden rounded-2xl bg-[var(--soft)]">
+      <div class="absolute inset-x-5 top-[60%] h-0.5 bg-[repeating-linear-gradient(90deg,var(--pink)_0_10px,transparent_10px_18px)] opacity-40"></div>
+      <div class="absolute top-[18%] text-[var(--pink)] motion-safe:animate-caminhao">${TRUCK(34)}</div></div>
+    <p class="m-0 font-semibold">Buscando as coletas de ${periodo}…</p></div>`);
+  try {
+    const lista = await api('coletas', { ini, fim, status: '' });
+    const ids = lista.coletas.filter(c => c.status !== 'cancelada' && c.data >= ini && c.data <= fim).map(c => c.id);
+    const dets = [];
+    for (const id of ids) dets.push(await api('coletas/' + id));
+    if (meu !== pd.seq) return;
+    const semCam = dets.filter(d => !(d.caminhoes || []).length);
+    pd.dias = agruparPorData(dets); pd.pdf = null;
+    if (!pd.dias.length) {
+      pdEtapa('resultado', `<div class="grid place-items-center gap-3 py-8 text-center motion-safe:animate-subir">
+        <div class="grid h-16 w-16 place-items-center rounded-full bg-[var(--soft)] text-[var(--deep)]">${TRUCK(30)}</div>
+        <p class="m-0 text-lg font-semibold">Nenhum caminhão registrado em ${periodo}</p>
+        <p class="m-0 max-w-[44ch] text-sm text-[var(--mut)]">${dets.length ? `Há ${dets.length} coleta${dets.length > 1 ? 's' : ''} nesse período, mas ainda sem caminhões. O transporte registra os caminhões dentro de cada coleta.` : 'Escolha outra data ou use os atalhos acima.'}</p></div>`);
+      $('#pdRodape').innerHTML = ''; return;
+    }
+    const tCam = pd.dias.reduce((a, d) => a + d.caminhoes.length, 0), tPal = pd.dias.reduce((a, d) => a + d.paletes, 0), tObj = pd.dias.reduce((a, d) => a + d.total, 0);
+    pdEtapa('resultado', `
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        ${[['Datas', pd.dias.length], ['Caminhões', tCam], ['Paletes', tPal], ['Objetos postados', tObj]].map(([r, v], i) => `<div class="rounded-2xl bg-[var(--panel)] p-4 motion-safe:animate-subir" style="animation-delay:${i * 70}ms">
+          <p class="m-0 text-xs text-[var(--mut)]">${r}</p><p class="m-0 text-[28px] leading-tight font-bold" style="font-family:Outfit,sans-serif" data-contar="${v}">0</p></div>`).join('')}
+      </div>
+      <ol class="m-0 mt-5 grid list-none gap-3 p-0">${pd.dias.map((dia, i) => `<li class="overflow-hidden rounded-2xl border border-[var(--line)] motion-safe:animate-subir" style="animation-delay:${200 + i * 90}ms">
+        <div class="flex flex-wrap items-center gap-3 bg-[#173a5e] px-4 py-2.5 text-white"><b>${semana(dia.data)}, ${br(dia.data)}</b>
+          <span class="text-sm text-white/80">${dia.caminhoes.length} caminh${dia.caminhoes.length === 1 ? 'ão' : 'ões'} · ${dia.paletes} paletes · ${dia.total ? nf.format(dia.total) + ' objetos' : 'objetos a informar'}</span>
+          <span class="ml-auto text-xs text-white/70">coleta${dia.coletas.length > 1 ? 's' : ''} ${dia.coletas.map(d => 'nº ' + d.coleta.id + (d.coleta.local ? ' (' + esc(d.coleta.local) + ')' : '')).join(', ')}</span></div>
+        <div class="scroll"><table class="w-full border-collapse text-[15px]"><tbody>${dia.caminhoes.map((v, j) => `<tr class="${j % 2 ? '' : 'bg-[var(--panel)]'}">
+          <td class="!border-0 !px-4 !py-2">Caminhão ${j + 1}</td><td class="!border-0 !py-2 text-center">${v.horario}</td><td class="!border-0 !py-2 text-center">${v.paletes}</td>
+          <td class="!border-0 !py-2 !pr-4 text-right">${v.objetos != null ? nf.format(v.objetos) : '<span class="text-[var(--mut)]">—</span>'}</td></tr>`).join('')}</tbody></table></div>
+        <button type="button" class="block w-full border-0 border-t border-[var(--line)] bg-transparent px-4 py-2.5 text-left text-sm font-semibold text-[var(--deep)] transition hover:bg-[var(--soft)]" data-pd-previa="${i}">Ver página do protocolo ↓</button>
+        <div class="pd-previa" data-pd-alvo="${i}"></div></li>`).join('')}</ol>
+      ${semCam.length ? `<p class="m-0 mt-3 text-sm text-[var(--mut)] motion-safe:animate-subir">${semCam.length} coleta${semCam.length > 1 ? 's' : ''} sem caminhão registrado fica${semCam.length > 1 ? 'm' : ''} fora do PDF (nº ${semCam.map(d => d.coleta.id).join(', ')}).</p>` : ''}`);
+    for (const el of $('#pdCorpo').querySelectorAll('[data-contar]')) contarAte(el, +el.dataset.contar);
+    $('#pdRodape').innerHTML = `<button type="button" id="pdGerar" class="relative inline-flex min-h-12 w-full items-center justify-center overflow-hidden rounded-full border-0 bg-[#e5007e] px-6 text-base font-semibold text-white shadow-lg transition duration-200 hover:-translate-y-0.5 hover:bg-[#c8006e] hover:shadow-xl sm:w-auto motion-safe:animate-subir" style="animation-delay:300ms">
+      <span id="pdBarra" class="absolute inset-y-0 left-0 w-0 bg-white/25 transition-[width] duration-500"></span><span class="relative" id="pdGerarTxt">Gerar PDF · ${pd.dias.length} página${pd.dias.length > 1 ? 's' : ''}</span></button>`;
+  } catch (e) {
+    if (meu !== pd.seq || e.message === 'login') return;
+    pdEtapa('resultado', `<p class="m-0 rounded-2xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] p-4 text-[var(--warn)]">${esc(e.message)}</p>`);
+  }
+}
+$('#pdCorpo').addEventListener('click', async e => {
+  const b = e.target.closest('[data-pd-previa]'); if (!b) return;
+  const alvo = $(`#pdCorpo [data-pd-alvo="${b.dataset.pdPrevia}"]`);
+  if (alvo.firstElementChild) { alvo.innerHTML = ''; b.textContent = 'Ver página do protocolo ↓'; return; }
+  b.textContent = 'Desenhando…';
+  const cv = await desenharProtocolo(pd.dias[+b.dataset.pdPrevia]);
+  alvo.innerHTML = `<img src="${cv.toDataURL('image/png')}" alt="Página do protocolo de ${br(pd.dias[+b.dataset.pdPrevia].data)}" class="block w-full border-t border-[var(--line)] motion-safe:animate-subir">`;
+  b.textContent = 'Esconder página ↑';
+});
+$('#pdRodape').addEventListener('click', async e => {
+  if (e.target.closest('#pdBaixar')) return pd.pdf && entregarArquivo(pd.pdf.blob, pd.pdf.nome);
+  if (e.target.closest('#pdNovo')) { pdEtapa('form'); $('#pdIni').focus(); return; }
+  const bt = e.target.closest('#pdGerar'); if (!bt) return;
+  bt.disabled = true;
+  try {
+    pd.pdf = await montarPdf(pd.dias, (i, n) => { $('#pdBarra').style.width = Math.round((i + 0.5) / n * 90) + '%'; $('#pdGerarTxt').textContent = `Montando página ${i + 1} de ${n}…`; });
+    $('#pdBarra').style.width = '100%';
+    await new Promise(ok => setTimeout(ok, 450));
+    await entregarArquivo(pd.pdf.blob, pd.pdf.nome);
+    $('#pdRodape').innerHTML = `<div class="flex w-full flex-wrap items-center gap-4 motion-safe:animate-subir">
+      <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#0b7a43] text-white motion-safe:animate-pulso">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" class="[stroke-dasharray:1] [stroke-dashoffset:1] motion-safe:animate-desenhar motion-reduce:[stroke-dashoffset:0]"/></svg></span>
+      <span class="mr-auto"><b class="block">PDF pronto!</b><span class="text-sm text-[var(--mut)]">${esc(pd.pdf.nome)} · ${Math.ceil(pd.pdf.blob.size / 1024)} KB</span></span>
+      <button type="button" id="pdNovo" class="${btnSec}">Outra data</button><button type="button" id="pdBaixar" class="${btn}">Baixar de novo</button></div>`;
+  } catch (err) { if (err.message !== 'login') { aviso('Não foi possível gerar o PDF: ' + err.message); bt.disabled = false; $('#pdGerarTxt').textContent = 'Tentar de novo'; } }
+});
+$('#porData').onclick = abrirPorData;
 
 /* PDF mínimo: uma página por imagem (JPEG), sem bibliotecas externas */
 async function pdfDeCanvas(canvases) {
