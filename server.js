@@ -404,6 +404,8 @@ function lerCorpo(req) {
 }
 
 const coletas = require('./coletas')({ consulta, normCod, lerCorpo });
+const ponte = require('./ponte-cliente')({ lerCorpo });
+const cubadora = require('./cubadora')({ consulta, lerCorpo });
 
 async function tratar(req, res) {
   const url = new URL(req.url, 'http://localhost');
@@ -450,6 +452,10 @@ async function tratar(req, res) {
       if (rota === '/api/envios') return json(res, 200, await envios(q));
       if (rota === '/api/export.csv') return await exportarCSV(q, res);
       if (rota === '/api/rastreio') { const [st, d] = await rastreio(q, s.u); return json(res, st, d); }
+      const rc = await cubadora.rota(rota, req, q, s);
+      if (rc) return json(res, rc[0], rc[1]);
+      const rp = await ponte.rota(rota, req, q, s);
+      if (rp) return json(res, rp[0], rp[1]);
       const r = await coletas.rota(rota, req, q, s);
       if (r && r[1] && r[1].__binario) {
         const a = r[1];

@@ -1,0 +1,113 @@
+/*
+  Portal de Envios Wepink · AGF Morada dos Lagos
+  Frota (caminhões e motoristas), caminhões de cada coleta, anexos e WhatsApp.
+
+  Rode no banco MANAGER depois de criar_tabelas_coletas.sql.
+  Pode rodar mais de uma vez: só cria o que ainda não existe.
+*/
+USE manager;
+GO
+
+/* ---------- Caminhões ---------- */
+IF OBJECT_ID('dbo.PORTAL_VEICULOS', 'U') IS NULL
+CREATE TABLE dbo.PORTAL_VEICULOS (
+    ID                  INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_PORTAL_VEICULOS PRIMARY KEY,
+    PLACA               VARCHAR(10)    NOT NULL CONSTRAINT UQ_PORTAL_VEICULOS_PLACA UNIQUE,
+    DESCRICAO           NVARCHAR(120)  NULL,          -- ex.: Truck baú 14 paletes
+    CAPACIDADE_PALETES  INT            NULL CONSTRAINT CK_PORTAL_VEICULOS_CAP CHECK (CAPACIDADE_PALETES IS NULL OR CAPACIDADE_PALETES > 0),
+    ATIVO               BIT            NOT NULL CONSTRAINT DF_PORTAL_VEICULOS_ATIVO DEFAULT 1,
+    CRIADO_EM           DATETIME2(0)   NOT NULL CONSTRAINT DF_PORTAL_VEICULOS_CRIADO DEFAULT SYSDATETIME()
+);
+GO
+
+/* ---------- Motoristas ---------- */
+IF OBJECT_ID('dbo.PORTAL_MOTORISTAS', 'U') IS NULL
+CREATE TABLE dbo.PORTAL_MOTORISTAS (
+    ID          INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_PORTAL_MOTORISTAS PRIMARY KEY,
+    NOME        NVARCHAR(120)  NOT NULL,
+    TELEFONE    VARCHAR(20)    NULL,
+    DOCUMENTO   VARCHAR(20)    NULL,                  -- CPF ou CNH (opcional)
+    ATIVO       BIT            NOT NULL CONSTRAINT DF_PORTAL_MOTORISTAS_ATIVO DEFAULT 1,
+    CRIADO_EM   DATETIME2(0)   NOT NULL CONSTRAINT DF_PORTAL_MOTORISTAS_CRIADO DEFAULT SYSDATETIME()
+);
+GO
+
+/* ---------- Caminhões de cada coleta (Caminhão 1, 2, 3...) ---------- */
+IF OBJECT_ID('dbo.PORTAL_COLETA_VEICULOS', 'U') IS NULL
+CREATE TABLE dbo.PORTAL_COLETA_VEICULOS (
+    ID              INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_PORTAL_COLETA_VEICULOS PRIMARY KEY,
+    COLETA_ID       INT            NOT NULL CONSTRAINT FK_PORTAL_CV_COLETA REFERENCES dbo.PORTAL_COLETAS(ID),
+    ORDEM           INT            NOT NULL,          -- nº do caminhão na coleta
+    VEICULO_ID      INT            NULL CONSTRAINT FK_PORTAL_CV_VEICULO REFERENCES dbo.PORTAL_VEICULOS(ID),
+    MOTORISTA_ID    INT            NULL CONSTRAINT FK_PORTAL_CV_MOTORISTA REFERENCES dbo.PORTAL_MOTORISTAS(ID),
+    PLACA           VARCHAR(10)    NULL,              -- cópia no momento do registro
+    MOTORISTA       NVARCHAR(120)  NULL,              -- cópia no momento do registro
+    HORARIO_COLETA  TIME(0)        NOT NULL,
+    PALETES         INT            NOT NULL CONSTRAINT CK_PORTAL_CV_PALETES CHECK (PALETES >= 0),
+    OCUPACAO_PCT    TINYINT        NOT NULL CONSTRAINT CK_PORTAL_CV_OCUP CHECK (OCUPACAO_PCT BETWEEN 0 AND 100),
+    QTD_OBJETOS     INT            NULL,              -- objetos informados pelo transporte (manifesto); os embarques da operação têm prioridade
+    OBS             NVARCHAR(500)  NULL,
+    CRIADO_POR      INT            NULL,
+    CRIADO_EM       DATETIME2(0)   NOT NULL CONSTRAINT DF_PORTAL_CV_CRIADO DEFAULT SYSDATETIME(),
+    CONSTRAINT UQ_PORTAL_CV_ORDEM UNIQUE (COLETA_ID, ORDEM)
+);
+GO
+
+/* Embarque passa a indicar de qual caminhão veio */
+IF COL_LENGTH('dbo.PORTAL_EMBARQUES', 'COLETA_VEICULO_ID') IS NULL
+    ALTER TABLE dbo.PORTAL_EMBARQUES ADD COLETA_VEICULO_ID INT NULL
+        CONSTRAINT FK_PORTAL_EMB_CV REFERENCES dbo.PORTAL_COLETA_VEICULOS(ID);
+GO
+
+/* ---------- Anexos (imagem do protocolo e arquivos) ---------- */
+IF OBJECT_ID('dbo.PORTAL_ANEXOS', 'U') IS NULL
+CREATE TABLE dbo.PORTAL_ANEXOS (
+    ID              INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_PORTAL_ANEXOS PRIMARY KEY,
+    COLETA_ID       INT            NOT NULL CONSTRAINT FK_PORTAL_ANEXOS_COLETA REFERENCES dbo.PORTAL_COLETAS(ID),
+    TIPO            VARCHAR(20)    NOT NULL CONSTRAINT CK_PORTAL_ANEXOS_TIPO CHECK (TIPO IN ('protocolo','arquivo')),
+    NOME            NVARCHAR(200)  NOT NULL,
+    MIME            VARCHAR(60)    NOT NULL,
+    TAMANHO         INT            NOT NULL,
+    CONTEUDO        VARBINARY(MAX) NOT NULL,
+    ENVIADO_POR     INT            NULL,
+    ENVIADO_EM      DATETIME2(0)   NOT NULL CONSTRAINT DF_PORTAL_ANEXOS_EM DEFAULT SYSDATETIME()
+);
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_PORTAL_ANEXOS_COLETA')
+    CREATE INDEX IX_PORTAL_ANEXOS_COLETA ON dbo.PORTAL_ANEXOS (COLETA_ID, ENVIADO_EM);
+GO
+
+/* ---------- Local da coleta (Galpão, SLV, SAVI CD) ---------- */
+IF COL_LENGTH('dbo.PORTAL_COLETAS', 'LOCAL_COLETA') IS NULL
+    ALTER TABLE dbo.PORTAL_COLETAS ADD LOCAL_COLETA NVARCHAR(40) NULL;
+GO
+
+/* ---------- WhatsApp do usuário ---------- */
+IF COL_LENGTH('dbo.PORTAL_USUARIOS', 'WHATSAPP') IS NULL
+    ALTER TABLE dbo.PORTAL_USUARIOS ADD WHATSAPP VARCHAR(20) NULL;
+GO
+IF COL_LENGTH('dbo.PORTAL_USUARIOS', 'WHATSAPP_ATIVO') IS NULL
+    ALTER TABLE dbo.PORTAL_USUARIOS ADD WHATSAPP_ATIVO BIT NOT NULL CONSTRAINT DF_PORTAL_USUARIOS_WA DEFAULT 0;
+GO
+
+/* ---------- Registro dos envios de WhatsApp ---------- */
+IF OBJECT_ID('dbo.PORTAL_WHATSAPP_LOG', 'U') IS NULL
+CREATE TABLE dbo.PORTAL_WHATSAPP_LOG (
+    ID          BIGINT IDENTITY(1,1) NOT NULL CONSTRAINT PK_PORTAL_WHATSAPP_LOG PRIMARY KEY,
+    USUARIO_ID  INT            NULL,
+    TELEFONE    VARCHAR(20)    NOT NULL,
+    TIPO        VARCHAR(30)    NOT NULL,              -- protocolo, pendencias, solicitacao, caminhao, teste
+    COLETA_ID   INT            NULL,
+    STATUS      VARCHAR(20)    NOT NULL,              -- enviado, erro
+    RESPOSTA    NVARCHAR(1000) NULL,
+    EM          DATETIME2(0)   NOT NULL CONSTRAINT DF_PORTAL_WHATSAPP_LOG_EM DEFAULT SYSDATETIME()
+);
+GO
+
+/* Permissões para o login do portal (se usar o login portal_wepink sugerido no LEIAME):
+GRANT SELECT, INSERT, UPDATE ON dbo.PORTAL_VEICULOS        TO portal_wepink;
+GRANT SELECT, INSERT, UPDATE ON dbo.PORTAL_MOTORISTAS      TO portal_wepink;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.PORTAL_COLETA_VEICULOS TO portal_wepink;
+GRANT SELECT, INSERT ON dbo.PORTAL_ANEXOS                  TO portal_wepink;
+GRANT SELECT, INSERT ON dbo.PORTAL_WHATSAPP_LOG            TO portal_wepink;
+*/

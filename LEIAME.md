@@ -89,6 +89,19 @@ Depois preencha `WHATSAPP_META_TOKEN` (token permanente de usuário do sistema) 
 Sem provedor configurado, tudo continua funcionando: os avisos aparecem no sino e o botão Compartilhar manda a imagem pelo WhatsApp do próprio celular.
 Na Vercel, cadastre as mesmas variáveis em Settings → Environment Variables e faça Redeploy.
 
+## Ponte MySQL e Cubadoras
+O portal busca dados do MySQL local (banco `vpost` em 192.168.20.251) por uma **ponte segura**: um pequeno serviço na pasta `ponte-mysql/` que roda num computador da rede e se conecta ao portal por um túnel HTTPS da Cloudflare. O MySQL não fica exposto, e a ponte só executa as consultas cadastradas em `ponte-mysql/consultas.js`, somente leitura. O passo a passo de instalação está em `ponte-mysql/LEIAME.md`.
+
+Na Vercel, cadastre `PONTE_URL` (endereço do túnel) e `PONTE_TOKEN` (o mesmo do `.env` da ponte).
+
+**Cubadoras (perfis Operação e Administrador):**
+- Desempenho dos operadores das balanças cubadoras Pitney, a partir das tabelas `imps` (impressões) e `servicos` do MySQL (`data1`, `hora`, `operador`).
+- Filtro por data **e hora** (De / Até), com atalhos Hoje, Ontem, Turno da noite (18h–6h, que passa da meia-noite) e Últimos 7 dias. Dá para ver tudo, só impressões ou só serviços.
+- Números do período (total de bipagens, operadores ativos, média por operador, hora de pico), gráfico por hora, ranking com o ritmo por hora trabalhada e o horário da primeira e da última bipagem, mapa por hora do dia e exportação para CSV.
+- **Cadastro de operadores:** rode `criar_tabela_cubadora.sql` no SQL Server (banco `manager`) e cadastre o número que cada pessoa usa na cubadora. Números que aparecem nas bipagens sem cadastro ganham o botão "Cadastrar".
+
+**Dados locais (Administrador):** status da ponte (online, versão do MySQL, tempo de resposta) e consultas de apoio (tabelas e colunas do banco), com exportação para CSV.
+
 ## Rastreamento
 1. Rode `criar_tabela_rastreamento.sql` no SQL Server (banco `manager`). Ele cria a tabela `PORTAL_RASTREAMENTO`.
 2. Confira `CORREIOS_USUARIO` e `CORREIOS_CHAVE` no `.env` (as mesmas do script de rastreio do SQL Server).
