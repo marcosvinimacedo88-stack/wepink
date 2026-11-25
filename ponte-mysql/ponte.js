@@ -36,6 +36,32 @@ process.on('uncaughtException', e => console.error(new Date().toISOString(), 'ER
 process.on('unhandledRejection', e => console.error(new Date().toISOString(), 'ERRO INESPERADO', e && (e.code || ''), e && e.message));
 pool.pool.on('connection', c => c.on('error', e => console.error(new Date().toISOString(), 'conexão MySQL', e.code || '', e.message)));
 
+/* ---------- cubadoras: descobre a coluna de hora de cada tabela ---------- */
+const momentos = {}; // tabela -> expressão SQL do momento da bipagem
+async function momentoDe(tabela, preferida) {
+  if (momentos[tabela]) return momentos[tabela];
+  const [cols] = await pool.query(
+    `SELECT COLUMN_NAME AS c, DATA_TYPE AS t FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?`, [tabela]);
+  if (!cols.length) throw new Error(`Tabela ${tabela} não encontrada no banco ${env.MYSQL_BANCO}.`);
+  const nomes = cols.map(x => x.c.toLowerCase());
+  if (!nomes.includes('data1')) throw new Error(`A tabela ${tabela} não tem a coluna data1. Colunas: ${cols.map(x => x.c).join(', ')}`);
+  if (!nomes.includes('operador')) throw new Error(`A tabela ${tabela} não tem a coluna operador. Colunas: ${cols.map(x => x.c).join(', ')}`);
+  if (preferida && !nomes.includes(preferida.toLowerCase())) throw new Error(`A tabela ${tabela} não tem a coluna ${preferida}. Colunas: ${cols.map(x => x.c).join(', ')}`);
+  const hora = (preferida && cols.find(x => x.c.toLowerCase() === preferida.toLowerCase()))
+    || cols.find(x => x.c.toLowerCase() === 'hora')
+    || cols.find(x => String(x.t).toLowerCase() === 'time')
+    || cols.find(x => /^hor/i.test(x.c));
+  const expr = hora ? `TIMESTAMP(DATE(data1), \`${hora.c}\`)` : 'CAST(data1 AS DATETIME)';
+  console.log(new Date().toISOString(), `cubadora: tabela ${tabela} usa ${expr}`);
+  return (momentos[tabela] = expr);
+}
+async function sqlDe(def) {
+  if (!def.sqlPorTabela) return def.sql;
+  const partes = [];
+  for (const t of def.tabelasCubadora) partes.push(def.sqlPorTabela(t).split('{M}').join(await momentoDe(t, (def.horaCubadora || {})[t])));
+  return partes.join('\n          UNION ALL\n');
+}
+
 /* ---------- segurança ---------- */
 const hashToken = crypto.createHash('sha256').update(TOKEN).digest();
 function autorizado(req) {
@@ -98,10 +124,11 @@ http.createServer(async (req, res) => {
     if (req.method === 'POST' && m) {
       const def = consultas[m[1]];
       if (!def) return json(res, 404, { erro: 'Consulta não cadastrada na ponte.' });
-      if (!somenteLeitura(def.sql)) return json(res, 500, { erro: 'A consulta cadastrada não é somente leitura.' });
       const params = validar(def, await lerCorpo(req));
+      const sql = await sqlDe(def);
+      if (!somenteLeitura(sql)) return json(res, 500, { erro: 'A consulta cadastrada não é somente leitura.' });
       const t0 = Date.now();
-      const [linhas, campos] = await pool.query({ sql: def.sql, timeout: TEMPO }, params);
+      const [linhas, campos] = await pool.query({ sql, timeout: TEMPO }, params);
       const lista = Array.isArray(linhas) ? linhas : [];
       console.log(new Date().toISOString(), ip, m[1], lista.length + ' linhas', (Date.now() - t0) + 'ms');
       const lim = Number(def.limite || LIMITE);
@@ -113,10 +140,10 @@ http.createServer(async (req, res) => {
     return json(res, 404, { erro: 'Rota não encontrada.' });
   } catch (e) {
     console.error(new Date().toISOString(), ip, url.pathname, e.code || '', e.sqlMessage || e.message);
-    const msg = /Informe|inválid/.test(e.message) ? e.message
+    const msg = /Informe|inválid|não encontrada|não tem a coluna/.test(e.message) ? e.message
       : e.code === 'ECONNREFUSED' ? 'A ponte não conseguiu conectar no MySQL.'
       : e.code === 'PROTOCOL_SEQUENCE_TIMEOUT' ? 'A consulta demorou demais.' : 'Erro ao consultar o MySQL: ' + (e.sqlMessage || e.message);
-    json(res, /Informe|inválid/.test(e.message) ? 400 : 502, { erro: msg });
+    json(res, /Informe|inválid/.test(e.message) ? 400 : 500, { erro: msg });
   }
 }).listen(PORTA, env.PONTE_ENDERECO || '127.0.0.1', () => {
   console.log(`Ponte MySQL ouvindo em http://${env.PONTE_ENDERECO || '127.0.0.1'}:${PORTA} · ${Object.keys(consultas).length} consultas liberadas`);

@@ -15,6 +15,18 @@
  *
  * Use sempre um usuário do MySQL só com permissão de SELECT (veja o LEIAME).
  */
+// Coluna de hora de cada tabela das cubadoras (a data vem sempre de data1)
+const HORA_CUBADORA = { imps: 'hora', servicos: 'HRA_OBJ' };
+
+function PARAMS_CUB() {
+  return [
+    { nome: 'ini', rotulo: 'De (data)', tipo: 'data', obrigatorio: true },
+    { nome: 'hi', rotulo: 'De (hora)', tipo: 'hora', obrigatorio: true, padrao: '00:00:00' },
+    { nome: 'fim', rotulo: 'Até (data)', tipo: 'data', obrigatorio: true },
+    { nome: 'hf', rotulo: 'Até (hora)', tipo: 'hora', obrigatorio: true, padrao: '23:59:59' }
+  ];
+}
+
 module.exports = {
   teste: {
     titulo: 'Teste de conexão',
@@ -48,30 +60,26 @@ module.exports = {
   },
 
 
-  /* ---------- Cubadoras Pitney (tela Cubadoras do portal) ---------- */
+  /* ---------- Cubadoras Pitney (tela Cubadoras do portal) ----------
+   * imps:     select data1, operador, hora    from imps     where data1 is not null
+   * servicos: select data1, operador, HRA_OBJ from servicos where data1 is not null
+   * A coluna de hora de cada tabela está em HORA_CUBADORA (no topo deste arquivo).
+   * Em cada SELECT, {M} vira a expressão "momento da bipagem" daquela tabela.
+   */
   cubadora_hora: {
     titulo: 'Cubadoras: bipagens por hora',
     descricao: 'Quantidade de registros por dia, hora e operador nas tabelas imps e servicos.',
     perfis: ['operacao', 'admin'],
     tela: 'cubadora',
     limite: 200000,
-    parametros: [
-      { nome: 'ini', rotulo: 'De (data)', tipo: 'data', obrigatorio: true },
-      { nome: 'hi', rotulo: 'De (hora)', tipo: 'hora', obrigatorio: true, padrao: '00:00:00' },
-      { nome: 'fim', rotulo: 'Até (data)', tipo: 'data', obrigatorio: true },
-      { nome: 'hf', rotulo: 'Até (hora)', tipo: 'hora', obrigatorio: true, padrao: '23:59:59' }
-    ],
-    sql: `SELECT 'imps' AS fonte, DATE(data1) AS dia, HOUR(hora) AS h, operador, COUNT(*) AS qtd
-          FROM imps
+    tabelasCubadora: ['imps', 'servicos'],
+    horaCubadora: HORA_CUBADORA,
+    parametros: PARAMS_CUB(),
+    sqlPorTabela: (t) => `SELECT '${t}' AS fonte, DATE({M}) AS dia, HOUR({M}) AS h, operador, COUNT(*) AS qtd
+          FROM ${t}
           WHERE data1 IS NOT NULL AND data1 >= :ini AND data1 < DATE_ADD(:fim, INTERVAL 1 DAY)
-            AND TIMESTAMP(DATE(data1), hora) BETWEEN TIMESTAMP(:ini, :hi) AND TIMESTAMP(:fim, :hf)
-          GROUP BY DATE(data1), HOUR(hora), operador
-          UNION ALL
-          SELECT 'servicos' AS fonte, DATE(data1) AS dia, HOUR(hora) AS h, operador, COUNT(*) AS qtd
-          FROM servicos
-          WHERE data1 IS NOT NULL AND data1 >= :ini AND data1 < DATE_ADD(:fim, INTERVAL 1 DAY)
-            AND TIMESTAMP(DATE(data1), hora) BETWEEN TIMESTAMP(:ini, :hi) AND TIMESTAMP(:fim, :hf)
-          GROUP BY DATE(data1), HOUR(hora), operador`
+            AND {M} BETWEEN TIMESTAMP(:ini, :hi) AND TIMESTAMP(:fim, :hf)
+          GROUP BY DATE({M}), HOUR({M}), operador`
   },
 
   cubadora_extremos: {
@@ -79,22 +87,13 @@ module.exports = {
     descricao: 'Primeira e última bipagem de cada operador no período.',
     perfis: ['operacao', 'admin'],
     tela: 'cubadora',
-    parametros: [
-      { nome: 'ini', rotulo: 'De (data)', tipo: 'data', obrigatorio: true },
-      { nome: 'hi', rotulo: 'De (hora)', tipo: 'hora', obrigatorio: true, padrao: '00:00:00' },
-      { nome: 'fim', rotulo: 'Até (data)', tipo: 'data', obrigatorio: true },
-      { nome: 'hf', rotulo: 'Até (hora)', tipo: 'hora', obrigatorio: true, padrao: '23:59:59' }
-    ],
-    sql: `SELECT 'imps' AS fonte, operador, MIN(TIMESTAMP(DATE(data1), hora)) AS primeiro, MAX(TIMESTAMP(DATE(data1), hora)) AS ultimo
-          FROM imps
+    tabelasCubadora: ['imps', 'servicos'],
+    horaCubadora: HORA_CUBADORA,
+    parametros: PARAMS_CUB(),
+    sqlPorTabela: (t) => `SELECT '${t}' AS fonte, operador, MIN({M}) AS primeiro, MAX({M}) AS ultimo
+          FROM ${t}
           WHERE data1 IS NOT NULL AND data1 >= :ini AND data1 < DATE_ADD(:fim, INTERVAL 1 DAY)
-            AND TIMESTAMP(DATE(data1), hora) BETWEEN TIMESTAMP(:ini, :hi) AND TIMESTAMP(:fim, :hf)
-          GROUP BY operador
-          UNION ALL
-          SELECT 'servicos' AS fonte, operador, MIN(TIMESTAMP(DATE(data1), hora)) AS primeiro, MAX(TIMESTAMP(DATE(data1), hora)) AS ultimo
-          FROM servicos
-          WHERE data1 IS NOT NULL AND data1 >= :ini AND data1 < DATE_ADD(:fim, INTERVAL 1 DAY)
-            AND TIMESTAMP(DATE(data1), hora) BETWEEN TIMESTAMP(:ini, :hi) AND TIMESTAMP(:fim, :hf)
+            AND {M} BETWEEN TIMESTAMP(:ini, :hi) AND TIMESTAMP(:fim, :hf)
           GROUP BY operador`
   },
 
