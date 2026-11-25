@@ -21,8 +21,17 @@ module.exports = function criarPonte({ lerCorpo }) {
       const err = new Error(e.name === 'TimeoutError' ? 'A ponte demorou demais para responder.' : 'Não foi possível falar com a ponte (computador desligado, sem internet ou túnel parado).');
       err.status = 504; throw err;
     }
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok) { const err = new Error(j.erro || `A ponte respondeu com erro (HTTP ${r.status}).`); err.status = r.status === 401 ? 502 : r.status; throw err; }
+    const ehJson = /json/.test(r.headers.get('content-type') || '');
+    const j = ehJson ? await r.json().catch(() => ({})) : {};
+    if (!r.ok) {
+      let msg = j.erro;
+      if (!msg && !ehJson) msg = [502, 503, 530, 1033].includes(r.status)
+        ? `O túnel da Cloudflare não alcançou a ponte (HTTP ${r.status}): a janela da ponte (iniciar-ponte.bat) está fechada, travou ou o túnel caiu.`
+        : r.status === 524 ? 'A consulta demorou mais de 100 segundos e o túnel desistiu. Reduza o período.'
+        : `A ponte respondeu com erro (HTTP ${r.status}).`;
+      if (r.status === 401) msg = 'A ponte recusou o token: confira se o PONTE_TOKEN da Vercel é igual ao do .env da ponte.';
+      const err = new Error(msg || `A ponte respondeu com erro (HTTP ${r.status}).`); err.status = 502; throw err;
+    }
     return j;
   }
 

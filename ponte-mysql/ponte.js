@@ -31,6 +31,11 @@ const pool = mysql.createPool({
   connectTimeout: 10000
 });
 
+// nunca derrubar a ponte por um erro inesperado: registra e continua no ar
+process.on('uncaughtException', e => console.error(new Date().toISOString(), 'ERRO INESPERADO', e && (e.code || ''), e && e.message));
+process.on('unhandledRejection', e => console.error(new Date().toISOString(), 'ERRO INESPERADO', e && (e.code || ''), e && e.message));
+pool.pool.on('connection', c => c.on('error', e => console.error(new Date().toISOString(), 'conexão MySQL', e.code || '', e.message)));
+
 /* ---------- segurança ---------- */
 const hashToken = crypto.createHash('sha256').update(TOKEN).digest();
 function autorizado(req) {
@@ -107,7 +112,7 @@ http.createServer(async (req, res) => {
     }
     return json(res, 404, { erro: 'Rota não encontrada.' });
   } catch (e) {
-    console.error(new Date().toISOString(), ip, url.pathname, e.code || '', e.message);
+    console.error(new Date().toISOString(), ip, url.pathname, e.code || '', e.sqlMessage || e.message);
     const msg = /Informe|inválid/.test(e.message) ? e.message
       : e.code === 'ECONNREFUSED' ? 'A ponte não conseguiu conectar no MySQL.'
       : e.code === 'PROTOCOL_SEQUENCE_TIMEOUT' ? 'A consulta demorou demais.' : 'Erro ao consultar o MySQL: ' + (e.sqlMessage || e.message);
