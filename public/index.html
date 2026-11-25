@@ -39,6 +39,7 @@
     --radius-2xl: 1rem;
     --radius-3xl: 1.5rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --animate-spin: spin 1s linear infinite;
     --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
     --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     --default-transition-duration: 150ms;
@@ -236,8 +237,14 @@
   .mr-auto {
     margin-right: auto;
   }
+  .mb-0 {
+    margin-bottom: 0px;
+  }
   .mb-1 {
     margin-bottom: var(--spacing);
+  }
+  .mb-2 {
+    margin-bottom: calc(var(--spacing) * 2);
   }
   .mb-3 {
     margin-bottom: calc(var(--spacing) * 3);
@@ -449,6 +456,9 @@
   .max-w-\[44ch\] {
     max-width: 44ch;
   }
+  .max-w-\[240px\] {
+    max-width: 240px;
+  }
   .max-w-\[420px\] {
     max-width: 420px;
   }
@@ -535,6 +545,9 @@
     --tw-scale-z: 110%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
   }
+  .animate-spin {
+    animation: var(--animate-spin);
+  }
   .cursor-pointer {
     cursor: pointer;
   }
@@ -586,6 +599,9 @@
   .content-start {
     align-content: flex-start;
   }
+  .items-baseline {
+    align-items: baseline;
+  }
   .items-center {
     align-items: center;
   }
@@ -612,6 +628,9 @@
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
+  }
+  .gap-2\.5 {
+    gap: calc(var(--spacing) * 2.5);
   }
   .gap-3 {
     gap: calc(var(--spacing) * 3);
@@ -714,6 +733,10 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
+  .border-4 {
+    border-style: var(--tw-border-style);
+    border-width: 4px;
+  }
   .border-\[3px\] {
     border-style: var(--tw-border-style);
     border-width: 3px;
@@ -736,6 +759,9 @@
   .border-\[\#e5007e\]\/50 {
     border-color: color-mix(in oklab, #e5007e 50%, transparent);
   }
+  .border-\[\#f3e6ed\] {
+    border-color: #f3e6ed;
+  }
   .border-\[var\(--line\)\] {
     border-color: var(--line);
   }
@@ -756,6 +782,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-white) 70%, transparent);
     }
+  }
+  .border-t-\[\#e5007e\] {
+    border-top-color: #e5007e;
   }
   .bg-\[\#0b7a43\] {
     background-color: #0b7a43;
@@ -931,6 +960,9 @@
   .p-1 {
     padding: var(--spacing);
   }
+  .p-1\.5 {
+    padding: calc(var(--spacing) * 1.5);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -1029,6 +1061,12 @@
   }
   .py-14 {
     padding-block: calc(var(--spacing) * 14);
+  }
+  .py-16 {
+    padding-block: calc(var(--spacing) * 16);
+  }
+  .py-20 {
+    padding-block: calc(var(--spacing) * 20);
   }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
@@ -1544,6 +1582,14 @@
     --tw-translate-y: 0px;
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
+  @media (hover: hover) {
+    .enabled\:hover\:bg-\[var\(--soft\)\]:enabled:hover {
+      background-color: var(--soft);
+    }
+  }
+  .disabled\:cursor-default:disabled {
+    cursor: default;
+  }
   .disabled\:opacity-50:disabled {
     opacity: 50%;
   }
@@ -1891,6 +1937,11 @@
   syntax: "*";
   inherits: false;
 }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes ping {
   75%, 100% {
     transform: scale(2);
@@ -2060,6 +2111,35 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}}
 .planilha td{text-align:center;border:1px solid var(--line);padding:8px}
 .planilha tfoot td{font-weight:700;background:var(--panel)}
 #protocolo{display:none}
+.atalho{border-radius:999px;border:1px solid rgba(255,255,255,.6);background:transparent;padding:8px 16px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;transition:background .15s}
+.atalho:hover{background:rgba(255,255,255,.15)}.atalho[aria-pressed=true]{background:#fff;color:#8c004c}
+.campoHero{border-radius:12px;border:0;background:rgba(255,255,255,.95);padding:8px 12px;font-size:16px;color:#16101a}
+#vCubadora.carregando .wrap,#vTce.carregando .wrap{opacity:.55;transition:opacity .2s}
+.relFundo{background:light-dark(#f4eef1,#1c1519)}
+.papel{--pi:#16101a;--pm:#6d5f69;--pl:#eadfe5;background:#fff;color:var(--pi);max-width:960px;margin:0 auto;border-radius:20px;box-shadow:0 24px 70px rgba(60,0,30,.18);padding:clamp(22px,5vw,56px);color-scheme:light}
+.papel h2{font-family:Outfit,sans-serif;font-size:21px;margin:0 0 4px;color:var(--pi)}
+.papel .rsec{margin-top:38px}.papel .rnota{color:var(--pm);font-size:13px;margin:0 0 14px}
+.papel .rkpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.papel .rkpi{border:1px solid var(--pl);border-radius:16px;padding:14px 16px;break-inside:avoid}
+.papel .rkpi small{display:block;color:var(--pm);font-size:12.5px}.papel .rkpi b{display:block;font-family:Outfit,sans-serif;font-size:30px;line-height:1.15;color:#c4006b}.papel .rkpi em{font-style:normal;font-size:12.5px;color:var(--pm)}
+.papel .rtab{width:100%;border-collapse:collapse;font-size:13px}
+.papel .rtab th{text-align:left;color:var(--pm);font-weight:600;font-size:12px;padding:8px;border:0;border-bottom:2px solid var(--pi);background:none;white-space:nowrap}
+.papel .rtab td{padding:8px;border:0;border-bottom:1px solid var(--pl);vertical-align:top;color:var(--pi)}
+.papel .rtab .rtot td{font-weight:700;border-bottom:0;border-top:2px solid var(--pi)}
+.papel .rtab .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.papel .rbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;font-size:13px;margin-bottom:9px;break-inside:avoid}
+.papel .rbar i{grid-column:1/-1;display:block;height:8px;border-radius:9px;background:#f3e6ed;overflow:hidden}.papel .rbar i s{display:block;height:100%;border-radius:9px;background:#e5007e}
+.papel .rbar.dest i s{background:#173a5e}
+.papel .rresumo{background:#fdf0f6;border-radius:16px;padding:16px 20px;line-height:1.6;font-size:15px;margin:22px 0}
+.papel .rchip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;background:#f3e6ed;color:#8c004c;white-space:nowrap}
+.papel .rchip.ok{background:#dcf5e7;color:#0b5e35}.papel .rchip.al{background:#fff1d6;color:#8a5300}
+.papel .rcol2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media(max-width:700px){.papel .rkpis{grid-template-columns:repeat(2,minmax(0,1fr))}.papel .rcol2{grid-template-columns:1fr}}
+@media print{body.imprimindoRel>*:not(#vRelatorio){display:none!important}body.imprimindoRel #vRelatorio>.hero{display:none!important}
+  body.imprimindoRel #vRelatorio .band{padding:0;background:#fff}body.imprimindoRel #vRelatorio .wrap{max-width:none;padding:0}
+  body.imprimindoRel .papel{box-shadow:none;border-radius:0;padding:0;max-width:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.imprimindoRel .papel .rsec{break-inside:auto}body.imprimindoRel .papel h2{break-after:avoid}body.imprimindoRel .papel tr{break-inside:avoid}body.imprimindoRel .papel .rcol2{grid-template-columns:1fr;gap:18px}
+  @page{size:A4;margin:12mm}}
 #lote:not(.opacity-0)>div,#selBar:not(.opacity-0)>div{pointer-events:auto}
 body:has(#selBar:not(.opacity-0)) .toast{bottom:108px}
 @media(max-width:600px){body:has(#selBar:not(.opacity-0)) .toast{bottom:168px}}
@@ -2164,7 +2244,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
 <header class="top">
   <div class="marca"><b>wep<i>i</i>nk · portal</b><span>por AGF Morada dos Lagos</span></div>
   <nav class="abas" id="abas" aria-label="Seções">
-    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#frota" data-v="frota" hidden>Frota</a><a href="#cubadora" data-v="cubadora" hidden>Cubadoras</a><a href="#local" data-v="local" hidden>Dados locais</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
+    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#frota" data-v="frota" hidden>Frota</a><a href="#cubadora" data-v="cubadora" hidden>Cubadoras</a><a href="#tce" data-v="tce" hidden>TCE</a><a href="#relatorio" data-v="relatorio" hidden>Relatório</a><a href="#local" data-v="local" hidden>Dados locais</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
   </nav>
   <div class="user">
     <label class="demoPerfil" id="demoPerfilBox" hidden>Ver como <select id="demoPerfil"><option value="cliente">Cliente Wepink</option><option value="transporte">Transporte</option><option value="operacao">Operação</option><option value="admin">Administrador</option></select></label>
@@ -2353,6 +2433,76 @@ main.carregando{opacity:.55;transition:opacity .2s}
         <div class="scroll"><table class="stack"><thead><tr><th>Número</th><th>Nome</th><th>Turno</th><th>Situação</th><th></th></tr></thead><tbody id="cubOpBody"></tbody></table></div>
       </div>
     </div>
+  </section>
+</div>
+
+<div id="vTce" hidden>
+  <section class="band hero">
+    <div class="wrap">
+      <h1 id="tceTitulo">Produtividade no TCE</h1>
+      <p class="sub" id="tceSub">Objetos bipados no TCE (registros micropost) por operador.</p>
+      <form id="tceForm" class="mb-5 grid gap-3">
+        <div class="flex flex-wrap items-center gap-2" id="tceAtalhos">
+          <button type="button" data-at="hoje" class="atalho">Hoje</button><button type="button" data-at="ontem" class="atalho">Ontem</button>
+          <button type="button" data-at="noite" class="atalho">Turno da noite (18h–6h)</button><button type="button" data-at="semana" class="atalho">Últimos 7 dias</button>
+          <label class="ml-auto inline-flex items-center gap-2 text-[13px] text-white/85">Triagem
+            <select id="tceTriagem" class="max-w-[240px] rounded-full border-0 bg-white/95 px-3 py-2 text-sm text-[#16101a]"><option value="">Todas</option></select></label>
+        </div>
+        <div class="flex flex-wrap items-end gap-3">
+          <label class="grid gap-1 text-[13px] text-white/85">De<span class="flex gap-2"><input type="date" id="tceIni" class="campoHero"><input type="time" id="tceHi" class="campoHero"></span></label>
+          <label class="grid gap-1 text-[13px] text-white/85">Até<span class="flex gap-2"><input type="date" id="tceFim" class="campoHero"><input type="time" id="tceHf" class="campoHero"></span></label>
+          <button type="submit" class="min-h-11 rounded-full border-0 bg-[#16101a] px-6 text-[15px] font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg">Atualizar</button>
+        </div>
+      </form>
+      <p id="tceErro" class="m-0 mb-4 rounded-2xl bg-white/95 p-4 font-semibold text-[#b45309]" hidden></p>
+      <div class="kpis" id="tceKpis"></div>
+      <div class="fig"><svg id="tceSvg" role="img" aria-label="Objetos bipados por hora"></svg><div class="tip" id="tceTip"></div></div>
+      <div class="legenda"><span><i></i>Objetos bipados por hora (ou por dia, em períodos longos)</span></div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div>
+        <div class="mb-3 flex flex-wrap items-end justify-between gap-3"><div><h2>Ranking dos operadores</h2><p class="nota" style="margin:0">Pelo login do TCE: total bipado, ritmo por hora trabalhada e horário da primeira e da última bipagem.</p></div>
+          <button type="button" id="tceExportar" class="inline-flex min-h-10 items-center rounded-full border border-[var(--line)] bg-transparent px-4 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--ink)]">Exportar CSV</button></div>
+        <ol id="tceRanking" class="m-0 grid list-none gap-3 p-0"></ol>
+      </div>
+      <div>
+        <h2>Mapa por hora do dia</h2><p class="nota">Quanto mais forte o rosa, mais objetos bipados naquela hora.</p>
+        <div id="tceCalor"></div>
+        <div class="mt-8 grid gap-8 sm:grid-cols-2">
+          <div><h2>Por triagem</h2><p class="nota">Clique para filtrar.</p><div id="tceTriagens"></div></div>
+          <div><h2>Principais remetentes</h2><p class="nota">Os 15 que mais tiveram objetos bipados.</p><div id="tceRemetentes"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="vRelatorio" hidden>
+  <section class="band hero">
+    <div class="wrap">
+      <h1>Relatório da operação</h1>
+      <p class="sub">Tudo o que a operação recebeu, tratou e bipou no período, pronto para enviar à diretoria.</p>
+      <form id="relForm" class="mb-2 grid gap-3">
+        <div class="flex flex-wrap items-center gap-2" id="relAtalhos">
+          <button type="button" data-at="hoje" class="atalho">Hoje</button><button type="button" data-at="ontem" class="atalho">Ontem</button>
+          <button type="button" data-at="noite" class="atalho">Turno da noite (18h–6h)</button><button type="button" data-at="semana" class="atalho">Últimos 7 dias</button>
+        </div>
+        <div class="flex flex-wrap items-end gap-3">
+          <label class="grid gap-1 text-[13px] text-white/85">De<span class="flex gap-2"><input type="date" id="relIni" class="campoHero"><input type="time" id="relHi" class="campoHero"></span></label>
+          <label class="grid gap-1 text-[13px] text-white/85">Até<span class="flex gap-2"><input type="date" id="relFim" class="campoHero"><input type="time" id="relHf" class="campoHero"></span></label>
+          <button type="submit" id="relGerar" class="min-h-11 rounded-full border-0 bg-[#16101a] px-6 text-[15px] font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60">Gerar relatório</button>
+          <button type="button" id="relImprimir" hidden class="min-h-11 rounded-full border-0 bg-white px-6 text-[15px] font-semibold text-[#8c004c] transition hover:-translate-y-0.5 hover:shadow-lg">Imprimir / salvar PDF</button>
+        </div>
+      </form>
+      <p id="relErro" class="m-0 mt-3 rounded-2xl bg-white/95 p-4 font-semibold text-[#b45309]" hidden></p>
+    </div>
+  </section>
+  <section class="band relFundo">
+    <div class="wrap"><div id="relPapel" class="papel"><div class="py-16 text-center text-[#6d5f69]">
+      <p class="m-0 text-lg font-semibold text-[#16101a]">Escolha o período e clique em <b>Gerar relatório</b>.</p>
+      <p class="mt-2 mb-0">O relatório junta as coletas recebidas, os objetos tratados, as bipagens do TCE, as cubadoras e as ocorrências com os motivos.</p></div></div></div>
   </section>
 </div>
 
@@ -2621,6 +2771,7 @@ const params = extra => ({ ini: st.ini, fim: st.fim, uf: st.uf, depto: st.depto,
 async function api(rota, p = {}) {
   if (st.demo && rota.startsWith('ponte/')) return demoPonte('GET', rota, p);
   if (st.demo && rota.startsWith('cubadora/')) return demoCubadora('GET', rota, p);
+  if (st.demo && (rota === 'tce' || rota === 'relatorio')) return demoRel(rota, p);
   if (st.demo) return /^(coletas|usuarios|notificacoes|frota|minha-conta)/.test(rota) ? demoCol('GET', rota, p) : demoApi(rota, p);
   const qs = new URLSearchParams(Object.entries(p).filter(([, v]) => v !== '' && v != null));
   const r = await fetch('api/' + rota + '?' + qs, { credentials: 'same-origin' });
@@ -2962,10 +3113,10 @@ const PODE = {
   solicitar: ['cliente', 'transporte', 'operacao', 'admin'], agendar: ['transporte', 'admin'], coletar: ['transporte', 'admin'],
   cancelar: ['cliente', 'transporte', 'admin'], embarque: ['operacao', 'admin'], conferir: ['operacao', 'admin'],
   finalizar: ['operacao', 'admin'], ciente: ['cliente', 'admin'], resolver: ['operacao', 'admin'], usuarios: ['admin'],
-  frota: ['transporte', 'admin'], caminhao: ['transporte', 'admin'], protocolo: ['transporte', 'operacao', 'admin'], anexar: ['transporte', 'operacao', 'admin'], cubadora: ['operacao', 'admin']
+  frota: ['transporte', 'admin'], caminhao: ['transporte', 'admin'], protocolo: ['transporte', 'operacao', 'admin'], anexar: ['transporte', 'operacao', 'admin'], cubadora: ['operacao', 'admin'], tce: ['operacao', 'admin'], relatorio: ['operacao', 'admin']
 };
 const pode = a => !!st.me && PODE[a].includes(st.me.perfil);
-const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', frota: '#vFrota', cubadora: '#vCubadora', local: '#vLocal', usuarios: '#vUsuarios' };
+const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', frota: '#vFrota', cubadora: '#vCubadora', tce: '#vTce', relatorio: '#vRelatorio', local: '#vLocal', usuarios: '#vUsuarios' };
 let viewAtual = '';
 function rotear() {
   const h = location.hash.replace('#', '');
@@ -2975,6 +3126,8 @@ function rotear() {
   if (v === 'frota' && !pode('frota')) v = 'coletas';
   if (v === 'local' && !(ponteSt.disponivel || pode('usuarios'))) v = 'coletas';
   if (v === 'cubadora' && !pode('cubadora')) v = 'coletas';
+  if (v === 'tce' && !pode('tce')) v = 'coletas';
+  if (v === 'relatorio' && !pode('relatorio')) v = 'coletas';
   const mudou = v !== viewAtual; viewAtual = v;
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   for (const a of document.querySelectorAll('#abas a')) a.toggleAttribute('aria-current', false), a.dataset.v === v && a.setAttribute('aria-current', 'page');
@@ -2985,6 +3138,8 @@ function rotear() {
   if (mudou && v === 'frota') carregarFrota();
   if (mudou && v === 'local') carregarLocal();
   if (mudou && v === 'cubadora') { carregarCubadora(); requestAnimationFrame(desenharCub); }
+  if (mudou && v === 'tce') { carregarTce(); requestAnimationFrame(desenharTce); }
+  if (mudou && v === 'relatorio' && !$('#relIni').value) aplicarAtalho('rel', 'ontem');
   const m = /^coleta-(\d+)$/.exec(h);
   if (m && (!colAberta || colAberta.id !== +m[1])) abrirColeta(+m[1]);
 }
@@ -2994,6 +3149,8 @@ function aplicarPerfil() {
   $('#abas a[data-v=frota]').hidden = !pode('frota');
   $('#abas a[data-v=local]').hidden = !(ponteSt.disponivel || pode('usuarios'));
   $('#abas a[data-v=cubadora]').hidden = !pode('cubadora');
+  $('#abas a[data-v=tce]').hidden = !pode('tce');
+  $('#abas a[data-v=relatorio]').hidden = !pode('relatorio');
   $('#usuario').textContent = `${st.me.nome} · ${PERFIL_NOME[st.me.perfil] || st.me.perfil}`;
   $('#novaColeta span').textContent = st.me.perfil === 'cliente' ? 'Solicitar coleta' : 'Nova coleta';
   $('#novaColeta').hidden = !pode('solicitar');
@@ -4358,24 +4515,7 @@ function renderCubadora() {
       <span class="col-span-full flex h-2.5 overflow-hidden rounded-full bg-[var(--panel)]" title="${nf.format(o.imps || 0)} impressões · ${nf.format(o.servicos || 0)} serviços">
         <span class="block h-full bg-[#e5007e] transition-[width] duration-700" style="width:${(o.imps || 0) / max * 100}%"></span><span class="block h-full bg-[#173a5e] transition-[width] duration-700" style="width:${(o.servicos || 0) / max * 100}%"></span></span>
     </li>`).join('') : '<li class="rounded-2xl bg-[var(--panel)] p-5 text-[var(--mut)]">Nenhuma bipagem nesse período.</li>';
-  // mapa de calor
-  const horasDia = [...Array(24).keys()], top = Math.max(1, ...lista.flatMap(o => o.porHora));
-  // horas na ordem do turno: começa depois do maior intervalo sem bipagem (ex.: 18h, 19h ... 23h, 00h ... 06h)
-  const usadas = horasDia.filter(h => lista.some(o => o.porHora[h]));
-  let hs = [];
-  if (usadas.length === 24) hs = horasDia;
-  else if (usadas.length) {
-    let ini = usadas[0], maior = -1;
-    usadas.forEach((h, i) => { const prox = usadas[(i + 1) % usadas.length], gap = (prox - h + 24) % 24 || 24; if (gap > maior) { maior = gap; ini = prox; } });
-    const fimH = (ini - maior + 24 + 1) % 24;
-    for (let h = ini, n = 0; n < 24; h = (h + 1) % 24, n++) { hs.push(h); if (h === (fimH + 23) % 24 && usadas.length) break; }
-    hs = hs.slice(0, (hs.indexOf(usadas.reduce((m, h) => ((h - ini + 24) % 24) > ((m - ini + 24) % 24) ? h : m, ini)) + 1) || hs.length);
-  }
-  $('#cubCalor').innerHTML = lista.length && hs.length ? `<div class="scroll"><table class="w-full border-separate [border-spacing:3px] text-xs">
-    <thead><tr><th class="!border-0 !p-1 text-left !text-[var(--mut)]">Operador</th>${hs.map(h => `<th class="!border-0 !p-1 text-center font-semibold !text-[var(--mut)]">${pad(h)}h</th>`).join('')}</tr></thead>
-    <tbody>${lista.map(o => `<tr><td class="!border-0 !p-1 pr-3 whitespace-nowrap font-semibold">${o.nome ? esc(o.nome.split(' ')[0]) : 'nº ' + esc(o.op)}</td>${hs.map(h => { const v = o.porHora[h], a = v / top;
-      return `<td class="!border-0 !p-0"><span class="grid h-8 min-w-8 place-items-center rounded-md text-[11px] font-semibold transition hover:scale-110 ${a > .55 ? 'text-white' : 'text-[var(--ink)]'}" style="background:${v ? `color-mix(in srgb,#e5007e ${Math.round(12 + a * 88)}%,var(--bg))` : 'var(--panel)'}" title="${o.nome ? esc(o.nome) : 'nº ' + esc(o.op)} · ${pad(h)}h: ${nf.format(v)}">${v ? nf.format(v) : ''}</span></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`
-    : '<p class="m-0 text-sm text-[var(--mut)]">Sem dados para o mapa.</p>';
+  $('#cubCalor').innerHTML = htmlCalor(lista.map(o => ({ curto: o.nome ? o.nome.split(' ')[0] : 'nº ' + o.op, longo: o.nome || 'nº ' + o.op, porHora: o.porHora })));
   renderOperadores();
 }
 let cubSerie = [];
@@ -4395,10 +4535,9 @@ function cubMontarSerie(slots, fl) {
   return out;
 }
 const svgCub = $('#cubSvg'), tipCub = $('#cubTip');
-function desenharCub() {
+function desenharBarras(svgCub, tipCub, s, vazio) {
   const W = svgCub.clientWidth, H = svgCub.clientHeight; if (!W || !H) return;
-  const s = cubSerie;
-  if (!s.length || !s.some(x => x.n)) { svgCub.innerHTML = `<text x="${W / 2}" y="${H / 2}" fill="#fff" text-anchor="middle" font-size="15">Sem bipagens no período</text>`; return; }
+  if (!s.length || !s.some(x => x.n)) { svgCub.innerHTML = `<text x="${W / 2}" y="${H / 2}" fill="#fff" text-anchor="middle" font-size="15">${vazio}</text>`; return; }
   const est = W < 520, m = { t: 12, r: 8, b: 26, l: est ? 8 : 48 }, iw = W - m.l - m.r, ih = H - m.t - m.b, max = Math.max(...s.map(x => x.n), 1);
   const passo = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000, 10000, 20000].find(p => max / p <= 4) || Math.ceil(max / 4);
   const topo = Math.ceil(max / passo) * passo, y = v => m.t + ih - v / topo * ih, bw = iw / s.length;
@@ -4414,6 +4553,7 @@ function desenharCub() {
     tipCub.style.left = Math.min(Math.max(m.l + i * bw + bw / 2, 90), W - 90) + 'px'; tipCub.style.top = y(x.n) + 'px'; };
   svgCub.onmouseleave = () => tipCub.style.display = 'none';
 }
+function desenharCub() { desenharBarras(svgCub, tipCub, cubSerie, 'Sem bipagens no período'); }
 const roCub = new ResizeObserver(desenharCub); roCub.observe(svgCub);
 function renderOperadores() {
   $('#cubOpBody').innerHTML = cub.opErro ? `<tr><td colspan="5" class="vazio">${esc(cub.opErro)}</td></tr>` : cub.operadores.length ? cub.operadores.map(o => `<tr class="${o.ativo ? '' : 'opacity-55'}">
@@ -4450,6 +4590,279 @@ $('#vCubadora').addEventListener('click', e => {
   if (e.target.closest('#cubNovoOp')) return formOperadorCub(null);
   if (e.target.closest('#cubExportar')) return cub.filtro && exportarCub();
 });
+
+/* ---------- utilidades comuns (cubadoras, TCE e relatório) ---------- */
+function aplicarAtalho(pre, a) {
+  const [i, hi, f, hf] = cubPeriodo(a);
+  $(`#${pre}Ini`).value = i; $(`#${pre}Hi`).value = hi; $(`#${pre}Fim`).value = f; $(`#${pre}Hf`).value = hf;
+  for (const b of document.querySelectorAll(`#${pre}Atalhos [data-at]`)) b.setAttribute('aria-pressed', b.dataset.at === a);
+}
+function lerPeriodo(pre) {
+  const ini = $(`#${pre}Ini`).value, hi = $(`#${pre}Hi`).value || '00:00', fim = $(`#${pre}Fim`).value || ini, hf = $(`#${pre}Hf`).value || '23:59';
+  if (!ini) { aviso('Informe a data inicial.'); return null; }
+  if (ini + hi > fim + hf) { aviso('O início precisa ser antes do fim.'); return null; }
+  return { ini, hi, fim, hf };
+}
+const textoPeriodo = fl => fl.ini === fl.fim ? `${br(fl.ini)}, das ${fl.hi.slice(0, 5)} às ${fl.hf.slice(0, 5)}` : `${br(fl.ini)} ${fl.hi.slice(0, 5)} até ${br(fl.fim)} ${fl.hf.slice(0, 5)}`;
+// horas na ordem do turno: começa depois do maior intervalo sem registro (ex.: 18h, 19h ... 23h, 00h ... 06h)
+function ordemHoras(lista) {
+  const horasDia = [...Array(24).keys()], usadas = horasDia.filter(h => lista.some(o => o.porHora[h]));
+  if (usadas.length === 24) return horasDia;
+  if (!usadas.length) return [];
+  let ini = usadas[0], maior = -1;
+  usadas.forEach((h, i) => { const prox = usadas[(i + 1) % usadas.length], gap = (prox - h + 24) % 24 || 24; if (gap > maior) { maior = gap; ini = prox; } });
+  const ultima = usadas.reduce((m, h) => ((h - ini + 24) % 24) > ((m - ini + 24) % 24) ? h : m, ini), hs = [];
+  for (let h = ini; ; h = (h + 1) % 24) { hs.push(h); if (h === ultima) break; }
+  return hs;
+}
+function htmlCalor(lista) {
+  const hs = ordemHoras(lista), top = Math.max(1, ...lista.flatMap(o => o.porHora));
+  if (!lista.length || !hs.length) return '<p class="m-0 text-sm text-[var(--mut)]">Sem dados para o mapa.</p>';
+  return `<div class="scroll"><table class="w-full border-separate [border-spacing:3px] text-xs">
+    <thead><tr><th class="!border-0 !p-1 text-left !text-[var(--mut)]">Operador</th>${hs.map(h => `<th class="!border-0 !p-1 text-center font-semibold !text-[var(--mut)]">${pad(h)}h</th>`).join('')}</tr></thead>
+    <tbody>${lista.map(o => `<tr><td class="!border-0 !p-1 pr-3 whitespace-nowrap font-semibold">${esc(o.curto)}</td>${hs.map(h => { const v = o.porHora[h], a = v / top;
+      return `<td class="!border-0 !p-0"><span class="grid h-8 min-w-8 place-items-center rounded-md text-[11px] font-semibold transition hover:scale-110 ${a > .55 ? 'text-white' : 'text-[var(--ink)]'}" style="background:${v ? `color-mix(in srgb,#e5007e ${Math.round(12 + a * 88)}%,var(--bg))` : 'var(--panel)'}" title="${esc(o.longo)} · ${pad(h)}h: ${nf.format(v)}">${v ? nf.format(v) : ''}</span></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+// lista de barras horizontais (tela)
+function htmlListaBarras(itens, attr) {
+  if (!itens.length) return '<p class="m-0 text-sm text-[var(--mut)]">Sem registros.</p>';
+  const max = Math.max(1, ...itens.map(x => x.n)), tot = itens.reduce((a, x) => a + x.n, 0) || 1;
+  return `<ul class="m-0 grid list-none gap-2.5 p-0">${itens.map((x, i) => `<li><button type="button" ${attr ? `${attr}="${esc(x.chave ?? x.rotulo)}"` : 'disabled'} class="grid w-full cursor-pointer gap-1 rounded-xl border-0 bg-transparent p-1.5 text-left text-[var(--ink)] transition enabled:hover:bg-[var(--soft)] disabled:cursor-default ${x.ativo ? 'bg-[var(--soft)]' : ''}">
+      <span class="flex items-baseline justify-between gap-3 text-sm"><span class="min-w-0 truncate ${x.destaque ? 'font-bold text-[var(--deep)]' : ''}" title="${esc(x.rotulo)}">${esc(x.rotulo)}</span><b class="shrink-0">${nf.format(x.n)} <small class="font-normal text-[var(--mut)]">${(x.n / tot * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</small></b></span>
+      <span class="block h-2 overflow-hidden rounded-full bg-[var(--panel)]"><span class="block h-full rounded-full ${x.destaque ? 'bg-[#173a5e]' : 'bg-[#e5007e]'} transition-[width] duration-700" style="width:${x.n / max * 100}%;transition-delay:${Math.min(i, 12) * 30}ms"></span></span></button></li>`).join('')}</ul>`;
+}
+const csvCel = v => { const s = String(v ?? ''); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+const ehWepink = r => /SAVI|WEPINK/i.test(r || '');
+
+/* ---------- TCE (bipagens na tabela REGISTROSMICROPOST) ---------- */
+const tceSt = { dados: null, filtro: null, serie: [] };
+async function carregarTce() {
+  if (!$('#tceIni').value) aplicarAtalho('tce', 'hoje');
+  const p = lerPeriodo('tce'); if (!p) return;
+  tceSt.filtro = { ini: p.ini, hi: p.hi + ':00', fim: p.fim, hf: p.hf + ':59' };
+  $('#vTce').classList.add('carregando'); $('#tceErro').hidden = true;
+  try { tceSt.dados = await api('tce', { ...p, triagem: $('#tceTriagem').value }); renderTce(); }
+  catch (e) { if (e.message === 'login') return; $('#tceErro').hidden = false; $('#tceErro').textContent = e.message; }
+  finally { $('#vTce').classList.remove('carregando'); }
+}
+function tceCalcular(d) {
+  const ops = new Map(), slots = new Map();
+  for (const l of d.horas || []) {
+    const k = `${l.dia} ${pad(l.h)}`, q = Number(l.qtd) || 0, op = String(l.login);
+    const o = ops.get(op) || { op, total: 0, horas: new Set(), porHora: new Array(24).fill(0) };
+    o.total += q; o.horas.add(k); o.porHora[l.h] += q; ops.set(op, o); slots.set(k, (slots.get(k) || 0) + q);
+  }
+  for (const e of d.extremos || []) { const o = ops.get(String(e.login)); if (o) { o.primeiro = e.primeiro; o.ultimo = e.ultimo; } }
+  const lista = [...ops.values()].map(o => ({ ...o, horasAtivas: o.horas.size, ritmo: o.horas.size ? Math.round(o.total / o.horas.size) : 0 })).sort((a, b) => b.total - a.total);
+  return { lista, slots, total: lista.reduce((a, o) => a + o.total, 0) };
+}
+const faixaHorario = o => o.primeiro ? `${o.primeiro.slice(11, 16)} às ${o.ultimo.slice(11, 16)}${o.primeiro.slice(0, 10) !== o.ultimo.slice(0, 10) ? ' (+' + Math.round((parse(o.ultimo) - parse(o.primeiro)) / 864e5) + 'd)' : ''}` : '';
+function renderTce() {
+  const d = tceSt.dados, fl = tceSt.filtro, { lista, slots, total } = tceCalcular(d), lider = lista[0];
+  $('#tceTitulo').textContent = !total ? 'Nenhum objeto bipado no período' : `${nf.format(total)} objetos bipados no TCE`;
+  $('#tceSub').textContent = `${textoPeriodo(fl)}${d.filtro.triagem ? ' · triagem ' + d.filtro.triagem : ' · todas as triagens'}${lider ? ` · ${lider.op} lidera com ${nf.format(lider.total)}` : ''}`;
+  const sel = $('#tceTriagem'), atual = d.filtro.triagem || '';
+  sel.innerHTML = '<option value="">Todas</option>' + (d.opcoesTriagem || []).map(t => `<option${t === atual ? ' selected' : ''}>${esc(t)}</option>`).join('');
+  const pico = [...slots.entries()].sort((a, b) => b[1] - a[1])[0], wep = (d.remetentes || []).filter(r => ehWepink(r.remetente)).reduce((a, r) => a + r.qtd, 0);
+  $('#tceKpis').innerHTML = [
+    ['Objetos bipados', nf.format(total), wep ? `${nf.format(wep)} da Wepink` : `${(d.triagens || []).length} triagens`],
+    ['Operadores ativos', nf.format(lista.length), 'logins diferentes no TCE'],
+    ['Média por operador', lista.length ? nf.format(Math.round(total / lista.length)) : '—', 'objetos no período'],
+    ['Hora de pico', pico ? pico[0].slice(11) + 'h' : '—', pico ? `${nf.format(pico[1])} objetos em ${br(pico[0].slice(0, 10))}` : 'sem registros']
+  ].map(([a, b, c]) => `<div class="kpi"><small>${a}</small><div class="num">${b}</div><em>${c}</em></div>`).join('');
+  tceSt.serie = cubMontarSerie(slots, fl); desenharTce();
+  const max = Math.max(1, ...lista.map(o => o.total));
+  $('#tceRanking').innerHTML = lista.length ? lista.map((o, i) => `<li class="grid items-center gap-x-4 gap-y-2 rounded-2xl border border-[var(--line)] p-4 transition hover:-translate-y-0.5 hover:shadow-md motion-safe:animate-subir [grid-template-columns:auto_minmax(0,1fr)_auto]" style="animation-delay:${Math.min(i, 10) * 50}ms">
+      <span class="grid h-10 w-10 place-items-center rounded-full text-sm font-bold ${i === 0 ? 'bg-[#e5007e] text-white' : i < 3 ? 'bg-[var(--soft)] text-[var(--deep)]' : 'bg-[var(--panel)] text-[var(--mut)]'}">${i + 1}º</span>
+      <span class="min-w-0"><b class="block truncate">${esc(o.op)}</b><span class="text-sm text-[var(--mut)]">${faixaHorario(o)}${o.horasAtivas ? ` · ${o.horasAtivas} h ativa${o.horasAtivas > 1 ? 's' : ''}` : ''}</span></span>
+      <span class="text-right"><b class="block text-[22px] leading-tight" style="font-family:Outfit,sans-serif">${nf.format(o.total)}</b><span class="text-xs text-[var(--mut)]">${nf.format(o.ritmo)}/hora ativa</span></span>
+      <span class="col-span-full block h-2.5 overflow-hidden rounded-full bg-[var(--panel)]"><span class="block h-full rounded-full bg-[#e5007e] transition-[width] duration-700" style="width:${o.total / max * 100}%"></span></span>
+    </li>`).join('') : '<li class="rounded-2xl bg-[var(--panel)] p-5 text-[var(--mut)]">Nenhum objeto bipado nesse período.</li>';
+  $('#tceCalor').innerHTML = htmlCalor(lista.map(o => ({ curto: o.op, longo: o.op, porHora: o.porHora })));
+  $('#tceTriagens').innerHTML = htmlListaBarras((d.triagens || []).map(t => ({ rotulo: t.triagem, n: t.qtd, ativo: t.triagem === atual })), 'data-tce-triagem');
+  $('#tceRemetentes').innerHTML = htmlListaBarras((d.remetentes || []).map(r => ({ rotulo: r.remetente, n: r.qtd, destaque: ehWepink(r.remetente) })));
+}
+const svgTce = $('#tceSvg'), tipTce = $('#tceTip');
+function desenharTce() { desenharBarras(svgTce, tipTce, tceSt.serie, 'Nenhum objeto bipado no período'); }
+new ResizeObserver(desenharTce).observe(svgTce);
+function exportarTce() {
+  const { lista } = tceCalcular(tceSt.dados), fl = tceSt.filtro;
+  const linhas = [['Posição', 'Login', 'Objetos bipados', 'Horas ativas', 'Objetos por hora ativa', 'Primeira', 'Última'].join(';'),
+    ...lista.map((o, i) => [i + 1, o.op, o.total, o.horasAtivas, o.ritmo, o.primeiro || '', o.ultimo || ''].map(csvCel).join(';'))];
+  entregarArquivo(new Blob(['﻿' + linhas.join('\r\n')], { type: 'text/csv' }), `produtividade-tce-${fl.ini}_${fl.fim}.csv`);
+}
+$('#tceAtalhos').onclick = e => { const b = e.target.closest('[data-at]'); if (!b) return; aplicarAtalho('tce', b.dataset.at); carregarTce(); };
+$('#tceForm').onsubmit = e => { e.preventDefault(); for (const b of document.querySelectorAll('#tceAtalhos [data-at]')) b.setAttribute('aria-pressed', 'false'); carregarTce(); };
+$('#tceTriagem').onchange = () => carregarTce();
+$('#vTce').addEventListener('click', e => {
+  const t = e.target.closest('[data-tce-triagem]');
+  if (t) { const v = t.dataset.tceTriagem, sel = $('#tceTriagem');
+    if (sel.value === v) sel.value = ''; else { if (![...sel.options].some(o => o.value === v)) sel.add(new Option(v, v)); sel.value = v; }
+    return carregarTce(); }
+  if (e.target.closest('#tceExportar')) return tceSt.dados && exportarTce();
+});
+
+/* ---------- Relatório da operação (para a diretoria) ---------- */
+const relSt = { dados: null };
+const ST_PEND = { aberta: ['Aguardando cliente', 'al'], ciente: ['Cliente ciente', ''], resolvida: ['Resolvida', 'ok'] };
+const ST_REL = { solicitada: ['Solicitada', ''], agendada: ['Agendada', ''], coletada: ['Coletada', ''], em_tratamento: ['Em tratamento', ''], pendente: ['Com pendências', 'al'], concluida: ['Concluída', 'ok'], cancelada: ['Cancelada', ''] };
+function svgBarrasEstatico(s) {
+  const W = 860, H = 190, m = { t: 22, r: 6, b: 26, l: 46 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+  if (!s.some(x => x.n)) return `<p class="rnota">Sem registros no período.</p>`;
+  const max = Math.max(1, ...s.map(x => x.n));
+  const passo = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000, 10000, 20000, 50000].find(p => max / p <= 4) || Math.ceil(max / 4);
+  const topo = Math.ceil(max / passo) * passo, y = v => m.t + ih - v / topo * ih, bw = iw / s.length;
+  let g = '';
+  for (let v = 0; v <= topo; v += passo) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? '#efe4ea' : '#16101a'}"/><text x="${m.l - 8}" y="${y(v) + 4}" fill="#6d5f69" font-size="11" text-anchor="end">${nf.format(v)}</text>`;
+  const rotulos = s.length <= 26, cada = Math.max(1, Math.ceil(s.length / 18));
+  s.forEach((x, i) => {
+    const h = Math.max(x.n ? 1.5 : 0, ih - (y(x.n) - m.t)), cx = m.l + i * bw + bw / 2;
+    g += `<rect x="${m.l + i * bw + bw * .14}" y="${m.t + ih - h}" width="${Math.max(1, bw * .72)}" height="${h}" rx="${Math.min(4, bw / 4)}" fill="#e5007e"/>`;
+    if (rotulos && x.n) g += `<text x="${cx}" y="${m.t + ih - h - 5}" fill="#16101a" font-size="10" font-weight="600" text-anchor="middle">${nf.format(x.n)}</text>`;
+    if (i % cada === 0) g += `<text x="${cx}" y="${H - 7}" fill="#6d5f69" font-size="11" text-anchor="middle">${x.rot}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Gráfico por hora" style="display:block">${g}</svg>`;
+}
+function barrasPapel(itens, total) {
+  if (!itens.length) return '<p class="rnota">Sem registros.</p>';
+  const max = Math.max(1, ...itens.map(x => x.n)), tot = total || itens.reduce((a, x) => a + x.n, 0) || 1;
+  return itens.map(x => `<div class="rbar${x.destaque ? ' dest' : ''}"><span>${x.destaque ? '<b>' + esc(x.rotulo) + '</b>' : esc(x.rotulo)}</span><b>${nf.format(x.n)} <small style="font-weight:400;color:#6d5f69">${(x.n / tot * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</small></b><i><s style="width:${x.n / max * 100}%"></s></i></div>`).join('');
+}
+async function gerarRelatorio() {
+  const p = lerPeriodo('rel'); if (!p) return;
+  const fl = { ini: p.ini, hi: p.hi + ':00', fim: p.fim, hf: p.hf + ':59' };
+  $('#relErro').hidden = true; $('#relGerar').disabled = true; $('#relGerar').textContent = 'Gerando…';
+  $('#relPapel').innerHTML = `<div class="grid place-items-center gap-4 py-20 text-[#6d5f69]"><span class="h-12 w-12 animate-spin rounded-full border-4 border-[#f3e6ed] border-t-[#e5007e]"></span><p class="m-0 font-semibold">Juntando coletas, TCE, cubadoras e ocorrências…</p></div>`;
+  try {
+    const cubPromessa = ponteSt.disponivel
+      ? Promise.all([apiPost('ponte/consulta/cubadora_hora', fl), api('cubadora/operadores').catch(() => ({ operadores: [] }))]).then(([h, o]) => ({ horas: h.linhas || [], operadores: o.operadores || [] })).catch(e => ({ erro: e.message }))
+      : Promise.resolve(null);
+    const [d, cubR] = await Promise.all([api('relatorio', p), cubPromessa]);
+    relSt.dados = { ...d, cubadoras: cubR, fl };
+    renderRelatorio();
+    $('#relImprimir').hidden = false;
+    requestAnimationFrame(() => $('#relPapel').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  } catch (e) {
+    if (e.message === 'login') return;
+    $('#relErro').hidden = false; $('#relErro').textContent = e.message;
+    $('#relPapel').innerHTML = '<p class="py-16 text-center text-[#6d5f69]">Não foi possível gerar o relatório.</p>';
+  } finally { $('#relGerar').disabled = false; $('#relGerar').textContent = 'Gerar relatório'; }
+}
+function renderRelatorio() {
+  const R = relSt.dados, fl = R.fl, T = R.tce || {}, C = R.coletas || {}, O = R.ocorrencias || {}, CB = R.cubadoras;
+  const tceOk = !T.indisponivel && T.horas, colOk = !C.indisponivel && C.linhas, ocOk = !O.indisponivel && O.linhas;
+  const tc = tceOk ? tceCalcular(T) : { lista: [], slots: new Map(), total: 0 };
+  const cols = colOk ? C.linhas.filter(c => c.status !== 'cancelada') : [], canceladas = colOk ? C.linhas.length - cols.length : 0;
+  const soma = k => cols.reduce((a, c) => a + (Number(c[k]) || 0), 0);
+  const objetos = soma('objetos'), tratados = soma('tratados'), caminhoes = soma('caminhoes'), paletes = soma('paletes');
+  const ocs = ocOk ? O.linhas : [], motivos = [...ocs.reduce((m, o) => m.set(o.motivo, (m.get(o.motivo) || 0) + 1), new Map())].map(([rotulo, n]) => ({ rotulo, n })).sort((a, b) => b.n - a.n);
+  const wep = (T.remetentes || []).filter(r => ehWepink(r.remetente)).reduce((a, r) => a + r.qtd, 0);
+  const pico = [...tc.slots.entries()].sort((a, b) => b[1] - a[1])[0];
+  // cubadoras
+  let cub = null;
+  if (CB && !CB.erro) {
+    const nome = n => (CB.operadores.find(x => String(x.numero) === String(n)) || {}).nome;
+    const m = new Map(); let imps = 0, serv = 0;
+    for (const l of CB.horas) { const q = Number(l.qtd) || 0; m.set(String(l.operador), (m.get(String(l.operador)) || 0) + q); if (l.fonte === 'imps') imps += q; else serv += q; }
+    cub = { total: imps + serv, imps, serv, ops: [...m].map(([op, n]) => ({ rotulo: nome(op) || 'Operador nº ' + op, n })).sort((a, b) => b.n - a.n) };
+  }
+  const geradoEm = new Date(R.geradoEm || Date.now()), quando = `${br(ymd(geradoEm))} às ${pad(geradoEm.getHours())}:${pad(geradoEm.getMinutes())}`;
+  const kpis = [
+    ['Coletas recebidas', colOk ? nf.format(cols.length) : '—', colOk ? (canceladas ? `${canceladas} cancelada${canceladas > 1 ? 's' : ''} fora da conta` : 'no período') : 'indisponível'],
+    ['Caminhões e paletes', colOk && C.frota ? nf.format(caminhoes) : '—', colOk && C.frota ? `${nf.format(paletes)} paletes` : 'sem frota registrada'],
+    ['Objetos recebidos', colOk ? nf.format(objetos) : '—', colOk ? (objetos ? `${(tratados / objetos * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% já tratados` : 'nos embarques') : ''],
+    ['Bipados no TCE', tceOk ? nf.format(tc.total) : '—', tceOk ? (wep ? `${nf.format(wep)} da Wepink` : `${tc.lista.length} operadores`) : 'indisponível'],
+    ['Bipagens nas cubadoras', cub ? nf.format(cub.total) : '—', cub ? `${nf.format(cub.imps)} impressões · ${nf.format(cub.serv)} serviços` : CB && CB.erro ? 'ponte indisponível' : 'não consultado'],
+    ['Ocorrências', ocOk ? nf.format(ocs.length) : '—', ocOk ? (ocs.length ? `${ocs.filter(o => o.status === 'resolvida').length} resolvidas` : 'nenhuma no período') : 'indisponível']
+  ];
+  // resumo em texto
+  const frases = [];
+  if (colOk) frases.push(cols.length ? `A operação recebeu <b>${nf.format(cols.length)} coleta${cols.length > 1 ? 's' : ''}</b>${C.frota && caminhoes ? ` em <b>${nf.format(caminhoes)} caminh${caminhoes > 1 ? 'ões' : 'ão'}</b> (${nf.format(paletes)} paletes)` : ''}, somando <b>${nf.format(objetos)} objetos</b>${objetos ? `, dos quais ${nf.format(tratados)} já foram conferidos e tratados` : ''}.` : 'Não houve coletas recebidas no período.');
+  if (tceOk) frases.push(tc.total ? `No TCE foram bipados <b>${nf.format(tc.total)} objetos</b> por ${tc.lista.length} operador${tc.lista.length > 1 ? 'es' : ''}${wep ? `, sendo ${nf.format(wep)} da Wepink` : ''}. O destaque foi <b>${esc(tc.lista[0].op)}</b>, com ${nf.format(tc.lista[0].total)} objetos${pico ? `, e o pico aconteceu às ${pico[0].slice(11)}h de ${br(pico[0].slice(0, 10))}` : ''}.` : 'Não houve bipagens no TCE no período.');
+  if (cub && cub.total) frases.push(`As cubadoras registraram <b>${nf.format(cub.total)} bipagens</b>${cub.ops[0] ? `, lideradas por ${esc(cub.ops[0].rotulo)} (${nf.format(cub.ops[0].n)})` : ''}.`);
+  if (ocOk) frases.push(ocs.length ? `Foram registradas <b>${nf.format(ocs.length)} ocorrência${ocs.length > 1 ? 's' : ''}</b>, principalmente “${esc(motivos[0].rotulo)}” (${motivos[0].n}).` : 'Nenhuma ocorrência foi registrada.');
+  const sec = (n, t, nota, corpo) => `<section class="rsec"><h2>${n}. ${t}</h2>${nota ? `<p class="rnota">${nota}</p>` : ''}${corpo}</section>`;
+  let n = 0;
+  const secColetas = !colOk ? sec(++n, 'Coletas recebidas', esc(C.indisponivel || ''), '') : sec(++n, 'Coletas recebidas', 'Coletas cujo horário (da coleta ou do primeiro caminhão) está dentro do período.', !C.linhas.length ? '<p class="rnota">Nenhuma coleta no período.</p>' : `
+    <div style="overflow-x:auto"><table class="rtab"><thead><tr><th>Coleta</th><th>Data e hora</th><th>Local</th>${C.frota ? '<th class="n">Caminhões</th><th class="n">Paletes</th>' : ''}<th class="n">Objetos</th><th class="n">Tratados</th><th class="n">Ocorrências</th><th>Situação</th></tr></thead>
+    <tbody>${C.linhas.map(c => { const s = ST_REL[c.status] || [c.status, '']; return `<tr${c.status === 'cancelada' ? ' style="opacity:.5"' : ''}><td style="white-space:nowrap"><b>nº ${c.id}</b></td><td style="white-space:nowrap">${br(c.data)}${c.horario ? ' ' + c.horario : ''}</td><td>${esc(c.local || '—')}</td>${C.frota ? `<td class="n">${nf.format(c.caminhoes)}</td><td class="n">${nf.format(c.paletes)}</td>` : ''}<td class="n">${nf.format(c.objetos)}</td><td class="n">${nf.format(c.tratados)}</td><td class="n">${c.pendencias || '—'}</td><td><span class="rchip ${s[1]}">${s[0]}</span></td></tr>`; }).join('')}
+    <tr class="rtot"><td colspan="3">Total (sem canceladas)</td>${C.frota ? `<td class="n">${nf.format(caminhoes)}</td><td class="n">${nf.format(paletes)}</td>` : ''}<td class="n">${nf.format(objetos)}</td><td class="n">${nf.format(tratados)}</td><td class="n">${nf.format(soma('pendencias'))}</td><td></td></tr></tbody></table></div>`);
+  const secTce = !tceOk ? sec(++n, 'Bipagens no TCE', esc(T.indisponivel || ''), '') : sec(++n, 'Bipagens no TCE', 'Objetos bipados na triagem (registros micropost), por hora e por operador.', `
+    ${svgBarrasEstatico(cubMontarSerie(tc.slots, fl))}
+    <div class="rcol2" style="margin-top:22px">
+      <div><h3 style="margin:0 0 10px;font-size:15px">Operadores</h3>${tc.lista.length ? `<table class="rtab"><thead><tr><th>#</th><th>Login</th><th class="n">Objetos</th><th class="n">Por hora</th><th>Horário</th></tr></thead><tbody>${tc.lista.slice(0, 15).map((o, i) => `<tr><td>${i + 1}º</td><td><b>${esc(o.op)}</b></td><td class="n">${nf.format(o.total)}</td><td class="n">${nf.format(o.ritmo)}</td><td style="white-space:nowrap">${faixaHorario(o)}</td></tr>`).join('')}</tbody></table>${tc.lista.length > 15 ? `<p class="rnota" style="margin-top:6px">E mais ${tc.lista.length - 15} operadores.</p>` : ''}` : '<p class="rnota">Sem bipagens.</p>'}</div>
+      <div><h3 style="margin:0 0 10px;font-size:15px">Por triagem</h3>${barrasPapel((T.triagens || []).slice(0, 10).map(t => ({ rotulo: t.triagem, n: t.qtd })), tc.total)}
+        <h3 style="margin:18px 0 10px;font-size:15px">Principais remetentes</h3>${barrasPapel((T.remetentes || []).slice(0, 8).map(r => ({ rotulo: r.remetente, n: r.qtd, destaque: ehWepink(r.remetente) })), tc.total)}</div>
+    </div>`);
+  const secCub = !CB ? '' : CB.erro ? sec(++n, 'Cubadoras', 'Não foi possível consultar as cubadoras agora (ponte do MySQL): ' + esc(CB.erro), '') : sec(++n, 'Cubadoras', 'Bipagens nas balanças cubadoras Pitney por operador.', cub.total ? barrasPapel(cub.ops.slice(0, 12), cub.total) : '<p class="rnota">Sem bipagens nas cubadoras.</p>');
+  const secOc = !ocOk ? sec(++n, 'Ocorrências', esc(O.indisponivel || ''), '') : sec(++n, 'Ocorrências e motivos', 'Objetos com problema apontados na conferência dos embarques.', !ocs.length ? '<p class="rresumo" style="background:#e9f8ef;margin:0">Nenhuma ocorrência registrada no período. 👏</p>' : `
+    <div class="rcol2"><div>${barrasPapel(motivos, ocs.length)}</div>
+      <div class="rkpis" style="grid-template-columns:repeat(3,minmax(0,1fr));align-content:start">${[['Aguardando cliente', ocs.filter(o => o.status === 'aberta').length], ['Cliente ciente', ocs.filter(o => o.status === 'ciente').length], ['Resolvidas', ocs.filter(o => o.status === 'resolvida').length]].map(([a, b]) => `<div class="rkpi"><small>${a}</small><b style="font-size:24px">${b}</b></div>`).join('')}</div></div>
+    <div style="overflow-x:auto;margin-top:18px"><table class="rtab"><thead><tr><th>Objeto</th><th>Motivo</th><th>Coleta / embarque</th><th>Registrada</th><th>Observação</th><th>Situação</th></tr></thead>
+    <tbody>${ocs.map(o => { const s = ST_PEND[o.status] || [o.status, '']; return `<tr><td style="font-family:ui-monospace,monospace;white-space:nowrap">${esc(o.objeto)}</td><td>${esc(o.motivo)}</td><td>nº ${o.coleta}${o.embarque ? ' / ' + esc(o.embarque) : ''}</td><td style="white-space:nowrap">${br(o.criadoEm)} ${o.criadoEm.slice(11, 16)}</td><td>${esc(o.obs || o.solucao || '—')}</td><td><span class="rchip ${s[1]}">${s[0]}</span></td></tr>`; }).join('')}</tbody></table></div>`);
+  $('#relPapel').innerHTML = `
+    <header style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:18px;border-bottom:3px solid #e5007e;padding-bottom:18px">
+      <div><p style="margin:0;color:#c4006b;font-weight:700;letter-spacing:.06em;font-size:12px;text-transform:uppercase">AGF Morada dos Lagos · Operação Wepink</p>
+        <h1 style="margin:6px 0 4px;font-family:Outfit,sans-serif;font-size:clamp(26px,4vw,36px);line-height:1.1;color:#16101a">Relatório da operação</h1>
+        <p style="margin:0;color:#6d5f69;font-size:15px">${textoPeriodo(fl)}</p></div>
+      <div style="display:flex;align-items:center;gap:14px"><img src="logo-agf.png" alt="" style="height:44px" onerror="this.remove()"><img src="logo-wepink.png" alt="" style="height:38px" onerror="this.remove()"></div>
+    </header>
+    <div class="rkpis" style="margin-top:24px">${kpis.map(([a, b, c]) => `<div class="rkpi"><small>${a}</small><b>${b}</b><em>${c}</em></div>`).join('')}</div>
+    <div class="rresumo">${frases.join(' ')}</div>
+    ${secColetas}${secTce}${secCub}${secOc}
+    <footer style="margin-top:40px;border-top:1px solid #eadfe5;padding-top:12px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:#6d5f69;font-size:12px">
+      <span>Gerado por ${esc(st.me ? st.me.nome : '')} em ${quando}</span><span>Portal Wepink · AGF Morada dos Lagos</span></footer>`;
+}
+function imprimirRelatorio() {
+  if (!relSt.dados) return;
+  const fl = relSt.dados.fl, tituloAntes = document.title;
+  document.title = `Relatório da operação ${fl.ini === fl.fim ? br(fl.ini) : br(fl.ini) + ' a ' + br(fl.fim)}`.replace(/\//g, '-');
+  document.body.classList.add('imprimindoRel');
+  setTimeout(() => { try { window.print(); } catch { aviso('Use Ctrl+P para imprimir.'); } setTimeout(() => { document.body.classList.remove('imprimindoRel'); document.title = tituloAntes; }, 500); }, 80);
+}
+$('#relAtalhos').onclick = e => { const b = e.target.closest('[data-at]'); if (b) aplicarAtalho('rel', b.dataset.at); };
+$('#relForm').onsubmit = e => { e.preventDefault(); gerarRelatorio(); };
+$('#relImprimir').onclick = imprimirRelatorio;
+for (const id of ['#relIni', '#relHi', '#relFim', '#relHf']) $(id).addEventListener('input', () => { for (const b of document.querySelectorAll('#relAtalhos [data-at]')) b.setAttribute('aria-pressed', 'false'); });
+
+/* demonstração do TCE e do relatório */
+function demoRel(rota, p) {
+  const fl = { ini: p.ini || hoje, hi: p.hi || '00:00', fim: p.fim || p.ini || hoje, hf: p.hf || '23:59' };
+  const rnd = k => { let h = 2166136261; for (const c of k) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return ((h >>> 0) % 1000) / 1000; };
+  const LOGINS = [['maumau', 18, 6], ['jessica', 18, 6], ['rodrigo', 19, 5], ['ana.paula', 7, 16], ['felipe', 8, 17], ['bruna', 13, 22], ['thiago', 22, 6]];
+  const TRI = [['EXPORTACAO AEREO', .34], ['SEDEX', .24], ['PAC', .22], ['MINI ENVIOS', .12], ['CARTA REGISTRADA', .08]];
+  const REM = [['SAVI COSMETICOS LTDA', .46], ['PS LOGISTICA E PROMOC ARMAZENS GERAIS LTDA', .18], ['MERCADO ENVIOS', .11], ['BELEZA NATURAL COMERCIO', .08], ['LOJAS LAGOS', .06], ['DIVERSOS', .11]];
+  const horas = [], ext = new Map(), fator = p.triagem ? (TRI.find(t => t[0] === p.triagem) || [0, .1])[1] : 1;
+  const a = new Date(`${fl.ini}T${fl.hi}:00`), b = new Date(`${fl.fim}T${fl.hf}:59`);
+  for (let t = new Date(a); t <= b; t = new Date(t.getTime() + 36e5)) {
+    const d = ymd(t), h = t.getHours();
+    for (const [lg, ini, fim] of LOGINS) {
+      const ativo = ini < fim ? h >= ini && h < fim : h >= ini || h < fim; if (!ativo || rnd(lg + d) < .12) continue;
+      const qtd = Math.round((90 + rnd(lg + d + h) * 160) * fator); if (!qtd) continue;
+      horas.push({ dia: d, h, login: lg, qtd });
+      const mm = pad(Math.floor(rnd(lg + d + h + 'm') * 59)), ts = `${d} ${pad(h)}:${mm}:00`, e = ext.get(lg) || { login: lg, primeiro: ts, ultimo: ts };
+      if (ts < e.primeiro) e.primeiro = ts; if (ts > e.ultimo) e.ultimo = ts; ext.set(lg, e);
+    }
+    t.setMinutes(0, 0, 0);
+  }
+  const total = horas.reduce((s, x) => s + x.qtd, 0);
+  const tce = { filtro: { ...fl, triagem: p.triagem || null }, total, horas, extremos: [...ext.values()],
+    triagens: (p.triagem ? TRI.filter(t => t[0] === p.triagem) : TRI).map(([triagem, f]) => ({ triagem, qtd: Math.round(total * (p.triagem ? 1 : f)) })),
+    remetentes: REM.map(([remetente, f]) => ({ remetente, qtd: Math.round(total * f) })), status: [{ status: '1', qtd: total }], opcoesTriagem: TRI.map(t => t[0]).sort(), geradoEm: new Date().toISOString() };
+  if (rota === 'tce') return new Promise(r => setTimeout(() => r(tce), 350));
+  const linhas = [], ocorr = [];
+  let id = 140;
+  for (let d = fl.ini; d <= fl.fim; d = addD(d, 1)) {
+    for (const [hh, local] of [['08:30', 'Galpão'], ['18:00', 'SAVI CD'], ['21:30', 'SLV']]) {
+      if (`${d}T${hh}` < `${fl.ini}T${fl.hi}` || `${d}T${hh}` > `${fl.fim}T${fl.hf}`) continue;
+      id++; const cam = 1 + Math.floor(rnd(d + hh) * 3), obj = cam * (2600 + Math.round(rnd(d + hh + 'o') * 900)), trat = rnd(d + hh + 't') < .25 ? Math.round(obj * .6) : obj - (rnd(d + hh + 'p') < .5 ? 3 : 0);
+      const pend = obj - trat > 0 && obj - trat < 10 ? obj - trat : rnd(d + hh + 'q') < .3 ? 2 : 0;
+      linhas.push({ id, data: d, horario: hh, status: trat < obj * .9 ? 'em_tratamento' : pend ? 'pendente' : 'concluida', local, previstos: null, embarques: cam, objetos: obj, conferidos: cam, tratados: trat, pendencias: pend, caminhoes: cam, paletes: cam * (10 + Math.floor(rnd(d + 'pal') * 4)) });
+      for (let k = 0; k < pend; k++) ocorr.push({ id: id * 10 + k, coleta: id, embarque: 'EMB-' + (5000 + id), objeto: 'AP' + String(12817026 + id * 37 + k).padStart(9, '0') + 'BR', motivo: MOTIVOS_DEMO[Math.floor(rnd(d + k + hh) * 6)], obs: k ? null : 'Separado para revisão', status: ['aberta', 'ciente', 'resolvida'][Math.floor(rnd(id + 's' + k) * 3)], criadoEm: `${d} ${hh.slice(0, 2) === '08' ? '11' : '23'}:${pad(10 + k * 7)}`, solucao: null, resposta: null });
+    }
+  }
+  return new Promise(r => setTimeout(() => r({ filtro: fl, tce, coletas: { linhas, frota: true }, ocorrencias: { linhas: ocorr }, geradoEm: new Date().toISOString() }), 700));
+}
 
 /* demonstração das cubadoras */
 const DEMO_CUB = { operadores: [[101, 'Juliana Martins', 'Noite'], [102, 'Carlos Henrique', 'Noite'], [103, 'Paula Rocha', 'Tarde'], [104, 'Diego Alves', 'Tarde'], [105, 'Renata Lima', 'Noite'], [106, 'Bruno Costa', 'Manhã']].map(([numero, nome, turno], i) => ({ id: i + 1, numero: String(numero), nome, turno, ativo: true })), seq: 6 };

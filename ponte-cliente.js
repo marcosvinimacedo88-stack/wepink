@@ -13,7 +13,7 @@ module.exports = function criarPonte({ lerCorpo }) {
     try {
       r = await fetch(base() + caminho, {
         method: metodo,
-        headers: { Authorization: 'Bearer ' + env.PONTE_TOKEN, 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { Authorization: 'Bearer ' + env.PONTE_TOKEN, 'Content-Type': 'application/json', Accept: 'application/json', 'ngrok-skip-browser-warning': '1' },
         body: corpo ? JSON.stringify(corpo) : undefined,
         signal: AbortSignal.timeout(Number(env.PONTE_TEMPO_MS || 25000))
       });
@@ -26,7 +26,7 @@ module.exports = function criarPonte({ lerCorpo }) {
     if (!r.ok) {
       let msg = j.erro;
       if (!msg && !ehJson) msg = [502, 503, 530, 1033].includes(r.status)
-        ? `O túnel da Cloudflare não alcançou a ponte (HTTP ${r.status}): a janela da ponte (iniciar-ponte.bat) está fechada, travou ou o túnel caiu.`
+        ? `O túnel não alcançou a ponte (HTTP ${r.status}): a ponte não está rodando no computador do MySQL, ou o túnel (ngrok) está desligado.`
         : r.status === 524 ? 'A consulta demorou mais de 100 segundos e o túnel desistiu. Reduza o período.'
         : `A ponte respondeu com erro (HTTP ${r.status}).`;
       if (r.status === 401) msg = 'A ponte recusou o token: confira se o PONTE_TOKEN da Vercel é igual ao do .env da ponte.';

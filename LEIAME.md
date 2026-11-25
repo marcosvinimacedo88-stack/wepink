@@ -158,3 +158,9 @@ Segurança na Vercel:
 - Na Vercel cada instância tem memória própria: o bloqueio após 5 senhas erradas e o limite de rastreios por minuto valem por instância, então ficam mais fracos que num servidor único.
 
 Na Hostinger/VPS continua funcionando igual: `npm start` (ou `iniciar.bat` no Windows).
+
+## TCE e Relatório da operação
+
+- **TCE** (perfis operação e administrador): produtividade de quem bipa no TCE, a partir da tabela `REGISTROSMICROPOST` (SQL Server, a mesma dos envios, sem o filtro da Wepink). Filtros de data, hora e triagem; ranking por `Login`, mapa por hora, triagens e principais remetentes; exportação CSV. Período máximo de 31 dias.
+- **Relatório** (perfis operação e administrador): relatório para a diretoria no período escolhido (data e hora), com coletas recebidas (caminhões, paletes, objetos, tratados), bipagens do TCE, cubadoras (se a ponte estiver no ar) e ocorrências com os motivos. Botão **Imprimir / salvar PDF**.
+- Opcional, para deixar as duas telas mais rápidas: rode `criar_indice_tce.sql` no banco.
