@@ -9,6 +9,10 @@ module.exports = function criarRelatorios({ consulta }) {
   const PERFIS = ['operacao', 'admin'];
   const TABELA = 'REGISTROSMICROPOST';
   const MAX_DIAS = 31;
+  // Remetentes considerados no TCE e no relatório (parecido com: LIKE %nome%). Separe por ponto e vírgula.
+  const REMETENTES = String(process.env.FILTRO_TCE || 'SAVI COSMETICOS LTDA;SLV SUPLEMENTOS LTDA').split(';').map(x => x.trim()).filter(Boolean).slice(0, 10);
+  const escLike = v => v.replace(/[[\]%_]/g, m => '[' + m + ']');
+  const filtroRem = () => ({ w: '(' + REMETENTES.map((_, i) => `Remetente LIKE @rem${i}`).join(' OR ') + ')', params: REMETENTES.map((r, i) => [`rem${i}`, '%' + escLike(r) + '%']) });
   const reData = /^\d{4}-\d{2}-\d{2}$/, reHora = /^([01]\d|2[0-3]):[0-5]\d$/;
   const LOGIN = `ISNULL(NULLIF(LTRIM(RTRIM(Login)), ''), '(sem login)')`;
   const TRIAGEM = `ISNULL(NULLIF(LTRIM(RTRIM(Triagem)), ''), '(sem triagem)')`;
@@ -25,7 +29,8 @@ module.exports = function criarRelatorios({ consulta }) {
     if (a > b) throw new Falha(400, 'O início precisa ser antes do fim.');
     if ((Date.parse(fim) - Date.parse(ini)) / 864e5 > MAX_DIAS) throw new Falha(400, `Escolha um período de até ${MAX_DIAS} dias.`);
     // fim inclusivo até o último segundo do minuto escolhido
-    return { ini, hi, fim, hf, params: [['a', a], ['b', b]], w: `data >= CAST(@a AS datetime) AND data < DATEADD(minute, 1, CAST(@b AS datetime))` };
+    const r = filtroRem();
+    return { ini, hi, fim, hf, params: [['a', a], ['b', b], ...r.params], w: `data >= CAST(@a AS datetime) AND data < DATEADD(minute, 1, CAST(@b AS datetime)) AND ${r.w}` };
   }
 
   /* ---------- TCE ---------- */
@@ -51,7 +56,7 @@ module.exports = function criarRelatorios({ consulta }) {
     return {
       filtro: { ini: j.ini, hi: j.hi, fim: j.fim, hf: j.hf, triagem: triagem || null },
       total: triagens.reduce((s, t) => s + t.qtd, 0),
-      horas, extremos, triagens, remetentes, status, opcoesTriagem: opcoes, geradoEm: new Date().toISOString()
+      horas, extremos, triagens, remetentes, status, opcoesTriagem: opcoes, remetentesFiltro: REMETENTES, geradoEm: new Date().toISOString()
     };
   }
 

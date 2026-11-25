@@ -11,7 +11,7 @@ module.exports = function criarColetas({ consulta, normCod, lerCorpo }) {
   const MOTIVOS = [
     'Objeto não localizado na carga', 'Embalagem avariada', 'Sem etiqueta', 'Etiqueta ilegível ou danificada',
     'Etiqueta duplicada', 'Endereço incompleto ou CEP inválido', 'Peso ou dimensões fora do padrão',
-    'Conteúdo proibido ou restrito', 'Objeto sem registro no sistema', 'Outro'
+    'Conteúdo proibido ou restrito', 'Objeto sem registro no sistema', 'Postado outra agência', 'Etiqueta já utilizada', 'Outro'
   ];
   const PODE = {
     solicitar: ['cliente', 'transporte', 'operacao', 'admin'],

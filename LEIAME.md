@@ -161,6 +161,6 @@ Na Hostinger/VPS continua funcionando igual: `npm start` (ou `iniciar.bat` no Wi
 
 ## TCE e Relatório da operação
 
-- **TCE** (perfis operação e administrador): produtividade de quem bipa no TCE, a partir da tabela `REGISTROSMICROPOST` (SQL Server, a mesma dos envios, sem o filtro da Wepink). Filtros de data, hora e triagem; ranking por `Login`, mapa por hora, triagens e principais remetentes; exportação CSV. Período máximo de 31 dias.
+- **TCE** (perfis operação e administrador): produtividade de quem bipa no TCE, a partir da tabela `REGISTROSMICROPOST` (SQL Server), só dos remetentes parecidos com SAVI COSMETICOS LTDA e SLV SUPLEMENTOS LTDA (variável opcional `FILTRO_TCE`). Filtros de data, hora e triagem; ranking por `Login`, mapa por hora, triagens e principais remetentes; exportação CSV. Período máximo de 31 dias.
 - **Relatório** (perfis operação e administrador): relatório para a diretoria no período escolhido (data e hora), com coletas recebidas (caminhões, paletes, objetos, tratados), bipagens do TCE, cubadoras (se a ponte estiver no ar) e ocorrências com os motivos. Botão **Imprimir / salvar PDF**.
 - Opcional, para deixar as duas telas mais rápidas: rode `criar_indice_tce.sql` no banco.

@@ -389,7 +389,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
   <section class="band hero">
     <div class="wrap">
       <h1 id="tceTitulo">Produtividade no TCE</h1>
-      <p class="sub" id="tceSub">Objetos bipados no TCE (registros micropost) por operador.</p>
+      <p class="sub" id="tceSub">Objetos da SAVI Cosméticos e da SLV Suplementos bipados no TCE, por operador.</p>
       <form id="tceForm" class="mb-5 grid gap-3">
         <div class="flex flex-wrap items-center gap-2" id="tceAtalhos">
           <button type="button" data-at="hoje" class="atalho">Hoje</button><button type="button" data-at="ontem" class="atalho">Ontem</button>
@@ -421,7 +421,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
         <div id="tceCalor"></div>
         <div class="mt-8 grid gap-8 sm:grid-cols-2">
           <div><h2>Por triagem</h2><p class="nota">Clique para filtrar.</p><div id="tceTriagens"></div></div>
-          <div><h2>Principais remetentes</h2><p class="nota">Os 15 que mais tiveram objetos bipados.</p><div id="tceRemetentes"></div></div>
+          <div><h2>Remetentes</h2><p class="nota">Só SAVI Cosméticos e SLV Suplementos.</p><div id="tceRemetentes"></div></div>
         </div>
       </div>
     </div>
@@ -2096,7 +2096,7 @@ $('#usuBody').onclick = e => { const b = e.target.closest('[data-editar]'); if (
 
 /* ---------- Demonstração da área de coletas ---------- */
 const DEMO_COL = { coletas: [], embarques: [], pendencias: [], historico: [], usuarios: [], veiculos: [], motoristas: [], caminhoes: [], anexos: [], conta: {}, seq: { c: 0, e: 0, p: 0, u: 0, v: 0, m: 0, cv: 0, a: 0 } };
-const MOTIVOS_DEMO = ['Objeto não localizado na carga', 'Embalagem avariada', 'Sem etiqueta', 'Etiqueta ilegível ou danificada', 'Etiqueta duplicada', 'Endereço incompleto ou CEP inválido', 'Peso ou dimensões fora do padrão', 'Conteúdo proibido ou restrito', 'Objeto sem registro no sistema', 'Outro'];
+const MOTIVOS_DEMO = ['Objeto não localizado na carga', 'Embalagem avariada', 'Sem etiqueta', 'Etiqueta ilegível ou danificada', 'Etiqueta duplicada', 'Endereço incompleto ou CEP inválido', 'Peso ou dimensões fora do padrão', 'Conteúdo proibido ou restrito', 'Objeto sem registro no sistema', 'Postado outra agência', 'Etiqueta já utilizada', 'Outro'];
 const agoraTxt = (dia, h) => (dia || hoje) + ' ' + (h ? h + ':00' : new Date().toTimeString().slice(0, 8));
 let histN = 0;
 function semearDemo() {
@@ -2582,6 +2582,7 @@ function htmlListaBarras(itens, attr) {
 }
 const csvCel = v => { const s = String(v ?? ''); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 const ehWepink = r => /SAVI|WEPINK/i.test(r || '');
+const porEmpresa = rems => { const savi = rems.filter(r => /SAVI/i.test(r.remetente)).reduce((a, r) => a + r.qtd, 0), slv = rems.filter(r => /SLV/i.test(r.remetente)).reduce((a, r) => a + r.qtd, 0); return `${nf.format(savi)} SAVI · ${nf.format(slv)} SLV`; };
 
 /* ---------- TCE (bipagens na tabela REGISTROSMICROPOST) ---------- */
 const tceSt = { dados: null, filtro: null, serie: [] };
@@ -2614,7 +2615,7 @@ function renderTce() {
   sel.innerHTML = '<option value="">Todas</option>' + (d.opcoesTriagem || []).map(t => `<option${t === atual ? ' selected' : ''}>${esc(t)}</option>`).join('');
   const pico = [...slots.entries()].sort((a, b) => b[1] - a[1])[0], wep = (d.remetentes || []).filter(r => ehWepink(r.remetente)).reduce((a, r) => a + r.qtd, 0);
   $('#tceKpis').innerHTML = [
-    ['Objetos bipados', nf.format(total), wep ? `${nf.format(wep)} da Wepink` : `${(d.triagens || []).length} triagens`],
+    ['Objetos bipados', nf.format(total), porEmpresa(d.remetentes || [])],
     ['Operadores ativos', nf.format(lista.length), 'logins diferentes no TCE'],
     ['Média por operador', lista.length ? nf.format(Math.round(total / lista.length)) : '—', 'objetos no período'],
     ['Hora de pico', pico ? pico[0].slice(11) + 'h' : '—', pico ? `${nf.format(pico[1])} objetos em ${br(pico[0].slice(0, 10))}` : 'sem registros']
@@ -2629,7 +2630,7 @@ function renderTce() {
     </li>`).join('') : '<li class="rounded-2xl bg-[var(--panel)] p-5 text-[var(--mut)]">Nenhum objeto bipado nesse período.</li>';
   $('#tceCalor').innerHTML = htmlCalor(lista.map(o => ({ curto: o.op, longo: o.op, porHora: o.porHora })));
   $('#tceTriagens').innerHTML = htmlListaBarras((d.triagens || []).map(t => ({ rotulo: t.triagem, n: t.qtd, ativo: t.triagem === atual })), 'data-tce-triagem');
-  $('#tceRemetentes').innerHTML = htmlListaBarras((d.remetentes || []).map(r => ({ rotulo: r.remetente, n: r.qtd, destaque: ehWepink(r.remetente) })));
+  $('#tceRemetentes').innerHTML = htmlListaBarras((d.remetentes || []).map(r => ({ rotulo: r.remetente, n: r.qtd })));
 }
 const svgTce = $('#tceSvg'), tipTce = $('#tceTip');
 function desenharTce() { desenharBarras(svgTce, tipTce, tceSt.serie, 'Nenhum objeto bipado no período'); }
@@ -2720,14 +2721,14 @@ function renderRelatorio() {
     ['Coletas recebidas', colOk ? nf.format(cols.length) : '—', colOk ? (canceladas ? `${canceladas} cancelada${canceladas > 1 ? 's' : ''} fora da conta` : 'no período') : 'indisponível'],
     ['Caminhões e paletes', colOk && C.frota ? nf.format(caminhoes) : '—', colOk && C.frota ? `${nf.format(paletes)} paletes` : 'sem frota registrada'],
     ['Objetos recebidos', colOk ? nf.format(objetos) : '—', colOk ? (objetos ? `${(tratados / objetos * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% já tratados` : 'nos embarques') : ''],
-    ['Bipados no TCE', tceOk ? nf.format(tc.total) : '—', tceOk ? (wep ? `${nf.format(wep)} da Wepink` : `${tc.lista.length} operadores`) : 'indisponível'],
+    ['Bipados no TCE', tceOk ? nf.format(tc.total) : '—', tceOk ? porEmpresa(T.remetentes || []) : 'indisponível'],
     ['Bipagens nas cubadoras', cub ? nf.format(cub.total) : '—', cub ? `${nf.format(cub.imps)} impressões · ${nf.format(cub.serv)} serviços` : CB && CB.erro ? 'ponte indisponível' : 'não consultado'],
     ['Ocorrências', ocOk ? nf.format(ocs.length) : '—', ocOk ? (ocs.length ? `${ocs.filter(o => o.status === 'resolvida').length} resolvidas` : 'nenhuma no período') : 'indisponível']
   ];
   // resumo em texto
   const frases = [];
   if (colOk) frases.push(cols.length ? `A operação recebeu <b>${nf.format(cols.length)} coleta${cols.length > 1 ? 's' : ''}</b>${C.frota && caminhoes ? ` em <b>${nf.format(caminhoes)} caminh${caminhoes > 1 ? 'ões' : 'ão'}</b> (${nf.format(paletes)} paletes)` : ''}, somando <b>${nf.format(objetos)} objetos</b>${objetos ? `, dos quais ${nf.format(tratados)} já foram conferidos e tratados` : ''}.` : 'Não houve coletas recebidas no período.');
-  if (tceOk) frases.push(tc.total ? `No TCE foram bipados <b>${nf.format(tc.total)} objetos</b> por ${tc.lista.length} operador${tc.lista.length > 1 ? 'es' : ''}${wep ? `, sendo ${nf.format(wep)} da Wepink` : ''}. O destaque foi <b>${esc(tc.lista[0].op)}</b>, com ${nf.format(tc.lista[0].total)} objetos${pico ? `, e o pico aconteceu às ${pico[0].slice(11)}h de ${br(pico[0].slice(0, 10))}` : ''}.` : 'Não houve bipagens no TCE no período.');
+  if (tceOk) frases.push(tc.total ? `No TCE foram bipados <b>${nf.format(tc.total)} objetos</b> por ${tc.lista.length} operador${tc.lista.length > 1 ? 'es' : ''} (${porEmpresa(T.remetentes || [])}). O destaque foi <b>${esc(tc.lista[0].op)}</b>, com ${nf.format(tc.lista[0].total)} objetos${pico ? `, e o pico aconteceu às ${pico[0].slice(11)}h de ${br(pico[0].slice(0, 10))}` : ''}.` : 'Não houve bipagens no TCE no período.');
   if (cub && cub.total) frases.push(`As cubadoras registraram <b>${nf.format(cub.total)} bipagens</b>${cub.ops[0] ? `, lideradas por ${esc(cub.ops[0].rotulo)} (${nf.format(cub.ops[0].n)})` : ''}.`);
   if (ocOk) frases.push(ocs.length ? `Foram registradas <b>${nf.format(ocs.length)} ocorrência${ocs.length > 1 ? 's' : ''}</b>, principalmente “${esc(motivos[0].rotulo)}” (${motivos[0].n}).` : 'Nenhuma ocorrência foi registrada.');
   const sec = (n, t, nota, corpo) => `<section class="rsec"><h2>${n}. ${t}</h2>${nota ? `<p class="rnota">${nota}</p>` : ''}${corpo}</section>`;
@@ -2736,12 +2737,12 @@ function renderRelatorio() {
     <div style="overflow-x:auto"><table class="rtab"><thead><tr><th>Coleta</th><th>Data e hora</th><th>Local</th>${C.frota ? '<th class="n">Caminhões</th><th class="n">Paletes</th>' : ''}<th class="n">Objetos</th><th class="n">Tratados</th><th class="n">Ocorrências</th><th>Situação</th></tr></thead>
     <tbody>${C.linhas.map(c => { const s = ST_REL[c.status] || [c.status, '']; return `<tr${c.status === 'cancelada' ? ' style="opacity:.5"' : ''}><td style="white-space:nowrap"><b>nº ${c.id}</b></td><td style="white-space:nowrap">${br(c.data)}${c.horario ? ' ' + c.horario : ''}</td><td>${esc(c.local || '—')}</td>${C.frota ? `<td class="n">${nf.format(c.caminhoes)}</td><td class="n">${nf.format(c.paletes)}</td>` : ''}<td class="n">${nf.format(c.objetos)}</td><td class="n">${nf.format(c.tratados)}</td><td class="n">${c.pendencias || '—'}</td><td><span class="rchip ${s[1]}">${s[0]}</span></td></tr>`; }).join('')}
     <tr class="rtot"><td colspan="3">Total (sem canceladas)</td>${C.frota ? `<td class="n">${nf.format(caminhoes)}</td><td class="n">${nf.format(paletes)}</td>` : ''}<td class="n">${nf.format(objetos)}</td><td class="n">${nf.format(tratados)}</td><td class="n">${nf.format(soma('pendencias'))}</td><td></td></tr></tbody></table></div>`);
-  const secTce = !tceOk ? sec(++n, 'Bipagens no TCE', esc(T.indisponivel || ''), '') : sec(++n, 'Bipagens no TCE', 'Objetos bipados na triagem (registros micropost), por hora e por operador.', `
+  const secTce = !tceOk ? sec(++n, 'Bipagens no TCE', esc(T.indisponivel || ''), '') : sec(++n, 'Bipagens no TCE', 'Objetos da SAVI Cosméticos e da SLV Suplementos bipados na triagem, por hora e por operador.', `
     ${svgBarrasEstatico(cubMontarSerie(tc.slots, fl))}
     <div class="rcol2" style="margin-top:22px">
       <div><h3 style="margin:0 0 10px;font-size:15px">Operadores</h3>${tc.lista.length ? `<table class="rtab"><thead><tr><th>#</th><th>Login</th><th class="n">Objetos</th><th class="n">Por hora</th><th>Horário</th></tr></thead><tbody>${tc.lista.slice(0, 15).map((o, i) => `<tr><td>${i + 1}º</td><td><b>${esc(o.op)}</b></td><td class="n">${nf.format(o.total)}</td><td class="n">${nf.format(o.ritmo)}</td><td style="white-space:nowrap">${faixaHorario(o)}</td></tr>`).join('')}</tbody></table>${tc.lista.length > 15 ? `<p class="rnota" style="margin-top:6px">E mais ${tc.lista.length - 15} operadores.</p>` : ''}` : '<p class="rnota">Sem bipagens.</p>'}</div>
       <div><h3 style="margin:0 0 10px;font-size:15px">Por triagem</h3>${barrasPapel((T.triagens || []).slice(0, 10).map(t => ({ rotulo: t.triagem, n: t.qtd })), tc.total)}
-        <h3 style="margin:18px 0 10px;font-size:15px">Principais remetentes</h3>${barrasPapel((T.remetentes || []).slice(0, 8).map(r => ({ rotulo: r.remetente, n: r.qtd, destaque: ehWepink(r.remetente) })), tc.total)}</div>
+        <h3 style="margin:18px 0 10px;font-size:15px">Remetentes</h3>${barrasPapel((T.remetentes || []).slice(0, 8).map(r => ({ rotulo: r.remetente, n: r.qtd })), tc.total)}</div>
     </div>`);
   const secCub = !CB ? '' : CB.erro ? sec(++n, 'Cubadoras', 'Não foi possível consultar as cubadoras agora (ponte do MySQL): ' + esc(CB.erro), '') : sec(++n, 'Cubadoras', 'Bipagens nas balanças cubadoras Pitney por operador.', cub.total ? barrasPapel(cub.ops.slice(0, 12), cub.total) : '<p class="rnota">Sem bipagens nas cubadoras.</p>');
   const secOc = !ocOk ? sec(++n, 'Ocorrências', esc(O.indisponivel || ''), '') : sec(++n, 'Ocorrências e motivos', 'Objetos com problema apontados na conferência dos embarques.', !ocs.length ? '<p class="rresumo" style="background:#e9f8ef;margin:0">Nenhuma ocorrência registrada no período. 👏</p>' : `
@@ -2780,7 +2781,7 @@ function demoRel(rota, p) {
   const rnd = k => { let h = 2166136261; for (const c of k) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return ((h >>> 0) % 1000) / 1000; };
   const LOGINS = [['maumau', 18, 6], ['jessica', 18, 6], ['rodrigo', 19, 5], ['ana.paula', 7, 16], ['felipe', 8, 17], ['bruna', 13, 22], ['thiago', 22, 6]];
   const TRI = [['EXPORTACAO AEREO', .34], ['SEDEX', .24], ['PAC', .22], ['MINI ENVIOS', .12], ['CARTA REGISTRADA', .08]];
-  const REM = [['SAVI COSMETICOS LTDA', .46], ['PS LOGISTICA E PROMOC ARMAZENS GERAIS LTDA', .18], ['MERCADO ENVIOS', .11], ['BELEZA NATURAL COMERCIO', .08], ['LOJAS LAGOS', .06], ['DIVERSOS', .11]];
+  const REM = [['SAVI COSMETICOS LTDA', .78], ['SLV SUPLEMENTOS LTDA', .22]];
   const horas = [], ext = new Map(), fator = p.triagem ? (TRI.find(t => t[0] === p.triagem) || [0, .1])[1] : 1;
   const a = new Date(`${fl.ini}T${fl.hi}:00`), b = new Date(`${fl.fim}T${fl.hf}:59`);
   for (let t = new Date(a); t <= b; t = new Date(t.getTime() + 36e5)) {
