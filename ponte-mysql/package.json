@@ -1,0 +1,10 @@
+{
+  "name": "ponte-mysql-portal-wepink",
+  "version": "1.0.0",
+  "description": "Ponte somente leitura entre o MySQL local e o Portal Wepink · AGF Morada dos Lagos",
+  "main": "ponte.js",
+  "private": true,
+  "engines": { "node": ">=20.6" },
+  "scripts": { "start": "node --env-file=.env ponte.js" },
+  "dependencies": { "mysql2": "^3.11.0" }
+}

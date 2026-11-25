@@ -51,7 +51,7 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}}
 .abas a:hover{opacity:1}.abas a[aria-current=page]{opacity:1;background:color-mix(in srgb,currentColor 15%,transparent)}
 .top .user #usuario{opacity:.8;font-size:13px;max-width:22ch;line-height:1.25}
 @media(max-width:1380px){.top .marca span{display:none}}
-.demoPerfil{display:flex;gap:6px;align-items:center;font-size:13px}.demoPerfil select{color:#16101a;border-radius:99px;border:0;padding:6px 10px;font-size:14px}
+.demoPerfil{display:flex;gap:6px;align-items:center;font-size:13px}.demoPerfil[hidden]{display:none!important}.demoPerfil select{color:#16101a;border-radius:99px;border:0;padding:6px 10px;font-size:14px}
 .chip{border:1px solid rgba(255,255,255,.55);background:transparent;color:#fff;border-radius:99px;padding:6px 14px;min-height:38px;font-size:14px;transition:background .2s,color .2s}
 .chip:hover{background:rgba(255,255,255,.15)}.chip[aria-pressed=true]{background:#fff;color:#8c004c;border-color:#fff;font-weight:600}
 .campo textarea{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;font:inherit;font-size:16px;color:inherit;min-height:84px;resize:vertical}
@@ -164,7 +164,7 @@ main.carregando{opacity:.55;transition:opacity .2s}
 <header class="top">
   <div class="marca"><b>wep<i>i</i>nk · portal</b><span>por AGF Morada dos Lagos</span></div>
   <nav class="abas" id="abas" aria-label="Seções">
-    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#frota" data-v="frota" hidden>Frota</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
+    <a href="#envios" data-v="envios">Envios</a><a href="#coletas" data-v="coletas">Coletas</a><a href="#frota" data-v="frota" hidden>Frota</a><a href="#cubadora" data-v="cubadora" hidden>Cubadoras</a><a href="#local" data-v="local" hidden>Dados locais</a><a href="#usuarios" data-v="usuarios" hidden>Usuários</a>
   </nav>
   <div class="user">
     <label class="demoPerfil" id="demoPerfilBox" hidden>Ver como <select id="demoPerfil"><option value="cliente">Cliente Wepink</option><option value="transporte">Transporte</option><option value="operacao">Operação</option><option value="admin">Administrador</option></select></label>
@@ -306,6 +306,64 @@ main.carregando{opacity:.55;transition:opacity .2s}
           <div class="mb-3 flex flex-wrap items-center justify-between gap-3"><h3 class="m-0 text-lg font-semibold">Motoristas</h3><button type="button" class="acao" id="novoMotorista">Novo motorista</button></div>
           <div class="scroll"><table class="stack"><thead><tr><th>Nome</th><th class="n">Telefone</th><th>Documento</th><th>Situação</th><th></th></tr></thead><tbody id="motBody"></tbody></table></div>
         </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="vCubadora" hidden>
+  <section class="band hero">
+    <div class="wrap">
+      <h1 id="cubTitulo">Desempenho das cubadoras</h1>
+      <p class="sub" id="cubSub">Bipagens das balanças cubadoras por operador.</p>
+      <form id="cubForm" class="mb-5 grid gap-3">
+        <div class="flex flex-wrap items-center gap-2" id="cubAtalhos">
+          <button type="button" data-at="hoje" class="rounded-full border border-white/60 bg-transparent px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15 aria-pressed:bg-white aria-pressed:text-[#8c004c]">Hoje</button><button type="button" data-at="ontem" class="rounded-full border border-white/60 bg-transparent px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15 aria-pressed:bg-white aria-pressed:text-[#8c004c]">Ontem</button>
+          <button type="button" data-at="noite" class="rounded-full border border-white/60 bg-transparent px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15 aria-pressed:bg-white aria-pressed:text-[#8c004c]">Turno da noite (18h–6h)</button><button type="button" data-at="semana" class="rounded-full border border-white/60 bg-transparent px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15 aria-pressed:bg-white aria-pressed:text-[#8c004c]">Últimos 7 dias</button>
+          <span class="ml-auto inline-flex rounded-full bg-white/15 p-1" id="cubFontes" role="group" aria-label="Origem">
+            <button type="button" data-fonte="" aria-pressed="true" class="rounded-full border-0 bg-transparent px-3 py-1.5 text-sm font-semibold text-white transition aria-pressed:bg-white aria-pressed:text-[#8c004c]">Tudo</button>
+            <button type="button" data-fonte="imps" class="rounded-full border-0 bg-transparent px-3 py-1.5 text-sm font-semibold text-white transition aria-pressed:bg-white aria-pressed:text-[#8c004c]">Impressões</button>
+            <button type="button" data-fonte="servicos" class="rounded-full border-0 bg-transparent px-3 py-1.5 text-sm font-semibold text-white transition aria-pressed:bg-white aria-pressed:text-[#8c004c]">Serviços</button></span>
+        </div>
+        <div class="flex flex-wrap items-end gap-3">
+          <label class="grid gap-1 text-[13px] text-white/85">De<span class="flex gap-2"><input type="date" id="cubIni" class="rounded-xl border-0 bg-white/95 px-3 py-2 text-base text-[#16101a]"><input type="time" id="cubHi" class="rounded-xl border-0 bg-white/95 px-3 py-2 text-base text-[#16101a]"></span></label>
+          <label class="grid gap-1 text-[13px] text-white/85">Até<span class="flex gap-2"><input type="date" id="cubFim" class="rounded-xl border-0 bg-white/95 px-3 py-2 text-base text-[#16101a]"><input type="time" id="cubHf" class="rounded-xl border-0 bg-white/95 px-3 py-2 text-base text-[#16101a]"></span></label>
+          <button type="submit" class="min-h-11 rounded-full border-0 bg-[#16101a] px-6 text-[15px] font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg">Atualizar</button>
+        </div>
+      </form>
+      <p id="cubErro" class="m-0 mb-4 rounded-2xl bg-white/95 p-4 font-semibold text-[#b45309]" hidden></p>
+      <div class="kpis" id="cubKpis"></div>
+      <div class="fig"><svg id="cubSvg" role="img" aria-label="Bipagens por hora"></svg><div class="tip" id="cubTip"></div></div>
+      <div class="legenda"><span><i></i>Bipagens por hora (ou por dia, em períodos longos)</span></div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div>
+        <div class="mb-3 flex flex-wrap items-end justify-between gap-3"><div><h2>Ranking dos operadores</h2><p class="nota" style="margin:0">Total de bipagens, ritmo por hora trabalhada e horário da primeira e da última.</p></div>
+          <button type="button" id="cubExportar" class="inline-flex min-h-10 items-center rounded-full border border-[var(--line)] bg-transparent px-4 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--ink)]">Exportar CSV</button></div>
+        <div class="mb-3 flex gap-4 text-xs text-[var(--mut)]"><span><i class="mr-1.5 inline-block h-2.5 w-2.5 rounded-sm bg-[#e5007e]"></i>Impressões</span><span><i class="mr-1.5 inline-block h-2.5 w-2.5 rounded-sm bg-[#173a5e]"></i>Serviços</span></div>
+        <ol id="cubRanking" class="m-0 grid list-none gap-3 p-0"></ol>
+      </div>
+      <div>
+        <h2>Mapa por hora do dia</h2><p class="nota">Quanto mais forte o rosa, mais bipagens naquela hora.</p>
+        <div id="cubCalor"></div>
+        <div class="mt-8 mb-3 flex flex-wrap items-end justify-between gap-3"><div><h2>Operadores de cubadora</h2><p class="nota" style="margin:0">O número é o código que a pessoa usa na cubadora.</p></div>
+          <button type="button" class="acao" id="cubNovoOp">Novo operador</button></div>
+        <div class="scroll"><table class="stack"><thead><tr><th>Número</th><th>Nome</th><th>Turno</th><th>Situação</th><th></th></tr></thead><tbody id="cubOpBody"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="vLocal" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="cab"><div class="t"><h2>Dados locais</h2><p class="nota" style="margin:0">Consultas do MySQL da AGF, pela ponte segura. Só as consultas liberadas na ponte aparecem aqui.</p></div></div>
+      <div id="localStatus" class="mb-6"></div>
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+        <div id="localLista" class="grid content-start gap-3"></div>
+        <div id="localConsulta"><div class="grid h-full min-h-[220px] place-items-center rounded-3xl border-2 border-dashed border-[var(--line)] p-8 text-center text-[var(--mut)]">Escolha uma consulta ao lado.</div></div>
       </div>
     </div>
   </section>
@@ -561,6 +619,8 @@ function demoApi(rota, p) {
 /* ---------- API ---------- */
 const params = extra => ({ ini: st.ini, fim: st.fim, uf: st.uf, depto: st.depto, q: st.q, ...extra });
 async function api(rota, p = {}) {
+  if (st.demo && rota.startsWith('ponte/')) return demoPonte('GET', rota, p);
+  if (st.demo && rota.startsWith('cubadora/')) return demoCubadora('GET', rota, p);
   if (st.demo) return /^(coletas|usuarios|notificacoes|frota|minha-conta)/.test(rota) ? demoCol('GET', rota, p) : demoApi(rota, p);
   const qs = new URLSearchParams(Object.entries(p).filter(([, v]) => v !== '' && v != null));
   const r = await fetch('api/' + rota + '?' + qs, { credentials: 'same-origin' });
@@ -902,10 +962,10 @@ const PODE = {
   solicitar: ['cliente', 'transporte', 'operacao', 'admin'], agendar: ['transporte', 'admin'], coletar: ['transporte', 'admin'],
   cancelar: ['cliente', 'transporte', 'admin'], embarque: ['operacao', 'admin'], conferir: ['operacao', 'admin'],
   finalizar: ['operacao', 'admin'], ciente: ['cliente', 'admin'], resolver: ['operacao', 'admin'], usuarios: ['admin'],
-  frota: ['transporte', 'admin'], caminhao: ['transporte', 'admin'], protocolo: ['transporte', 'operacao', 'admin'], anexar: ['transporte', 'operacao', 'admin']
+  frota: ['transporte', 'admin'], caminhao: ['transporte', 'admin'], protocolo: ['transporte', 'operacao', 'admin'], anexar: ['transporte', 'operacao', 'admin'], cubadora: ['operacao', 'admin']
 };
 const pode = a => !!st.me && PODE[a].includes(st.me.perfil);
-const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', frota: '#vFrota', usuarios: '#vUsuarios' };
+const VIEWS = { envios: '#vEnvios', coletas: '#vColetas', frota: '#vFrota', cubadora: '#vCubadora', local: '#vLocal', usuarios: '#vUsuarios' };
 let viewAtual = '';
 function rotear() {
   const h = location.hash.replace('#', '');
@@ -913,6 +973,8 @@ function rotear() {
   if (!v) v = st.me && ['transporte', 'operacao'].includes(st.me.perfil) ? 'coletas' : 'envios';
   if (v === 'usuarios' && !pode('usuarios')) v = 'coletas';
   if (v === 'frota' && !pode('frota')) v = 'coletas';
+  if (v === 'local' && !(ponteSt.disponivel || pode('usuarios'))) v = 'coletas';
+  if (v === 'cubadora' && !pode('cubadora')) v = 'coletas';
   const mudou = v !== viewAtual; viewAtual = v;
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   for (const a of document.querySelectorAll('#abas a')) a.toggleAttribute('aria-current', false), a.dataset.v === v && a.setAttribute('aria-current', 'page');
@@ -921,6 +983,8 @@ function rotear() {
   if (mudou) atualizarSelBar();
   if (mudou && v === 'usuarios') carregarUsuarios();
   if (mudou && v === 'frota') carregarFrota();
+  if (mudou && v === 'local') carregarLocal();
+  if (mudou && v === 'cubadora') { carregarCubadora(); requestAnimationFrame(desenharCub); }
   const m = /^coleta-(\d+)$/.exec(h);
   if (m && (!colAberta || colAberta.id !== +m[1])) abrirColeta(+m[1]);
 }
@@ -928,6 +992,8 @@ window.addEventListener('hashchange', rotear);
 function aplicarPerfil() {
   $('#abas a[data-v=usuarios]').hidden = !pode('usuarios');
   $('#abas a[data-v=frota]').hidden = !pode('frota');
+  $('#abas a[data-v=local]').hidden = !(ponteSt.disponivel || pode('usuarios'));
+  $('#abas a[data-v=cubadora]').hidden = !pode('cubadora');
   $('#usuario').textContent = `${st.me.nome} · ${PERFIL_NOME[st.me.perfil] || st.me.perfil}`;
   $('#novaColeta span').textContent = st.me.perfil === 'cliente' ? 'Solicitar coleta' : 'Nova coleta';
   $('#novaColeta').hidden = !pode('solicitar');
@@ -935,7 +1001,7 @@ function aplicarPerfil() {
 
 /* ---------- POST ---------- */
 async function apiPost(rota, corpo) {
-  if (st.demo) return demoCol('POST', rota, {}, corpo || {});
+  if (st.demo) return rota.startsWith('ponte/') ? demoPonte('POST', rota, corpo || {}) : rota.startsWith('cubadora/') ? demoCubadora('POST', rota, corpo || {}) : demoCol('POST', rota, {}, corpo || {});
   const r = await fetch('api/' + rota, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo || {}) });
   if (r.status === 401) { abrirLogin(); throw new Error('login'); }
   const j = await r.json().catch(() => ({}));
@@ -2091,6 +2157,337 @@ function demoCol(met, rota, q, b) {
   } catch (e) { return erro(e.message); }
 }
 
+/* ---------- Dados locais (Ponte MySQL) ---------- */
+const ponteSt = { consultas: [], atual: null, res: null, disponivel: false };
+async function checarPonte() {
+  try { const l = await api('ponte/consultas'); ponteSt.disponivel = (l.consultas || []).some(c => !c.tela); } catch { ponteSt.disponivel = false; }
+  $('#abas a[data-v=local]').hidden = !(ponteSt.disponivel || pode('usuarios'));
+}
+function statusPonteHTML(r) {
+  if (!r) return '';
+  if (!r.configurada) return `<div class="rounded-3xl border border-dashed border-[var(--line)] p-6 motion-safe:animate-subir">
+    <p class="m-0 flex items-center gap-2 font-semibold"><span class="h-2.5 w-2.5 rounded-full bg-[var(--mut)]"></span>Ponte ainda não configurada</p>
+    <ol class="m-0 mt-3 grid gap-1.5 pl-5 text-[15px] text-[var(--mut)]">
+      <li>Instale a pasta <b>ponte-mysql</b> num computador da rede que fica sempre ligado (passo a passo no LEIAME dela).</li>
+      <li>Crie o túnel da Cloudflare apontando para a ponte.</li>
+      <li>Na Vercel, cadastre <b>PONTE_URL</b> e <b>PONTE_TOKEN</b> e faça Redeploy.</li></ol></div>`;
+  if (!r.online) return `<div class="flex flex-wrap items-center gap-3 rounded-3xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] p-5 text-[var(--warn)] motion-safe:animate-subir">
+    <span class="h-3 w-3 rounded-full bg-[var(--warn)] motion-safe:animate-pulse"></span><b>Ponte fora do ar</b><span class="text-sm">${esc(r.erro || '')}</span>
+    <button type="button" class="${btnSec} ml-auto !text-[var(--ink)]" data-ponte-recarregar>Tentar de novo</button></div>`;
+  return `<div class="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-3xl bg-[color-mix(in_srgb,var(--ok)_12%,transparent)] p-5 motion-safe:animate-subir">
+    <span class="relative grid h-4 w-4 place-items-center"><span class="absolute h-4 w-4 rounded-full bg-[var(--ok)] opacity-40 motion-safe:animate-ping"></span><span class="h-2.5 w-2.5 rounded-full bg-[var(--ok)]"></span></span>
+    <b class="text-[var(--ok)]">Ponte online</b>
+    <span class="text-sm"><span class="text-[var(--mut)]">MySQL</span> ${esc(r.mysql || '')}</span>
+    <span class="text-sm"><span class="text-[var(--mut)]">Resposta</span> ${r.ms} ms</span>
+    <span class="text-sm"><span class="text-[var(--mut)]">Hora do servidor</span> ${esc(String(r.horaServidor || '').replace('T', ' ').slice(0, 19))}</span>
+    <span class="text-sm"><span class="text-[var(--mut)]">Consultas liberadas</span> ${r.consultas}</span>
+    <button type="button" class="${btnMini} ml-auto" data-ponte-recarregar>Atualizar</button></div>`;
+}
+async function carregarLocal() {
+  $('#localStatus').innerHTML = pode('usuarios') ? '<div class="h-16 rounded-3xl bg-[var(--panel)] motion-safe:animate-pulse"></div>' : '';
+  $('#localLista').innerHTML = '<div class="h-24 rounded-2xl bg-[var(--panel)] motion-safe:animate-pulse"></div>'.repeat(3);
+  try {
+    if (pode('usuarios')) $('#localStatus').innerHTML = statusPonteHTML(await api('ponte/status'));
+    const l = await api('ponte/consultas');
+    ponteSt.consultas = (l.consultas || []).filter(c => !c.tela);
+    $('#localLista').innerHTML = ponteSt.consultas.length ? ponteSt.consultas.map((c, i) => `<button type="button" data-consulta="${esc(c.nome)}" aria-pressed="${ponteSt.atual === c.nome}"
+      class="group w-full rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-4 text-left text-[var(--ink)] transition duration-300 hover:-translate-y-0.5 hover:border-[#e5007e] hover:shadow-md aria-pressed:border-[#e5007e] aria-pressed:bg-[var(--soft)] motion-safe:animate-subir" style="animation-delay:${i * 60}ms">
+      <span class="block font-semibold">${esc(c.titulo)}</span><span class="mt-1 block text-sm text-[var(--mut)]">${esc(c.descricao)}</span>
+      ${c.parametros.length ? `<span class="mt-2 inline-flex rounded-full bg-[var(--panel)] px-2.5 py-0.5 text-xs text-[var(--mut)]">${c.parametros.length} filtro${c.parametros.length > 1 ? 's' : ''}</span>` : ''}</button>`).join('')
+      : `<p class="m-0 rounded-2xl bg-[var(--panel)] p-5 text-sm text-[var(--mut)]">${l.offline ? 'A ponte está fora do ar no momento.' : l.configurada === false ? 'Assim que a ponte for configurada, as consultas aparecem aqui.' : 'Nenhuma consulta liberada para o seu perfil.'}</p>`;
+  } catch (e) { $('#localLista').innerHTML = `<p class="m-0 text-[var(--bad)]">${esc(e.message)}</p>`; }
+}
+function selecionarConsulta(nome) {
+  const c = ponteSt.consultas.find(x => x.nome === nome); if (!c) return;
+  ponteSt.atual = nome;
+  for (const b of document.querySelectorAll('#localLista [data-consulta]')) b.setAttribute('aria-pressed', b.dataset.consulta === nome);
+  const campoP = p => {
+    const id = 'lp_' + p.nome, val = p.padrao != null ? esc(p.padrao) : '';
+    const ctl = p.tipo === 'data' ? `<input type="date" id="${id}" name="${esc(p.nome)}" value="${val}" class="${inp}"${p.obrigatorio ? ' required' : ''}>`
+      : p.tipo === 'inteiro' ? `<input type="number" id="${id}" name="${esc(p.nome)}" value="${val}" class="${inp}" inputmode="numeric"${p.obrigatorio ? ' required' : ''}>`
+      : p.tipo === 'lista' ? `<select id="${id}" name="${esc(p.nome)}" class="${inp}">${(p.opcoes || []).map(o => `<option${o === p.padrao ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`
+      : `<input id="${id}" name="${esc(p.nome)}" value="${val}" maxlength="100" class="${inp}"${p.obrigatorio ? ' required' : ''}>`;
+    return campo(esc(p.rotulo) + (p.obrigatorio ? '' : ' (opcional)'), ctl);
+  };
+  $('#localConsulta').innerHTML = `<form id="localForm" class="grid gap-4 rounded-3xl border border-[var(--line)] p-5 motion-safe:animate-subir">
+    <div><p class="m-0 text-[22px] leading-tight font-bold" style="font-family:Outfit,sans-serif">${esc(c.titulo)}</p><p class="m-0 mt-1 text-sm text-[var(--mut)]">${esc(c.descricao)}</p></div>
+    ${c.parametros.length ? `<div class="grid items-end gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))]">${c.parametros.map(campoP).join('')}</div>` : ''}
+    <div class="flex flex-wrap gap-3"><button type="submit" class="${btn}">Executar consulta</button></div></form><div id="localResultado" class="mt-5"></div>`;
+  const pr = $('#localForm input,#localForm select'); if (pr) pr.focus();
+}
+const fmtCel = v => {
+  if (v == null) return '<span class="text-[var(--mut)]">—</span>';
+  if (typeof v === 'number') return nf.format(v);
+  const s = String(v);
+  if (/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}(:\d{2})?)?$/.test(s)) return br(s) + (s.length > 10 ? ' ' + s.slice(11, 16) : '');
+  return esc(s);
+};
+async function executarConsulta() {
+  const nome = ponteSt.atual, f = $('#localForm'); if (!nome || !f) return;
+  const dados = Object.fromEntries(new FormData(f)), bt = f.querySelector('button[type=submit]');
+  bt.disabled = true; bt.textContent = 'Consultando…';
+  $('#localResultado').innerHTML = `<div class="overflow-hidden rounded-2xl border border-[var(--line)]">${'<div class="h-10 border-b border-[var(--line)] bg-[linear-gradient(90deg,var(--panel),var(--soft),var(--panel))] bg-[length:200%_100%] motion-safe:animate-pulse"></div>'.repeat(6)}</div>`;
+  try {
+    const r = await apiPost('ponte/consulta/' + nome, dados);
+    ponteSt.res = r;
+    const num = r.colunas.map(cn => r.linhas.length && r.linhas.every(l => l[cn] == null || typeof l[cn] === 'number'));
+    const mostrar = r.linhas.slice(0, 1000);
+    $('#localResultado').innerHTML = `<div class="mb-3 flex flex-wrap items-center gap-3 motion-safe:animate-subir">
+      <p class="m-0 mr-auto text-sm"><b>${nf.format(r.total)}</b> linha${r.total === 1 ? '' : 's'} · ${r.ms} ms${r.truncado ? ' · resultado cortado no limite da ponte' : ''}${r.linhas.length > 1000 ? ' · mostrando as 1.000 primeiras' : ''}</p>
+      <button type="button" class="${btnSec}" data-local="copiar">Copiar</button><button type="button" class="${btn}" data-local="csv">Exportar CSV</button></div>
+      ${r.linhas.length ? `<div class="max-h-[60vh] overflow-auto rounded-2xl border border-[var(--line)] motion-safe:animate-subir"><table class="w-full border-collapse text-[14px]">
+        <thead class="sticky top-0"><tr>${r.colunas.map((cn, j) => `<th class="!border-0 bg-[#173a5e] !px-3 !py-2.5 !text-white ${num[j] ? 'text-right' : ''}">${esc(cn)}</th>`).join('')}</tr></thead>
+        <tbody>${mostrar.map((l, i) => `<tr class="${i % 2 ? '' : 'bg-[var(--panel)]'} transition-colors hover:bg-[var(--soft)]">${r.colunas.map((cn, j) => `<td class="!border-0 !px-3 !py-2 ${num[j] ? 'text-right tabular-nums' : ''}">${fmtCel(l[cn])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`
+        : '<p class="m-0 rounded-2xl bg-[var(--panel)] p-5 text-sm text-[var(--mut)]">A consulta não retornou linhas.</p>'}`;
+  } catch (e) {
+    if (e.message !== 'login') $('#localResultado').innerHTML = `<p class="m-0 rounded-2xl bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] p-4 text-[var(--warn)] motion-safe:animate-subir">${esc(e.message)}</p>`;
+  } finally { bt.disabled = false; bt.textContent = 'Executar consulta'; }
+}
+function tabelaTexto(sep) {
+  const r = ponteSt.res; if (!r) return '';
+  const c = v => { const s = v == null ? '' : String(v); return sep === ';' && /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s.replace(/[\t\n\r]/g, ' '); };
+  return [r.colunas.map(c).join(sep), ...r.linhas.map(l => r.colunas.map(cn => c(l[cn])).join(sep))].join('\r\n');
+}
+$('#vLocal').addEventListener('click', async e => {
+  if (e.target.closest('[data-ponte-recarregar]')) return carregarLocal();
+  const b = e.target.closest('[data-consulta]'); if (b) return selecionarConsulta(b.dataset.consulta);
+  const a = e.target.closest('[data-local]'); if (!a) return;
+  if (a.dataset.local === 'csv') return entregarArquivo(new Blob(['﻿' + tabelaTexto(';')], { type: 'text/csv' }), `${ponteSt.atual}-${hoje}.csv`);
+  try { await navigator.clipboard.writeText(tabelaTexto('\t')); aviso('Tabela copiada. Cole no Excel.'); } catch { aviso('Não foi possível copiar.'); }
+});
+$('#vLocal').addEventListener('submit', e => { if (e.target.id === 'localForm') { e.preventDefault(); executarConsulta(); } });
+
+/* demonstração da ponte */
+function demoPonte(met, rota, b) {
+  const consultas = [
+    { nome: 'cubadora_hora', titulo: 'Cubadoras: bipagens por hora', descricao: '', perfis: ['operacao', 'admin'], tela: 'cubadora', parametros: [] },
+    { nome: 'teste', titulo: 'Teste de conexão', descricao: 'Versão do MySQL, banco em uso e hora do servidor.', perfis: ['admin'], parametros: [] },
+    { nome: 'tabelas', titulo: 'Tabelas do banco', descricao: 'Lista as tabelas com a quantidade aproximada de linhas.', perfis: ['admin'], parametros: [] },
+    { nome: 'colunas', titulo: 'Colunas de uma tabela', descricao: 'Mostra as colunas e os tipos de uma tabela.', perfis: ['admin'], parametros: [{ nome: 'tabela', rotulo: 'Nome da tabela', tipo: 'texto', obrigatorio: true }] },
+    { nome: 'ocorrencias', titulo: 'Ocorrências por período', descricao: 'Exemplo de consulta de negócio com filtros.', perfis: ['operacao', 'admin'], parametros: [{ nome: 'ini', rotulo: 'De', tipo: 'data', obrigatorio: true, padrao: addD(hoje, -7) }, { nome: 'fim', rotulo: 'Até', tipo: 'data', obrigatorio: true, padrao: hoje }, { nome: 'tipo', rotulo: 'Tipo', tipo: 'lista', opcoes: ['Todos', 'Avaria', 'Atraso', 'Extravio'], padrao: 'Todos' }] }
+  ];
+  const atraso = v => new Promise(ok => setTimeout(() => ok(v), 450 + Math.random() * 400));
+  if (rota === 'ponte/status') return atraso({ configurada: true, online: true, mysql: '8.0.36', horaServidor: hoje + ' ' + new Date().toTimeString().slice(0, 8), ms: 38, consultas: consultas.length });
+  if (rota === 'ponte/consultas') return atraso({ configurada: true, consultas: consultas.filter(c => c.perfis.includes(st.me.perfil)) });
+  const nome = rota.split('/').pop(), t = Math.round(40 + Math.random() * 90);
+  if (nome.startsWith('cubadora_')) return demoCubDados(nome, b);
+  if (nome === 'teste') return atraso({ ms: t, total: 1, colunas: ['versao', 'banco', 'hora_servidor'], linhas: [{ versao: '8.0.36', banco: 'agf_local', hora_servidor: hoje + ' ' + new Date().toTimeString().slice(0, 8) }] });
+  if (nome === 'tabelas') return atraso({ ms: t, total: 6, colunas: ['tabela', 'linhas_aprox', 'tamanho_mb', 'atualizada_em'], linhas: [['clientes', 1840, 0.4], ['faturamento', 96512, 22.1], ['ocorrencias', 4211, 1.2], ['postagens', 1250340, 310.6], ['tabela_precos', 380, 0.1], ['veiculos', 12, 0]].map(([tabela, linhas_aprox, tamanho_mb]) => ({ tabela, linhas_aprox, tamanho_mb, atualizada_em: addD(hoje, -(linhas_aprox % 5)) + ' 08:12:00' })) });
+  if (nome === 'colunas') { if (!b.tabela) return Promise.reject(new Error('Informe Nome da tabela.'));
+    return atraso({ ms: t, total: 4, colunas: ['coluna', 'tipo', 'aceita_nulo', 'chave'], linhas: [['id', 'int', 'NO', 'PRI'], ['data', 'datetime', 'NO', 'MUL'], ['descricao', 'varchar(255)', 'YES', ''], ['valor', 'decimal(12,2)', 'YES', '']].map(([coluna, tipo, aceita_nulo, chave]) => ({ coluna, tipo, aceita_nulo, chave })) }); }
+  if (nome === 'ocorrencias') {
+    const tipos = ['Avaria', 'Atraso', 'Extravio'], linhas = [];
+    for (let i = 0; i < 18; i++) { const tp = tipos[i % 3]; if (b.tipo && b.tipo !== 'Todos' && b.tipo !== tp) continue; linhas.push({ id: 5200 + i, data: addD(b.fim || hoje, -(i % 7)) + ' ' + pad(8 + i % 9) + ':' + pad((i * 7) % 60) + ':00', tipo: tp, objeto: 'AE' + String(164175886 + i * 913).padStart(9, '0') + 'BR', valor: Math.round((20 + i * 3.7) * 100) / 100 }); }
+    return atraso({ ms: t, total: linhas.length, colunas: ['id', 'data', 'tipo', 'objeto', 'valor'], linhas });
+  }
+  return Promise.reject(new Error('Consulta não encontrada.'));
+}
+
+/* ---------- Cubadoras (desempenho dos operadores) ---------- */
+const cub = { fonte: '', horas: [], extremos: [], operadores: [], filtro: null, atalho: 'hoje' };
+function cubPeriodo(atalho) {
+  const ontem = addD(hoje, -1);
+  return { hoje: [hoje, '00:00', hoje, '23:59'], ontem: [ontem, '00:00', ontem, '23:59'], noite: [ontem, '18:00', hoje, '06:00'], semana: [addD(hoje, -6), '00:00', hoje, '23:59'] }[atalho];
+}
+function cubAplicarAtalho(a) {
+  const [i, hi, f, hf] = cubPeriodo(a); cub.atalho = a;
+  $('#cubIni').value = i; $('#cubHi').value = hi; $('#cubFim').value = f; $('#cubHf').value = hf;
+  for (const b of document.querySelectorAll('#cubAtalhos [data-at]')) b.setAttribute('aria-pressed', b.dataset.at === a);
+}
+const nomeOp = n => { const o = cub.operadores.find(x => String(x.numero) === String(n)); return o ? o.nome : null; };
+async function carregarCubadora() {
+  if (!$('#cubIni').value) cubAplicarAtalho('hoje');
+  const ini = $('#cubIni').value, hi = $('#cubHi').value || '00:00', fim = $('#cubFim').value || ini, hf = $('#cubHf').value || '23:59';
+  if (ini + hi > fim + hf) return aviso('O início precisa ser antes do fim.');
+  cub.filtro = { ini, hi: hi + ':00', fim, hf: hf + ':59' };
+  $('#vCubadora').classList.add('carregando');
+  $('#cubErro').hidden = true;
+  try {
+    const [ops, horas, ext] = await Promise.all([
+      api('cubadora/operadores').catch(e => ({ operadores: [], erro: e.message })),
+      apiPost('ponte/consulta/cubadora_hora', cub.filtro),
+      apiPost('ponte/consulta/cubadora_extremos', cub.filtro)
+    ]);
+    cub.operadores = ops.operadores || []; cub.opErro = ops.erro || null;
+    cub.horas = horas.linhas || []; cub.extremos = ext.linhas || []; cub.truncado = horas.truncado;
+    renderCubadora();
+  } catch (e) {
+    if (e.message === 'login') return;
+    $('#cubErro').hidden = false; $('#cubErro').textContent = e.message + (/ponte/i.test(e.message) ? '' : ' (a tela usa a Ponte MySQL)');
+  } finally { $('#vCubadora').classList.remove('carregando'); }
+}
+function cubCalcular() {
+  const f = cub.fonte, linhas = cub.horas.filter(l => !f || l.fonte === f);
+  const ops = new Map(), slots = new Map(), heat = new Map();
+  for (const l of linhas) {
+    const op = String(l.operador), q = Number(l.qtd) || 0, k = `${l.dia} ${pad(l.h)}`;
+    const o = ops.get(op) || { op, total: 0, imps: 0, servicos: 0, horas: new Set(), porHora: new Array(24).fill(0) };
+    o.total += q; o[l.fonte] = (o[l.fonte] || 0) + q; o.horas.add(k); o.porHora[l.h] += q; ops.set(op, o);
+    slots.set(k, (slots.get(k) || 0) + q);
+  }
+  for (const e of cub.extremos.filter(l => !f || l.fonte === f)) {
+    const o = ops.get(String(e.operador)); if (!o) continue;
+    if (!o.primeiro || e.primeiro < o.primeiro) o.primeiro = e.primeiro;
+    if (!o.ultimo || e.ultimo > o.ultimo) o.ultimo = e.ultimo;
+  }
+  const lista = [...ops.values()].map(o => ({ ...o, horasAtivas: o.horas.size, ritmo: o.horas.size ? Math.round(o.total / o.horas.size) : 0, nome: nomeOp(o.op) }))
+    .sort((a, b) => b.total - a.total);
+  return { lista, slots, total: lista.reduce((a, o) => a + o.total, 0) };
+}
+function renderCubadora() {
+  const { lista, slots, total } = cubCalcular(), fl = cub.filtro;
+  const periodo = fl.ini === fl.fim ? `${br(fl.ini)}, das ${fl.hi.slice(0, 5)} às ${fl.hf.slice(0, 5)}` : `${br(fl.ini)} ${fl.hi.slice(0, 5)} até ${br(fl.fim)} ${fl.hf.slice(0, 5)}`;
+  const lider = lista[0];
+  $('#cubTitulo').textContent = !total ? 'Nenhuma bipagem no período' : `${lider.nome || 'Operador ' + lider.op} lidera com ${nf.format(lider.total)} bipagens`;
+  $('#cubSub').textContent = `${periodo}${cub.fonte ? ' · só ' + (cub.fonte === 'imps' ? 'impressões' : 'serviços') : ' · impressões e serviços'}${cub.truncado ? ' · resultado parcial, reduza o período' : ''}`;
+  const pico = [...slots.entries()].sort((a, b) => b[1] - a[1])[0];
+  $('#cubKpis').innerHTML = [
+    ['Bipagens no período', total ? nf.format(total) : '0', `${nf.format(lista.reduce((a, o) => a + (o.imps || 0), 0))} impressões · ${nf.format(lista.reduce((a, o) => a + (o.servicos || 0), 0))} serviços`],
+    ['Operadores ativos', nf.format(lista.length), `${lista.filter(o => !o.nome).length} sem cadastro`],
+    ['Média por operador', lista.length ? nf.format(Math.round(total / lista.length)) : '—', 'bipagens no período'],
+    ['Hora de pico', pico ? pico[0].slice(11) + 'h' : '—', pico ? `${nf.format(pico[1])} bipagens em ${br(pico[0].slice(0, 10))}` : 'sem registros']
+  ].map(([a, b, c]) => `<div class="kpi"><small>${a}</small><div class="num">${b}</div><em>${c}</em></div>`).join('');
+  cubSerie = cubMontarSerie(slots, fl); desenharCub();
+  const max = Math.max(1, ...lista.map(o => o.total));
+  $('#cubRanking').innerHTML = lista.length ? lista.map((o, i) => `<li class="grid items-center gap-x-4 gap-y-2 rounded-2xl border border-[var(--line)] p-4 transition hover:-translate-y-0.5 hover:shadow-md motion-safe:animate-subir [grid-template-columns:auto_minmax(0,1fr)_auto]" style="animation-delay:${Math.min(i, 10) * 50}ms">
+      <span class="grid h-10 w-10 place-items-center rounded-full text-sm font-bold ${i === 0 ? 'bg-[#e5007e] text-white' : i < 3 ? 'bg-[var(--soft)] text-[var(--deep)]' : 'bg-[var(--panel)] text-[var(--mut)]'}">${i + 1}º</span>
+      <span class="min-w-0"><b class="block truncate">${o.nome ? esc(o.nome) : 'Operador ' + esc(o.op)}</b>
+        <span class="text-sm text-[var(--mut)]">nº ${esc(o.op)}${o.primeiro ? ` · ${o.primeiro.slice(11, 16)} às ${o.ultimo.slice(11, 16)}${o.primeiro.slice(0, 10) !== o.ultimo.slice(0, 10) ? ' (+1 dia)' : ''}` : ''}</span>
+        ${o.nome ? '' : `<button type="button" class="${btnMini} ml-2 !min-h-7" data-cub-cadastrar="${esc(o.op)}">Cadastrar</button>`}</span>
+      <span class="text-right"><b class="block text-[22px] leading-tight" style="font-family:Outfit,sans-serif">${nf.format(o.total)}</b><span class="text-xs text-[var(--mut)]">${nf.format(o.ritmo)}/hora ativa</span></span>
+      <span class="col-span-full flex h-2.5 overflow-hidden rounded-full bg-[var(--panel)]" title="${nf.format(o.imps || 0)} impressões · ${nf.format(o.servicos || 0)} serviços">
+        <span class="block h-full bg-[#e5007e] transition-[width] duration-700" style="width:${(o.imps || 0) / max * 100}%"></span><span class="block h-full bg-[#173a5e] transition-[width] duration-700" style="width:${(o.servicos || 0) / max * 100}%"></span></span>
+    </li>`).join('') : '<li class="rounded-2xl bg-[var(--panel)] p-5 text-[var(--mut)]">Nenhuma bipagem nesse período.</li>';
+  // mapa de calor
+  const horasDia = [...Array(24).keys()], top = Math.max(1, ...lista.flatMap(o => o.porHora));
+  // horas na ordem do turno: começa depois do maior intervalo sem bipagem (ex.: 18h, 19h ... 23h, 00h ... 06h)
+  const usadas = horasDia.filter(h => lista.some(o => o.porHora[h]));
+  let hs = [];
+  if (usadas.length === 24) hs = horasDia;
+  else if (usadas.length) {
+    let ini = usadas[0], maior = -1;
+    usadas.forEach((h, i) => { const prox = usadas[(i + 1) % usadas.length], gap = (prox - h + 24) % 24 || 24; if (gap > maior) { maior = gap; ini = prox; } });
+    const fimH = (ini - maior + 24 + 1) % 24;
+    for (let h = ini, n = 0; n < 24; h = (h + 1) % 24, n++) { hs.push(h); if (h === (fimH + 23) % 24 && usadas.length) break; }
+    hs = hs.slice(0, (hs.indexOf(usadas.reduce((m, h) => ((h - ini + 24) % 24) > ((m - ini + 24) % 24) ? h : m, ini)) + 1) || hs.length);
+  }
+  $('#cubCalor').innerHTML = lista.length && hs.length ? `<div class="scroll"><table class="w-full border-separate [border-spacing:3px] text-xs">
+    <thead><tr><th class="!border-0 !p-1 text-left !text-[var(--mut)]">Operador</th>${hs.map(h => `<th class="!border-0 !p-1 text-center font-semibold !text-[var(--mut)]">${pad(h)}h</th>`).join('')}</tr></thead>
+    <tbody>${lista.map(o => `<tr><td class="!border-0 !p-1 pr-3 whitespace-nowrap font-semibold">${o.nome ? esc(o.nome.split(' ')[0]) : 'nº ' + esc(o.op)}</td>${hs.map(h => { const v = o.porHora[h], a = v / top;
+      return `<td class="!border-0 !p-0"><span class="grid h-8 min-w-8 place-items-center rounded-md text-[11px] font-semibold transition hover:scale-110 ${a > .55 ? 'text-white' : 'text-[var(--ink)]'}" style="background:${v ? `color-mix(in srgb,#e5007e ${Math.round(12 + a * 88)}%,var(--bg))` : 'var(--panel)'}" title="${o.nome ? esc(o.nome) : 'nº ' + esc(o.op)} · ${pad(h)}h: ${nf.format(v)}">${v ? nf.format(v) : ''}</span></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`
+    : '<p class="m-0 text-sm text-[var(--mut)]">Sem dados para o mapa.</p>';
+  renderOperadores();
+}
+let cubSerie = [];
+function cubMontarSerie(slots, fl) {
+  const ini = new Date(`${fl.ini}T${fl.hi}`), fim = new Date(`${fl.fim}T${fl.hf}`), horas = (fim - ini) / 36e5;
+  const porDia = horas > 72, out = [];
+  if (porDia) {
+    const dias = new Map(); for (const [k, v] of slots) dias.set(k.slice(0, 10), (dias.get(k.slice(0, 10)) || 0) + v);
+    for (let d = fl.ini; d <= fl.fim; d = addD(d, 1)) out.push({ k: d, rot: brCurto(d), n: dias.get(d) || 0, dica: `${semana(d)}, ${br(d)}` });
+  } else {
+    for (let t = new Date(ini); t <= fim; t = new Date(t.getTime() + 36e5)) {
+      const d = ymd(t), h = pad(t.getHours()), k = `${d} ${h}`;
+      out.push({ k, rot: h + 'h', n: slots.get(k) || 0, dica: `${br(d)} · ${h}h às ${h}h59` });
+      t.setMinutes(0, 0, 0);
+    }
+  }
+  return out;
+}
+const svgCub = $('#cubSvg'), tipCub = $('#cubTip');
+function desenharCub() {
+  const W = svgCub.clientWidth, H = svgCub.clientHeight; if (!W || !H) return;
+  const s = cubSerie;
+  if (!s.length || !s.some(x => x.n)) { svgCub.innerHTML = `<text x="${W / 2}" y="${H / 2}" fill="#fff" text-anchor="middle" font-size="15">Sem bipagens no período</text>`; return; }
+  const est = W < 520, m = { t: 12, r: 8, b: 26, l: est ? 8 : 48 }, iw = W - m.l - m.r, ih = H - m.t - m.b, max = Math.max(...s.map(x => x.n), 1);
+  const passo = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000, 10000, 20000].find(p => max / p <= 4) || Math.ceil(max / 4);
+  const topo = Math.ceil(max / passo) * passo, y = v => m.t + ih - v / topo * ih, bw = iw / s.length;
+  let g = '';
+  for (let v = 0; v <= topo; v += passo) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,${v ? .18 : .5})"/>` + (est ? '' : `<text x="${m.l - 8}" y="${y(v) + 4}" fill="rgba(255,255,255,.85)" font-size="12" text-anchor="end">${nf.format(v)}</text>`);
+  s.forEach((x, i) => { const h = Math.max(x.n ? 1.5 : 0, ih - (y(x.n) - m.t)); g += `<rect x="${m.l + i * bw + bw * .12}" y="${m.t + ih - h}" width="${Math.max(1, bw * .76)}" height="${h}" rx="${Math.min(4, bw / 4)}" fill="rgba(255,255,255,.75)"/>`; });
+  const cada = Math.max(1, Math.ceil(s.length / Math.max(2, Math.floor(iw / (est ? 46 : 60)))));
+  s.forEach((x, i) => { if (i % cada === 0) g += `<text x="${m.l + i * bw + bw / 2}" y="${H - 6}" fill="rgba(255,255,255,.85)" font-size="12" text-anchor="middle">${x.rot}</text>`; });
+  svgCub.innerHTML = g;
+  svgCub.onmousemove = e => { const r = svgCub.getBoundingClientRect(), i = Math.floor((e.clientX - r.left - m.l) / bw), x = s[i];
+    if (!x) { tipCub.style.display = 'none'; return; }
+    tipCub.innerHTML = `<b>${nf.format(x.n)}</b>${x.dica}`; tipCub.style.display = 'block';
+    tipCub.style.left = Math.min(Math.max(m.l + i * bw + bw / 2, 90), W - 90) + 'px'; tipCub.style.top = y(x.n) + 'px'; };
+  svgCub.onmouseleave = () => tipCub.style.display = 'none';
+}
+const roCub = new ResizeObserver(desenharCub); roCub.observe(svgCub);
+function renderOperadores() {
+  $('#cubOpBody').innerHTML = cub.opErro ? `<tr><td colspan="5" class="vazio">${esc(cub.opErro)}</td></tr>` : cub.operadores.length ? cub.operadores.map(o => `<tr class="${o.ativo ? '' : 'opacity-55'}">
+    <td class="reg">${esc(o.numero)}</td><td><b>${esc(o.nome)}</b></td><td>${esc(o.turno || '—')}</td><td>${o.ativo ? 'Ativo' : 'Inativo'}</td>
+    <td><button type="button" class="${btnMini}" data-cub-editar="${o.id}">Editar</button></td></tr>`).join('')
+    : '<tr><td colspan="5" class="vazio">Nenhum operador cadastrado. Cadastre o número que cada pessoa usa na cubadora.</td></tr>';
+}
+function formOperadorCub(o, numero) {
+  abrirModal(o ? 'Editar operador' : 'Novo operador de cubadora', `
+    ${campo('Número do operador na cubadora', `<input name="numero" required maxlength="20" inputmode="numeric" value="${esc(o ? o.numero : numero || '')}" placeholder="Ex.: 101">`)}
+    ${campo('Nome', `<input name="nome" required maxlength="120" value="${esc(o ? o.nome : '')}">`)}
+    ${campo('Turno (opcional)', `<select name="turno"><option value="">—</option>${['Manhã', 'Tarde', 'Noite', 'Madrugada'].map(t => `<option${o && o.turno === t ? ' selected' : ''}>${t}</option>`).join('')}</select>`)}
+    ${o ? `<label class="flex items-center gap-2 text-[15px]"><input type="checkbox" name="ativo" value="1" ${o.ativo ? 'checked' : ''} class="h-5 w-5 accent-[#e5007e]"> Operador ativo</label>` : ''}`,
+    o ? 'Salvar' : 'Cadastrar', async d => {
+      await apiPost('cubadora/operadores', o ? { ...d, id: o.id, ativo: d.ativo === '1' } : d);
+      aviso(o ? 'Operador atualizado.' : 'Operador cadastrado.');
+      cub.operadores = (await api('cubadora/operadores')).operadores || [];
+      if (cub.filtro) renderCubadora(); else renderOperadores();
+    });
+}
+function exportarCub() {
+  const { lista } = cubCalcular(), c = v => { const s = String(v ?? ''); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const linhas = [['Posição', 'Número', 'Operador', 'Bipagens', 'Impressões', 'Serviços', 'Horas ativas', 'Bipagens por hora ativa', 'Primeira', 'Última'].join(';'),
+    ...lista.map((o, i) => [i + 1, o.op, o.nome || '', o.total, o.imps || 0, o.servicos || 0, o.horasAtivas, o.ritmo, o.primeiro || '', o.ultimo || ''].map(c).join(';'))];
+  entregarArquivo(new Blob(['﻿' + linhas.join('\r\n')], { type: 'text/csv' }), `desempenho-cubadoras-${cub.filtro.ini}_${cub.filtro.fim}.csv`);
+}
+$('#cubAtalhos').onclick = e => { const b = e.target.closest('[data-at]'); if (!b) return; cubAplicarAtalho(b.dataset.at); carregarCubadora(); };
+$('#cubForm').onsubmit = e => { e.preventDefault(); for (const b of document.querySelectorAll('#cubAtalhos [data-at]')) b.setAttribute('aria-pressed', 'false'); carregarCubadora(); };
+$('#cubFontes').onclick = e => { const b = e.target.closest('[data-fonte]'); if (!b) return; cub.fonte = b.dataset.fonte;
+  for (const x of document.querySelectorAll('#cubFontes [data-fonte]')) x.setAttribute('aria-pressed', x === b); if (cub.filtro) renderCubadora(); };
+$('#vCubadora').addEventListener('click', e => {
+  const c = e.target.closest('[data-cub-cadastrar]'); if (c) return formOperadorCub(null, c.dataset.cubCadastrar);
+  const ed = e.target.closest('[data-cub-editar]'); if (ed) return formOperadorCub(cub.operadores.find(o => o.id === +ed.dataset.cubEditar));
+  if (e.target.closest('#cubNovoOp')) return formOperadorCub(null);
+  if (e.target.closest('#cubExportar')) return cub.filtro && exportarCub();
+});
+
+/* demonstração das cubadoras */
+const DEMO_CUB = { operadores: [[101, 'Juliana Martins', 'Noite'], [102, 'Carlos Henrique', 'Noite'], [103, 'Paula Rocha', 'Tarde'], [104, 'Diego Alves', 'Tarde'], [105, 'Renata Lima', 'Noite'], [106, 'Bruno Costa', 'Manhã']].map(([numero, nome, turno], i) => ({ id: i + 1, numero: String(numero), nome, turno, ativo: true })), seq: 6 };
+function demoCubadora(met, rota, b) {
+  if (met === 'POST') {
+    if (!b.numero || !b.nome) return Promise.reject(new Error('Informe número e nome.'));
+    if (DEMO_CUB.operadores.some(o => o.numero === String(b.numero) && o.id !== b.id)) return Promise.reject(new Error(`O número ${b.numero} já está cadastrado.`));
+    if (b.id) Object.assign(DEMO_CUB.operadores.find(o => o.id === b.id), { numero: String(b.numero), nome: b.nome, turno: b.turno || null, ativo: b.ativo });
+    else DEMO_CUB.operadores.push({ id: ++DEMO_CUB.seq, numero: String(b.numero), nome: b.nome, turno: b.turno || null, ativo: true });
+    return Promise.resolve({ ok: true });
+  }
+  return Promise.resolve({ operadores: DEMO_CUB.operadores });
+}
+function demoCubDados(nome, b) {
+  const ini = new Date(`${b.ini}T${b.hi}`), fim = new Date(`${b.fim}T${b.hf}`), ops = [101, 102, 103, 104, 105, 106, 109];
+  const turno = { 101: [18, 6], 102: [18, 6], 105: [20, 4], 103: [12, 20], 104: [13, 21], 106: [6, 14], 109: [22, 2] };
+  const ritmo = { 101: 150, 102: 128, 103: 112, 104: 96, 105: 138, 106: 84, 109: 40 };
+  const horas = [], ext = new Map();
+  for (let t = new Date(ini); t <= fim; t = new Date(t.getTime() + 36e5)) {
+    const d = ymd(t), h = t.getHours();
+    for (const op of ops) {
+      const [a, z] = turno[op], dentro = a < z ? h >= a && h < z : h >= a || h < z;
+      if (!dentro || (h === 0 && op === 103)) continue;
+      const base = ritmo[op] * (0.75 + 0.5 * (((op * 31 + h * 17 + t.getDate() * 7) % 97) / 97));
+      const imps = Math.round(base * 0.82), serv = Math.round(base * 0.18);
+      horas.push({ fonte: 'imps', dia: d, h, operador: op, qtd: imps }, { fonte: 'servicos', dia: d, h, operador: op, qtd: serv });
+      for (const fonte of ['imps', 'servicos']) {
+        const k = fonte + op, e = ext.get(k) || { fonte, operador: op, primeiro: null, ultimo: null };
+        const p = `${d} ${pad(h)}:${pad((op * 7) % 20)}:12`, u = `${d} ${pad(h)}:${pad(40 + (op * 3) % 19)}:48`;
+        if (!e.primeiro || p < e.primeiro) e.primeiro = p; if (!e.ultimo || u > e.ultimo) e.ultimo = u; ext.set(k, e);
+      }
+    }
+    t.setMinutes(0, 0, 0);
+  }
+  const r = nome === 'cubadora_hora' ? { colunas: ['fonte', 'dia', 'h', 'operador', 'qtd'], linhas: horas } : { colunas: ['fonte', 'operador', 'primeiro', 'ultimo'], linhas: [...ext.values()] };
+  return new Promise(ok => setTimeout(() => ok({ ...r, total: r.linhas.length, ms: 60, truncado: false }), 500));
+}
+
 /* ---------- Login ---------- */
 function abrirLogin() { $('#login').style.display = 'grid'; setTimeout(() => $('#lu').focus(), 50); }
 $('#loginForm').onsubmit = async e => {
@@ -2107,7 +2504,7 @@ $('#sair').onclick = async () => { if (st.demo) return aviso('Modo demonstraçã
 async function iniciar() {
   try {
     st.me = await api('me');
-    aplicarPerfil(); rotear(); atualizarNotificacoes(); setInterval(atualizarNotificacoes, 60000);
+    aplicarPerfil(); rotear(); atualizarNotificacoes(); setInterval(atualizarNotificacoes, 60000); checarPonte();
   } catch (e) { if (e.message === 'login') return; }
   try { const o = await api('opcoes'); $('#fDepto').insertAdjacentHTML('beforeend', o.deptos.map(d => `<option value="${esc(d)}">${esc(curtoDepto(d))}</option>`).join('')); } catch (e) { mostrarErro(e); }
   sincronizar(); recarregar();
@@ -2120,10 +2517,10 @@ async function iniciar() {
   if (!real) { st.demo = true; $('#aviso').hidden = false; demoApi('opcoes'); st.ini = addD(hoje, -29);
     st.me = { id: 0, usuario: 'demo', nome: 'Demonstração', perfil: 'cliente' };
     $('#demoPerfilBox').hidden = false;
-    $('#demoPerfil').onchange = e => { st.me.perfil = e.target.value; aplicarPerfil(); ultimoTotal = -1; atualizarNotificacoes();
+    $('#demoPerfil').onchange = async e => { st.me.perfil = e.target.value; await checarPonte(); aplicarPerfil(); ultimoTotal = -1; atualizarNotificacoes(); if (viewAtual === 'local') { if (!(ponteSt.disponivel || pode('usuarios'))) location.hash = 'coletas'; else carregarLocal(); }
       if (!pode('usuarios') && viewAtual === 'usuarios') location.hash = 'coletas';
       if (viewAtual === 'coletas') carregarColetas(); if (colAberta) recarregarColeta(true); aviso('Agora vendo como ' + PERFIL_NOME[st.me.perfil]); };
-    aplicarPerfil(); rotear(); atualizarNotificacoes();
+    aplicarPerfil(); rotear(); atualizarNotificacoes(); checarPonte();
     const me = demoApi('opcoes'); $('#fDepto').insertAdjacentHTML('beforeend', me.deptos.map(d => `<option value="${esc(d)}">${esc(curtoDepto(d))}</option>`).join(''));
     sincronizar(); recarregar(); return; }
   iniciar();
